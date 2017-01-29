@@ -3,12 +3,15 @@ package com.pedrojtmartins.racingcalendar.Models;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Pedro Martins
  * 29/01/2017
  */
 
 public class Series extends BaseObservable {
+    @SerializedName("id")
     private int mId;
     public int getId() {
         return mId;
@@ -17,6 +20,7 @@ public class Series extends BaseObservable {
         mId = id;
     }
 
+    @SerializedName("nm")
     @Bindable
     private String mName;
     public String getName() {
@@ -26,6 +30,7 @@ public class Series extends BaseObservable {
         mName = name;
     }
 
+    @SerializedName("yr")
     @Bindable
     private int mYear;
     public int getYear() {

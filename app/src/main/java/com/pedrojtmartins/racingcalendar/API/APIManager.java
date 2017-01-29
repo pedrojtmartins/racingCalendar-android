@@ -1,6 +1,7 @@
 package com.pedrojtmartins.racingcalendar.API;
 
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Pedro Martins
@@ -9,7 +10,10 @@ import retrofit2.Retrofit;
 
 public class APIManager {
     public static IRacingCalendarAPI getApi() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(IRacingCalendarAPI.baseURL).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(IRacingCalendarAPI.baseURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         return retrofit.create(IRacingCalendarAPI.class);
     }
 }

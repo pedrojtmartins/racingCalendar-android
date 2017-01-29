@@ -3,6 +3,8 @@ package com.pedrojtmartins.racingcalendar.Models;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Pedro Martins
  * 28/01/2017
@@ -10,6 +12,7 @@ import android.databinding.Bindable;
 
 //@Parcel(Parcel.Serialization.BEAN)
 public class Race extends BaseObservable {
+    @SerializedName("id")
     private int mId;
     public int getId() {
         return mId;
@@ -18,6 +21,7 @@ public class Race extends BaseObservable {
         mId = id;
     }
 
+    @SerializedName("sid")
     private int mSeriesId;
     public int getSeriesId() {
         return mSeriesId;
@@ -26,6 +30,7 @@ public class Race extends BaseObservable {
         mSeriesId = seriesId;
     }
 
+    @SerializedName("nm")
     @Bindable
     private String mName;
     public String getName() {
@@ -35,6 +40,7 @@ public class Race extends BaseObservable {
         mName = name;
     }
 
+    @SerializedName("trk")
     @Bindable
     private String mTrack;
     public String getTrack() {
@@ -44,6 +50,7 @@ public class Race extends BaseObservable {
         mTrack = track;
     }
 
+    @SerializedName("loc")
     @Bindable
     private String mLocation;
     public String getLocation() {
@@ -53,6 +60,7 @@ public class Race extends BaseObservable {
         mLocation = location;
     }
 
+    @SerializedName("dt")
     @Bindable
     private String mDate;
     public String getDate() {
