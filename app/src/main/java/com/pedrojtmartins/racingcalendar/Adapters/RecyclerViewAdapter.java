@@ -18,28 +18,29 @@ public class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewAda
         mItemLayoutId = itemLayoutId;
         mValues = items;
 
-        mValues.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-            @Override
-            public void onChanged(ObservableList<T> ts) {
-                notifyDataSetChanged();
-            }
-            @Override
-            public void onItemRangeChanged(ObservableList<T> ts, int i, int i1) {
-                notifyDataSetChanged();
-            }
-            @Override
-            public void onItemRangeInserted(ObservableList<T> ts, int i, int i1) {
-                notifyDataSetChanged();
-            }
-            @Override
-            public void onItemRangeMoved(ObservableList<T> ts, int i, int i1, int i2) {
-                notifyDataSetChanged();
-            }
-            @Override
-            public void onItemRangeRemoved(ObservableList<T> ts, int i, int i1) {
-                notifyDataSetChanged();
-            }
-        });
+        if (mValues != null)
+            mValues.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+                @Override
+                public void onChanged(ObservableList<T> ts) {
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onItemRangeChanged(ObservableList<T> ts, int i, int i1) {
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onItemRangeInserted(ObservableList<T> ts, int i, int i1) {
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onItemRangeMoved(ObservableList<T> ts, int i, int i1, int i2) {
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onItemRangeRemoved(ObservableList<T> ts, int i, int i1) {
+                    notifyDataSetChanged();
+                }
+            });
     }
 
     @Override

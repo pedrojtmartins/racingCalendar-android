@@ -2,7 +2,6 @@ package com.pedrojtmartins.racingcalendar.ViewModels;
 
 import android.databinding.ObservableArrayList;
 
-import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 
 /**
@@ -10,11 +9,16 @@ import com.pedrojtmartins.racingcalendar.Models.Race;
  * 29/01/2017
  */
 
-public class MainViewModel implements IRaceList {
+public class MainViewModel {
     private ObservableArrayList<Race> mRaceList;
+    public ObservableArrayList<Race> getRaceList() {
+        return mRaceList;
+    }
 
-    @Override
-    public ObservableArrayList<Race> getList() {
-        return null;
+    public MainViewModel() {
+        mRaceList = new ObservableArrayList<>();
+        mRaceList.add(new Race(1, 1, "name1", "track1", "location1", "date1"));
+        mRaceList.add(new Race(2, 1, "name2", "track2", "location2", "date2"));
+        mRaceList.add(new Race(3, 1, "name3", "track3", "location3", "date3"));
     }
 }
