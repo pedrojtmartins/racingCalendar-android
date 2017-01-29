@@ -2,46 +2,57 @@ package com.pedrojtmartins.racingcalendar.Views.Fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
-
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViewAdapter;
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.R;
-
-import org.parceler.Parcels;
-
-import java.util.ArrayList;
+import com.pedrojtmartins.racingcalendar.databinding.FragmentRaceListBinding;
 
 public class RaceListFragment extends Fragment {
-
-    public static RaceListFragment newInstance(ArrayList<Race> items) {
-        RaceListFragment fragment = new RaceListFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("items", Parcels.wrap(items));
-        return fragment;
-    }
+    private IRaceList mIRaceList;
+    private FragmentRaceListBinding mBinding;
+    private ObservableArrayList<Race> mList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return DataBindingUtil.inflate(inflater, R.layout.fragment_race_list, container, false).getRoot();
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_race_list, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ArrayList<Race> items = savedInstanceState.getParcelable("items");
+        // By doing it this way we guarantee that databinding will work properly
+        // when some change is made to the mList in the activity viewModel
+        mList = mIRaceList.getList();
 
-//        RecyclerViewAdapter<Race> adapter = new RecyclerViewAdapter<>(R.layout.fragment_race, items);
-//        RecyclerView recyclerView = (RecyclerView) getView();
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setAdapter(adapter);
+        // Since we are specifying the item layout here and using databinding
+        // we will be able to have different layouts easily without changing the adapter.
+        // To achieve that the fragment will need to be aware of the selected layout.
+        // We can use shared preferences for that purpose for example.
+        //TODO implement multiple layout selection capabilities
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mBinding.recyclerView.setAdapter(new RecyclerViewAdapter<>(R.layout.fragment_race, mList));
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mIRaceList = (IRaceList) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IRaceList");
+        }
     }
 }
