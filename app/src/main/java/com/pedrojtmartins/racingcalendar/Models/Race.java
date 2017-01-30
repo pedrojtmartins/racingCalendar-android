@@ -30,6 +30,15 @@ public class Race extends BaseObservable {
         mSeriesId = seriesId;
     }
 
+    @SerializedName("no")
+    private int mRaceNumber;
+    public int getRaceNumber() {
+        return mRaceNumber;
+    }
+    public void setRaceNumber(int raceNumber) {
+        mRaceNumber = raceNumber;
+    }
+
     @SerializedName("nm")
     @Bindable
     private String mName;
@@ -63,6 +72,9 @@ public class Race extends BaseObservable {
     @SerializedName("dt")
     @Bindable
     private String mDate;
+    public String getFullDate() {
+        return mDate;
+    }
     public String getDate() {
         if (mDate != null && mDate.contains("T"))
             return mDate.split("T")[0];
@@ -79,9 +91,10 @@ public class Race extends BaseObservable {
         mDate = date;
     }
 
-    public Race(int id, int seriesId, String name, String track, String location, String date) {
+    public Race(int id, int seriesId, int raceNumber, String name, String track, String location, String date) {
         mId = id;
         mSeriesId = seriesId;
+        mRaceNumber = raceNumber;
         mName = name;
         mTrack = track;
         mLocation = location;

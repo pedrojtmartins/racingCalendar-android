@@ -31,6 +31,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //region Columns
     private static final String KEY_RACE_ID = "id";
     private static final String KEY_RACE_SERIES_ID = "seriesId";
+    private static final String KEY_RACE_NUMBER = "race_no";
     private static final String KEY_RACE_NAME = "name";
     private static final String KEY_RACE_TRACK = "track";
     private static final String KEY_RACE_LOCATION = "location";
@@ -41,6 +42,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_RACES = "CREATE TABLE " + TABLE_RACES + "(" +
             KEY_RACE_ID + " INTEGER PRIMARY KEY," +
             KEY_RACE_SERIES_ID + " INTEGER," +
+            KEY_RACE_NUMBER + " INTEGER," +
             KEY_RACE_NAME + " TEXT," +
             KEY_RACE_TRACK + " TEXT," +
             KEY_RACE_LOCATION + " TEXT," +
@@ -99,12 +101,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_RACE_ID));
                 int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_RACE_SERIES_ID));
+                int raceNo = cursor.getInt(cursor.getColumnIndex(KEY_RACE_NUMBER));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
                 String track = cursor.getString(cursor.getColumnIndex(KEY_RACE_TRACK));
                 String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
 
-                list.add(new Race(id, seriesId, name, track, location, date));
+                list.add(new Race(id, seriesId, raceNo, name, track, location, date));
             } while (cursor.moveToNext());
         }
 
@@ -114,10 +117,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_RACE_ID, race.getId());
         values.put(KEY_RACE_SERIES_ID, race.getSeriesId());
+        values.put(KEY_RACE_NUMBER, race.getRaceNumber());
         values.put(KEY_RACE_NAME, race.getName());
         values.put(KEY_RACE_TRACK, race.getTrack());
         values.put(KEY_RACE_LOCATION, race.getLocation());
-        values.put(KEY_RACE_DATE, race.getDate());
+        values.put(KEY_RACE_DATE, race.getFullDate());
         return values;
     }
     private ArrayList<Race> queryRaces(String query) {

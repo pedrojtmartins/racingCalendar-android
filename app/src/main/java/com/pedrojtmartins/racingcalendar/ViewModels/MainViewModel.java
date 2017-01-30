@@ -32,6 +32,8 @@ public class MainViewModel {
 
         loadRaceListFromLocalDb();
 //        initListsUpdate();
+
+//        mRaceList.add(new Race(1,1,));
     }
 
     private void loadRaceListFromLocalDb() {
@@ -40,9 +42,9 @@ public class MainViewModel {
             mRaceList.addAll(races);
 
         //TODO delete when db is populated
-        mRaceList.add(new Race(1, 1, "name1", "track1", "location1", "date1"));
-        mRaceList.add(new Race(2, 1, "name2", "track2", "location2", "date2"));
-        mRaceList.add(new Race(3, 1, "name3", "track3", "location3", "date3"));
+        mRaceList.add(new Race(1, 1, 1, "name1", "track1", "location1", "date1"));
+        mRaceList.add(new Race(2, 1, 2, "name2", "track2", "location2", "date2"));
+        mRaceList.add(new Race(3, 1, 3, "name3", "track3", "location3", "date3"));
     }
 
     private void initListsUpdate() {
@@ -72,7 +74,15 @@ public class MainViewModel {
 
             }
         });
+
+
+
+
+        mRaceList.add(new Race(1, 1, 1, "name1", "track1", "location1", "date1"));
+
+
+
+
+
     }
-
-
 }

@@ -44,7 +44,18 @@ public class DatabaseManagerTest {
     @Test
     public void racesShouldBeAdded() throws Exception {
         assertTrue(addFakeRaces(db) == 3);
-        assertTrue(db.getRaces().size() == 3);
+
+        ArrayList<Race> list = db.getRaces();
+
+        assertTrue(list.size() == 3);
+
+        assertTrue(list.get(1).getId() == 2);
+        assertTrue(list.get(1).getSeriesId() == 2);
+        assertTrue(list.get(1).getRaceNumber() == 2);
+        assertTrue(list.get(1).getName().equals("name2"));
+        assertTrue(list.get(1).getTrack().equals("track2"));
+        assertTrue(list.get(1).getLocation().equals("location2"));
+        assertTrue(list.get(1).getDate().equals("2001-01-01T08:00:00"));
     }
 
     @Test
@@ -78,9 +89,9 @@ public class DatabaseManagerTest {
     private int addFakeRaces(DatabaseManager db) {
 
         ArrayList<Race> races = new ArrayList<>();
-        races.add(new Race(1, 1, "name1", "track1", "location1", "date1"));
-        races.add(new Race(2, 2, "name2", "track2", "location2", "date2"));
-        races.add(new Race(3, 3, "name3", "track3", "location3", "date3"));
+        races.add(new Race(1, 1, 1, "name1", "track1", "location1", "2000-01-01T08:00:00"));
+        races.add(new Race(2, 2, 2, "name2", "track2", "location2", "2001-01-01T08:00:00"));
+        races.add(new Race(3, 3, 3, "name3", "track3", "location3", "2002-01-01T08:00:00"));
 
         return db.addRaces(races);
     }
