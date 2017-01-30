@@ -254,7 +254,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      */
     public Series getSeriesWithId(int id) {
         String query = "SELECT  * FROM " + TABLE_SERIES +
-                " WHERE " + KEY_RACE_SERIES_ID + "=" + id;
+                " WHERE " + KEY_SERIES_ID + "=" + id;
 
         ArrayList<Series> list = querySeries(query);
         if (list != null && list.size() == 1)
