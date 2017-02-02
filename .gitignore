@@ -40,3 +40,4 @@ captures/
 *.jks
 
 google-services.json
+ApiAddresses.java

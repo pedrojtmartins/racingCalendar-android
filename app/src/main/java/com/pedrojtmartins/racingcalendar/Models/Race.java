@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 //@Parcel(Parcel.Serialization.BEAN)
 public class Race extends BaseObservable {
-    @SerializedName("id")
+    @SerializedName("i")
     private int mId;
     public int getId() {
         return mId;
@@ -21,7 +21,7 @@ public class Race extends BaseObservable {
         mId = id;
     }
 
-    @SerializedName("sid")
+    @SerializedName("s")
     private int mSeriesId;
     public int getSeriesId() {
         return mSeriesId;
@@ -30,7 +30,7 @@ public class Race extends BaseObservable {
         mSeriesId = seriesId;
     }
 
-    @SerializedName("no")
+    @SerializedName("u")
     private int mRaceNumber;
     public int getRaceNumber() {
         return mRaceNumber;
@@ -39,7 +39,7 @@ public class Race extends BaseObservable {
         mRaceNumber = raceNumber;
     }
 
-    @SerializedName("nm")
+    @SerializedName("n")
     @Bindable
     private String mName;
     public String getName() {
@@ -49,17 +49,7 @@ public class Race extends BaseObservable {
         mName = name;
     }
 
-    @SerializedName("trk")
-    @Bindable
-    private String mTrack;
-    public String getTrack() {
-        return mTrack;
-    }
-    public void setTrack(String track) {
-        mTrack = track;
-    }
-
-    @SerializedName("loc")
+    @SerializedName("l")
     @Bindable
     private String mLocation;
     public String getLocation() {
@@ -69,7 +59,7 @@ public class Race extends BaseObservable {
         mLocation = location;
     }
 
-    @SerializedName("dt")
+    @SerializedName("d")
     @Bindable
     private String mDate;
     public String getFullDate() {
@@ -91,12 +81,11 @@ public class Race extends BaseObservable {
         mDate = date;
     }
 
-    public Race(int id, int seriesId, int raceNumber, String name, String track, String location, String date) {
+    public Race(int id, int seriesId, int raceNumber, String name, String location, String date) {
         mId = id;
         mSeriesId = seriesId;
         mRaceNumber = raceNumber;
         mName = name;
-        mTrack = track;
         mLocation = location;
         mDate = date;
     }

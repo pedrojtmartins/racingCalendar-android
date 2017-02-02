@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Series extends BaseObservable {
-    @SerializedName("id")
+    @SerializedName("i")
     private int mId;
     public int getId() {
         return mId;
@@ -20,7 +20,7 @@ public class Series extends BaseObservable {
         mId = id;
     }
 
-    @SerializedName("nm")
+    @SerializedName("n")
     @Bindable
     private String mName;
     public String getName() {
@@ -30,7 +30,7 @@ public class Series extends BaseObservable {
         mName = name;
     }
 
-    @SerializedName("yr")
+    @SerializedName("y")
     @Bindable
     private int mYear;
     public int getYear() {
