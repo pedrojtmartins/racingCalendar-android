@@ -53,9 +53,8 @@ public class DatabaseManagerTest {
         assertTrue(list.get(1).getSeriesId() == 2);
         assertTrue(list.get(1).getRaceNumber() == 2);
         assertTrue(list.get(1).getName().equals("name2"));
-        assertTrue(list.get(1).getTrack().equals("track2"));
         assertTrue(list.get(1).getLocation().equals("location2"));
-        assertTrue(list.get(1).getDate().equals("2001-01-01T08:00:00"));
+        assertTrue(list.get(1).getFullDate().equals("2001-01-01T08:00:00"));
     }
 
     @Test
@@ -89,9 +88,9 @@ public class DatabaseManagerTest {
     private int addFakeRaces(DatabaseManager db) {
 
         ArrayList<Race> races = new ArrayList<>();
-        races.add(new Race(1, 1, 1, "name1", "track1", "location1", "2000-01-01T08:00:00"));
-        races.add(new Race(2, 2, 2, "name2", "track2", "location2", "2001-01-01T08:00:00"));
-        races.add(new Race(3, 3, 3, "name3", "track3", "location3", "2002-01-01T08:00:00"));
+        races.add(new Race(1, 1, 1, "name1", "location1", "2000-01-01T08:00:00"));
+        races.add(new Race(2, 2, 2, "name2", "location2", "2001-01-01T08:00:00"));
+        races.add(new Race(3, 3, 3, "name3", "location3", "2002-01-01T08:00:00"));
 
         return db.addRaces(races);
     }
