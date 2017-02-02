@@ -1,4 +1,4 @@
-package com.pedrojtmartins.racingcalendar.API;
+package com.pedrojtmartins.racingcalendar.Api;
 
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
@@ -15,23 +15,21 @@ import retrofit2.http.GET;
 
 public interface IRacingCalendarAPI {
 
-    String baseURL = "base url here";
+    /**
+     * Retrieve current races and series data versions in the server
+     */
+    @GET(ApiAddresses.URL_DATA_VERSION)
+    Call<List<Integer>> getVersions();
 
     /**
      * Retrieves all races in the server
      */
-    @GET("races")
+    @GET(ApiAddresses.URL_RACES)
     Call<List<Race>> getAllRaces();
 
     /**
      * Retrieves all series in the server
      */
-    @GET("series")
+    @GET(ApiAddresses.URL_SERIES)
     Call<List<Series>> getAllSeries();
-
-    /**
-     * Retrieve current races and series data versions in the server
-     */
-    @GET("versions")
-    Call<List<Integer>> getVersions();
 }

@@ -8,6 +8,7 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Interfaces.Activities.IContext;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
@@ -27,10 +28,14 @@ public class MainActivity extends AppCompatActivity implements IContext, IRaceLi
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        DatabaseManager dbManager = DatabaseManager.getInstance(this);
-        mViewModel = new MainViewModel(dbManager);
-
+        initViewModel();
         initListFragment();
+    }
+
+    private void initViewModel() {
+        DatabaseManager dbManager = DatabaseManager.getInstance(this);
+        ApiManager apiManager = new ApiManager();
+        mViewModel = new MainViewModel(dbManager, apiManager);
     }
 
     private void initListFragment() {
