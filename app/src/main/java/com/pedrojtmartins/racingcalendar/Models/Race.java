@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
+import com.pedrojtmartins.racingcalendar.Helpers.DateFormatter;
 
 /**
  * Pedro Martins
@@ -35,6 +36,9 @@ public class Race extends BaseObservable {
     public int getRaceNumber() {
         return mRaceNumber;
     }
+    public String getRaceNumberString() {
+        return Integer.toString(mRaceNumber);
+    }
     public void setRaceNumber(int raceNumber) {
         mRaceNumber = raceNumber;
     }
@@ -64,6 +68,9 @@ public class Race extends BaseObservable {
     private String mDate;
     public String getFullDate() {
         return mDate;
+    }
+    public String getSimplifiedDate() {
+        return DateFormatter.getSimplifiedDate(mDate);
     }
     public String getDate() {
         if (mDate != null && mDate.contains("T"))

@@ -17,4 +17,17 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!--List divider-->
+    <style name="ListDividerTopRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/listDividerTopRow</item>
+    </style>
+
+    <style name="ListDividerBottomRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/listDividerBottomRow</item>
+    </style>
+
 </resources>

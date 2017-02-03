@@ -33,7 +33,7 @@ public class RaceListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // By doing it this way we guarantee that databinding will work properly
-        // when some change is made to the mList in the activity viewModel
+        // when some change is made to the mList in the viewModel
         mList = mIRaceList.getList();
 
         // Since we are specifying the item layout here and using databinding
