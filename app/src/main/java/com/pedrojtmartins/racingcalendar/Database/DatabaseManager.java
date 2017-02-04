@@ -29,12 +29,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TABLE_RACES = "races";
 
     //region Columns
-    private static final String KEY_RACE_ID = "id";
-    private static final String KEY_RACE_SERIES_ID = "seriesId";
+    private static final String KEY_RACE_ID = "race_id";
+    private static final String KEY_RACE_SERIES_ID = "race_seriesId";
     private static final String KEY_RACE_NUMBER = "race_no";
-    private static final String KEY_RACE_NAME = "name";
-    private static final String KEY_RACE_LOCATION = "location";
-    private static final String KEY_RACE_DATE = "date";
+    private static final String KEY_RACE_NAME = "race_name";
+    private static final String KEY_RACE_LOCATION = "race_location";
+    private static final String KEY_RACE_DATE = "race_date";
     //endregion
 
     //region Create Statement
@@ -52,9 +52,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TABLE_SERIES = "series";
 
     //region Columns
-    private static final String KEY_SERIES_ID = "id";
-    private static final String KEY_SERIES_NAME = "name";
-    private static final String KEY_SERIES_YEAR = "year";
+    private static final String KEY_SERIES_ID = "series_id";
+    private static final String KEY_SERIES_NAME = "series_name";
+    private static final String KEY_SERIES_YEAR = "series_year";
     //endregion
 
     //region Create Statement
@@ -103,8 +103,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
                 String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
+                String seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+                if (seriesName == null)
+                    seriesName = "";
 
-                list.add(new Race(id, seriesId, raceNo, name, location, date));
+                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName));
             } while (cursor.moveToNext());
         }
 
@@ -143,8 +146,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of all races
      */
     public ArrayList<Race> getRaces() {
-        String query = "SELECT  * FROM " + TABLE_RACES +
-                " ORDER BY " + KEY_RACE_DATE;
+        String query = "SELECT  r.*, s." + KEY_SERIES_NAME +
+                " FROM " + TABLE_RACES + " r" +
+                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " ORDER BY r." + KEY_RACE_DATE;
 
         return queryRaces(query);
     }
