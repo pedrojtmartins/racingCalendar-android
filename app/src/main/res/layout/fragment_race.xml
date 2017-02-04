@@ -47,7 +47,7 @@
                     android:layout_margin="5dp"
                     android:background="#535353"
                     android:gravity="center"
-                    android:text="F1"
+                    android:text="@{data.seriesName}"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
