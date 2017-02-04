@@ -43,7 +43,7 @@ public class DatabaseManagerTest {
 
     @Test
     public void racesShouldBeAdded() throws Exception {
-        assertTrue(addFakeRaces(db) == 3);
+        assertTrue(populateRaceSeriesDB(db) == 3);
 
         ArrayList<Race> list = db.getRaces();
 
@@ -65,12 +65,12 @@ public class DatabaseManagerTest {
 
     @Test
     public void shouldReturnAllRaces() throws Exception {
-        addFakeRaces(db);
+        populateRaceSeriesDB(db);
         assertTrue(db.getRaces().size() == 3);
     }
     @Test
     public void shouldReturnRaceFromSeries() throws Exception {
-        addFakeRaces(db);
+        populateRaceSeriesDB(db);
         assertTrue(db.getRacesFromSeries(1).size() == 1);
     }
 
@@ -85,12 +85,25 @@ public class DatabaseManagerTest {
         assertTrue(db.getSeriesWithId(1) != null);
     }
 
-    private int addFakeRaces(DatabaseManager db) {
+    @Test
+    public void getRacesShouldReturnOrderedByDateList() throws Exception {
+        ArrayList<Race> races = new ArrayList<>();
+        races.add(new Race(2, 2, 2, "name2", "location2", "2000-01-02T08:00:00", ""));
+        races.add(new Race(1, 1, 1, "name1", "location1", "2000-01-01T08:00:00", ""));
+        races.add(new Race(3, 3, 3, "name3", "location3", "2000-01-03T08:00:00", ""));
+        db.addRaces(races);
+
+        ArrayList<Race> list = db.getRaces();
+        assertTrue(list.get(0).getFullDate().startsWith("2000-01-01"));
+        assertTrue(list.get(1).getFullDate().startsWith("2000-01-02"));
+        assertTrue(list.get(2).getFullDate().startsWith("2000-01-03"));
+    }
+    private int populateRaceSeriesDB(DatabaseManager db) {
 
         ArrayList<Race> races = new ArrayList<>();
-        races.add(new Race(1, 1, 1, "name1", "location1", "2000-01-01T08:00:00"));
-        races.add(new Race(2, 2, 2, "name2", "location2", "2001-01-01T08:00:00"));
-        races.add(new Race(3, 3, 3, "name3", "location3", "2002-01-01T08:00:00"));
+        races.add(new Race(1, 1, 1, "name1", "location1", "2000-01-01T08:00:00", ""));
+        races.add(new Race(2, 2, 2, "name2", "location2", "2001-01-01T08:00:00", ""));
+        races.add(new Race(3, 3, 3, "name3", "location3", "2002-01-01T08:00:00", ""));
 
         return db.addRaces(races);
     }

@@ -14,6 +14,7 @@ import com.pedrojtmartins.racingcalendar.Interfaces.Activities.IContext;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.ViewModels.MainViewModel;
 import com.pedrojtmartins.racingcalendar.Views.Fragments.RaceListFragment;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements IContext, IRaceLi
     private void initViewModel() {
         DatabaseManager dbManager = DatabaseManager.getInstance(this);
         ApiManager apiManager = new ApiManager();
-        mViewModel = new MainViewModel(dbManager, apiManager);
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        mViewModel = new MainViewModel(dbManager, apiManager, sharedPreferencesManager);
     }
 
     private void initListFragment() {

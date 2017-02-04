@@ -4,7 +4,7 @@ import android.databinding.ObservableArrayList;
 
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
-import com.pedrojtmartins.racingcalendar.Interfaces.IDataUpdater;
+import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
@@ -21,17 +21,17 @@ public class MainViewModel implements IDataUpdater {
     private final ApiManager mApiManager;
     private final SharedPreferencesManager mSharedPreferencesManager;
 
-    private ObservableArrayList<Race> mRaceList;
     @Override
     public ObservableArrayList<Race> getRaceList() {
         return mRaceList;
     }
+    private ObservableArrayList<Race> mRaceList;
 
-    private ObservableArrayList<Series> mSeriesList;
     @Override
     public ObservableArrayList<Series> getSeriesList() {
         return mSeriesList;
     }
+    private ObservableArrayList<Series> mSeriesList;
 
     public MainViewModel(DatabaseManager dbManager, ApiManager apiManager, SharedPreferencesManager sharedPreferencesManager) {
         mDbManager = dbManager;

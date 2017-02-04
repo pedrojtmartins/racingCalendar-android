@@ -1,10 +1,9 @@
 package com.pedrojtmartins.racingcalendar.Api;
 
-import com.pedrojtmartins.racingcalendar.Models.Race;
-import com.pedrojtmartins.racingcalendar.Models.Series;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
+import com.pedrojtmartins.racingcalendar.Models.ServerData;
+import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,50 +32,56 @@ public class ApiManager {
 
     public ApiManager() {
     }
-    public boolean updateRaceDataAsync(final ArrayList<Race> list) {
-        if (list == null)
-            return false;
 
-        getApi().getAllRaces().enqueue(new Callback<List<Race>>() {
+    private void updateData(final IDataUpdater dataUpdater,
+                            final DatabaseManager dbManager,
+                            final SharedPreferencesManager sharedPreferencesManager,
+                            final int version) {
+        getApi().getData().enqueue(new Callback<ServerData>() {
             @Override
-            public void onResponse(Call<List<Race>> call, Response<List<Race>> response) {
-                List<Race> newList = response.body();
-                if (response.code() == 200 && newList != null && newList.size() > 0) {
-                    list.clear();
-                    list.addAll(response.body());
+            public void onResponse(Call<ServerData> call, Response<ServerData> response) {
+                ServerData data = response.body();
+                if (response.code() == 200 && data.races != null && data.series != null) {
+                    dbManager.addRaces(data.races);
+                    dbManager.addSeries(data.series);
+
+                    dataUpdater.getRaceList().clear();
+                    dataUpdater.getRaceList().addAll(dbManager.getRaces());
+
+                    dataUpdater.getSeriesList().clear();
+                    dataUpdater.getSeriesList().addAll(dbManager.getSeries());
+
+                    sharedPreferencesManager.addDataVersion(version);
                 } else {
                     //TODO: Handle unsuccessful call
                 }
             }
             @Override
-            public void onFailure(Call<List<Race>> call, Throwable t) {
+            public void onFailure(Call<ServerData> call, Throwable t) {
                 //TODO: Handle unsuccessful call
             }
         });
-
-        return true;
     }
-    public boolean updateSeriesDataAsync(final ArrayList<Series> list) {
-        if (list == null)
-            return false;
-
-        getApi().getAllSeries().enqueue(new Callback<List<Series>>() {
+    public void updateData(final IDataUpdater dataUpdater,
+                           final SharedPreferencesManager sharedPreferencesManager,
+                           final DatabaseManager dbManager) {
+        final int currVersion = sharedPreferencesManager.getDataVersion();
+        getApi().getDataVersion().enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<List<Series>> call, Response<List<Series>> response) {
-                List<Series> newList = response.body();
-                if (response.code() == 200 && newList != null && newList.size() > 0) {
-                    list.clear();
-                    list.addAll(response.body());
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                int version = response.body();
+                if (response.code() == 200 && version > currVersion) {
+                    updateData(dataUpdater, dbManager, sharedPreferencesManager, version);
                 } else {
                     //TODO: Handle unsuccessful call
                 }
             }
             @Override
-            public void onFailure(Call<List<Series>> call, Throwable t) {
+            public void onFailure(Call<Integer> call, Throwable t) {
                 //TODO: Handle unsuccessful call
             }
         });
-
-        return true;
     }
+
+
 }
