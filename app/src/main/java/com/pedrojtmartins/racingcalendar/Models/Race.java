@@ -88,12 +88,22 @@ public class Race extends BaseObservable {
         mDate = date;
     }
 
-    public Race(int id, int seriesId, int raceNumber, String name, String location, String date) {
+    @Bindable
+    private String mSeriesName;
+    public String getSeriesName() {
+        return mSeriesName;
+    }
+    public void setSeriesName(String seriesName) {
+        mSeriesName = seriesName;
+    }
+
+    public Race(int id, int seriesId, int raceNumber, String name, String location, String date, String seriesName) {
         mId = id;
         mSeriesId = seriesId;
         mRaceNumber = raceNumber;
         mName = name;
         mLocation = location;
         mDate = date;
+        mSeriesName = seriesName;
     }
 }

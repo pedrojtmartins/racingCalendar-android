@@ -5,8 +5,7 @@ import android.content.Context;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
-import com.pedrojtmartins.racingcalendar.Models.Race;
-import com.pedrojtmartins.racingcalendar.Models.Series;
+import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,11 +14,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 /**
@@ -29,25 +25,20 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainViewModelTest {
+public class MainViewModelViewModelTest {
 
+    //    private SharedPreferencesManager sharedPreferencesManager;
+//    private DatabaseManager dbManager;
     private MainViewModel mViewModel;
 
     @Before
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application;
 
-        DatabaseManager dbManager = DatabaseManager.getInstance(context);
-        ApiManager apiManager = mockApiManager();
-
-        mViewModel = new MainViewModel(dbManager, apiManager);
-    }
-    private ApiManager mockApiManager(){
         ApiManager apiManager = mock(ApiManager.class);
-        when(apiManager.updateRaceDataAsync(new ArrayList<Race>())).thenReturn(true);
-        when(apiManager.updateSeriesDataAsync(new ArrayList<Series>())).thenReturn(true);
-
-        return apiManager;
+        mViewModel = new MainViewModel(DatabaseManager.getInstance(context),
+                apiManager,
+                mock(SharedPreferencesManager.class));
     }
 
     @Test
