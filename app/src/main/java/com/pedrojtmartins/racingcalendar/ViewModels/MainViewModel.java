@@ -47,7 +47,7 @@ public class MainViewModel implements IDataUpdater {
 
     private void loadRaceListFromLocalDb() {
         ArrayList<Race> races = mDbManager.getRaces();
-        if (races != null)
+        if (races != null && races.size() > 0)
             mRaceList.addAll(races);
     }
 

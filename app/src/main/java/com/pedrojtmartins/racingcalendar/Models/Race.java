@@ -73,8 +73,13 @@ public class Race extends BaseObservable {
         return DateFormatter.getSimplifiedDate(mDate);
     }
     public String getDate() {
-        if (mDate != null && mDate.contains("T"))
-            return mDate.split("T")[0];
+        if (mDate != null) {
+            if (mDate.contains("T"))
+                return mDate.split("T")[0];
+
+            if (mDate.contains("-"))
+                return mDate;
+        }
 
         return "";
     }

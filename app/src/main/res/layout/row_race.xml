@@ -13,6 +13,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/weekTitle"
+            style="@style/WeekDivider"
+            android:visibility="gone"/>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -62,13 +67,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@{data.name}"
+                        android:textColor="@color/colorPrimaryText"
                         android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/track"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{data.location}"/>
+                        android:text="@{data.location}"
+                        android:textColor="@color/colorSecondaryText"/>
 
                 </LinearLayout>
 

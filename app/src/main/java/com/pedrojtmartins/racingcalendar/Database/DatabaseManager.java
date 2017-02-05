@@ -103,9 +103,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
                 String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
-                String seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
-                if (seriesName == null)
-                    seriesName = "";
+
+                String seriesName = "";
+                int seriesNameId = cursor.getColumnIndex(KEY_SERIES_NAME);
+                if (seriesNameId > 0) {
+                    seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+                    if (seriesName == null)
+                        seriesName = "";
+                }
 
                 list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName));
             } while (cursor.moveToNext());

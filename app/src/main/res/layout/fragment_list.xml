@@ -11,5 +11,5 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.pedrojtmartins.racingcalendar.Views.Fragments.RaceListFragment"
-        tools:listitem="@layout/fragment_race"/>
+        tools:listitem="@layout/row_race"/>
 </layout>

@@ -15,16 +15,16 @@ import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViewAdapter;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar.databinding.FragmentRaceListBinding;
+import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
 public class RaceListFragment extends Fragment {
     private IRaceList mIRaceList;
-    private FragmentRaceListBinding mBinding;
+    private FragmentListBinding mBinding;
     private ObservableArrayList<Race> mList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_race_list, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
         return mBinding.getRoot();
     }
 
@@ -42,7 +42,7 @@ public class RaceListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RecyclerViewAdapter<>(R.layout.fragment_race, mList));
+        mBinding.recyclerView.setAdapter(new RecyclerViewAdapter(R.layout.row_race, mList));
     }
 
     @Override
