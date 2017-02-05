@@ -7,6 +7,7 @@ import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
+import com.pedrojtmartins.racingcalendar.Models.ServerData;
 import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -21,13 +22,11 @@ public class MainViewModel implements IDataUpdater {
     private final ApiManager mApiManager;
     private final SharedPreferencesManager mSharedPreferencesManager;
 
-    @Override
     public ObservableArrayList<Race> getRaceList() {
         return mRaceList;
     }
     private ObservableArrayList<Race> mRaceList;
 
-    @Override
     public ObservableArrayList<Series> getSeriesList() {
         return mSeriesList;
     }
@@ -41,17 +40,38 @@ public class MainViewModel implements IDataUpdater {
         mRaceList = new ObservableArrayList<>();
         mSeriesList = new ObservableArrayList<>();
 
-        loadRaceListFromLocalDb();
+        loadDataFromLocalDb();
         initDataUpdate();
     }
 
-    private void loadRaceListFromLocalDb() {
-        ArrayList<Race> races = mDbManager.getRaces();
-        if (races != null && races.size() > 0)
-            mRaceList.addAll(races);
+    private void loadDataFromLocalDb() {
+        mRaceList.clear();
+        ArrayList<Race> raceList = mDbManager.getRaces();
+        if (raceList != null && raceList.size() > 0)
+            mRaceList.addAll(raceList);
+
+        mSeriesList.clear();
+        ArrayList<Series> seriesList = mDbManager.getSeries();
+        if (seriesList != null && seriesList.size() > 0)
+            mSeriesList.addAll(seriesList);
     }
 
     private void initDataUpdate() {
-        mApiManager.updateData(this, mSharedPreferencesManager, mDbManager);
+        // TODO: 05/02/2017 - Alert the user the download is starting
+        mApiManager.updateDataIfRequired(this, mSharedPreferencesManager.getDataVersion());
+    }
+
+    @Override
+    public void newDataIsReady(ServerData data) {
+        if (data == null)
+            return;
+
+        // TODO: 05/02/2017 - Do this in a separate thread?
+        // TODO: 05/02/2017 - Alert the user the download is complete and data was updated
+        mSharedPreferencesManager.addDataVersion(data.version);
+        mDbManager.addRaces(data.races);
+        mDbManager.addSeries(data.series);
+
+        loadDataFromLocalDb();
     }
 }

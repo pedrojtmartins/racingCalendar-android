@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 String formattedDate = DateFormatter.getWeekInterval(fullDate);
                 holder.mDataBinding.weekTitle.setText(formattedDate);
                 holder.mDataBinding.weekTitle.setVisibility(View.VISIBLE);
-                Log.i("debug", fullDate + " - " + formattedDate);
             } else {
                 holder.mDataBinding.weekTitle.setVisibility(View.GONE);
             }

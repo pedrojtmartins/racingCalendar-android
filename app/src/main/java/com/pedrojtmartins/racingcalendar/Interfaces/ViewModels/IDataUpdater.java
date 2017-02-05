@@ -1,9 +1,6 @@
 package com.pedrojtmartins.racingcalendar.Interfaces.ViewModels;
 
-import com.pedrojtmartins.racingcalendar.Models.Race;
-import com.pedrojtmartins.racingcalendar.Models.Series;
-
-import java.util.ArrayList;
+import com.pedrojtmartins.racingcalendar.Models.ServerData;
 
 /**
  * Pedro Martins
@@ -11,6 +8,5 @@ import java.util.ArrayList;
  */
 
 public interface IDataUpdater {
-    ArrayList<Race> getRaceList();
-    ArrayList<Series> getSeriesList();
+    void newDataIsReady(ServerData data);
 }

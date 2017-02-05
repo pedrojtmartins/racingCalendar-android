@@ -1,9 +1,7 @@
 package com.pedrojtmartins.racingcalendar.Api;
 
-import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.Models.ServerData;
-import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,45 +31,16 @@ public class ApiManager {
     public ApiManager() {
     }
 
-    private void updateData(final IDataUpdater dataUpdater,
-                            final DatabaseManager dbManager,
-                            final SharedPreferencesManager sharedPreferencesManager,
-                            final int version) {
-        getApi().getData().enqueue(new Callback<ServerData>() {
-            @Override
-            public void onResponse(Call<ServerData> call, Response<ServerData> response) {
-                ServerData data = response.body();
-                if (response.code() == 200 && data.races != null && data.series != null) {
-                    dbManager.addRaces(data.races);
-                    dbManager.addSeries(data.series);
+    public void updateDataIfRequired(final IDataUpdater dataUpdater, final int currVersion) {
+        if (dataUpdater == null)
+            return;
 
-                    dataUpdater.getRaceList().clear();
-                    dataUpdater.getRaceList().addAll(dbManager.getRaces());
-
-                    dataUpdater.getSeriesList().clear();
-                    dataUpdater.getSeriesList().addAll(dbManager.getSeries());
-
-                    sharedPreferencesManager.addDataVersion(version);
-                } else {
-                    //TODO: Handle unsuccessful call
-                }
-            }
-            @Override
-            public void onFailure(Call<ServerData> call, Throwable t) {
-                //TODO: Handle unsuccessful call
-            }
-        });
-    }
-    public void updateData(final IDataUpdater dataUpdater,
-                           final SharedPreferencesManager sharedPreferencesManager,
-                           final DatabaseManager dbManager) {
-        final int currVersion = sharedPreferencesManager.getDataVersion();
         getApi().getDataVersion().enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 int version = response.body();
                 if (response.code() == 200 && version > currVersion) {
-                    updateData(dataUpdater, dbManager, sharedPreferencesManager, version);
+                    updateData(dataUpdater, version);
                 } else {
                     //TODO: Handle unsuccessful call
                 }
@@ -82,6 +51,22 @@ public class ApiManager {
             }
         });
     }
-
-
+    private void updateData(final IDataUpdater dataUpdater, final int version) {
+        getApi().getData().enqueue(new Callback<ServerData>() {
+            @Override
+            public void onResponse(Call<ServerData> call, Response<ServerData> response) {
+                ServerData data = response.body();
+                if (response.code() == 200 && data != null && data.races != null && data.series != null) {
+                    data.version = version;
+                    dataUpdater.newDataIsReady(data);
+                } else {
+                    //TODO: Handle unsuccessful call
+                }
+            }
+            @Override
+            public void onFailure(Call<ServerData> call, Throwable t) {
+                //TODO: Handle unsuccessful call
+            }
+        });
+    }
 }

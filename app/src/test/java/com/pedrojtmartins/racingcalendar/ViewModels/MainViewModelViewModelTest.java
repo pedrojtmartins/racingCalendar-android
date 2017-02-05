@@ -27,6 +27,7 @@ import static org.mockito.Mockito.mock;
 @Config(constants = BuildConfig.class)
 public class MainViewModelViewModelTest {
 
+
     //    private SharedPreferencesManager sharedPreferencesManager;
 //    private DatabaseManager dbManager;
     private MainViewModel mViewModel;

@@ -15,4 +15,6 @@ public class ServerData {
 
     @SerializedName("s")
     public ArrayList<Series> series;
+
+    public int version;
 }
