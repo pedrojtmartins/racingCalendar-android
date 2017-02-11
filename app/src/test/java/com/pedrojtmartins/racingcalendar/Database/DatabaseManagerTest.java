@@ -71,7 +71,7 @@ public class DatabaseManagerTest {
     @Test
     public void shouldReturnRaceFromSeries() throws Exception {
         populateRaceSeriesDB(db);
-        assertTrue(db.getRacesFromSeries(1).size() == 1);
+        assertTrue(db.getUpcomingRacesFromSeries(1).size() == 1);
     }
 
     @Test

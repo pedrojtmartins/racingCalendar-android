@@ -169,7 +169,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param seriesId
      * @return list of all races from the specified series
      */
-    public ArrayList<Race> getRacesFromSeries(int seriesId) {
+    public ArrayList<Race> getUpcomingRacesFromSeries(int seriesId) {
         String query = "SELECT  * FROM " + TABLE_RACES +
                 " WHERE " + KEY_RACE_SERIES_ID + "=" + seriesId +
                 " ORDER BY " + KEY_RACE_DATE;

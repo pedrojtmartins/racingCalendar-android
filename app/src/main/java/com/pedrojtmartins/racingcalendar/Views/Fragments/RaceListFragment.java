@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViewAdapter;
+import com.pedrojtmartins.racingcalendar.Adapters.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.R;
@@ -42,7 +42,7 @@ public class RaceListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RecyclerViewAdapter(R.layout.row_race, mList));
+        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList));
     }
 
     @Override
