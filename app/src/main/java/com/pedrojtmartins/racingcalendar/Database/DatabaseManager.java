@@ -148,11 +148,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     /**
-     * Retrieves all races in the database
+     * Retrieves all upcoming races in the database
      *
      * @return list of all races
      */
-    public ArrayList<Race> getRaces() {
+    public ArrayList<Race> getUpcomingRaces() {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         String query = "SELECT  r.*, s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_RACES + " r" +
