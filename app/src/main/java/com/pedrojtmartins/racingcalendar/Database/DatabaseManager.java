@@ -153,28 +153,28 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of all races
      */
     public ArrayList<Race> getUpcomingRaces() {
-        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = "SELECT  r.*, s." + KEY_SERIES_NAME +
-                " FROM " + TABLE_RACES + " r" +
-                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " WHERE r." + KEY_RACE_DATE + ">('" + today + "')" +
-                " ORDER BY r." + KEY_RACE_DATE;
-
-        return queryRaces(query);
+        return getUpcomingRaces(null);
     }
 
     /**
-     * Retrieves all races from a series
+     * Retrieves all upcoming races in the database from given series
      *
-     * @param seriesId
-     * @return list of all races from the specified series
+     * @return list of all races
      */
-    public ArrayList<Race> getUpcomingRacesFromSeries(int seriesId) {
-        String query = "SELECT  * FROM " + TABLE_RACES +
-                " WHERE " + KEY_RACE_SERIES_ID + "=" + seriesId +
-                " ORDER BY " + KEY_RACE_DATE;
+    public ArrayList<Race> getUpcomingRaces(String seriesIds) {
+        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME +
+                " FROM " + TABLE_RACES + " r" +
+                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " WHERE r." + KEY_RACE_DATE + ">('").append(today).append("')");
 
-        return queryRaces(query);
+        if (seriesIds != null && seriesIds.length() > 0)
+            sBuilder.append(" AND r." + KEY_RACE_SERIES_ID + " IN(").append(seriesIds).append(")");
+
+        sBuilder.append(" ORDER BY r." + KEY_RACE_DATE);
+
+        return queryRaces(sBuilder.toString());
     }
 
     /**
