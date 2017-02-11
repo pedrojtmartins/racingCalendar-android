@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.pedrojtmartins.racingcalendar.Helpers.DateHelper;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Pedro Martins
@@ -151,9 +153,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of all races
      */
     public ArrayList<Race> getRaces() {
+        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         String query = "SELECT  r.*, s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_RACES + " r" +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " WHERE r." + KEY_RACE_DATE + ">('" + today + "')" +
                 " ORDER BY r." + KEY_RACE_DATE;
 
         return queryRaces(query);
