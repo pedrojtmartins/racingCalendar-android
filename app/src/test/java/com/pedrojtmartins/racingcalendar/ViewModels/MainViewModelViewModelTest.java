@@ -44,7 +44,7 @@ public class MainViewModelViewModelTest {
 
     @Test
     public void raceListShouldNotBeNull() {
-        assertNotNull(mViewModel.getRaceList());
+        assertNotNull(mViewModel.getRacesList(favouritesOnly));
     }
 
     @Test

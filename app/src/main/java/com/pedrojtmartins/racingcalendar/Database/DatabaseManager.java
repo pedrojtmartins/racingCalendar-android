@@ -57,13 +57,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_SERIES_ID = "series_id";
     private static final String KEY_SERIES_NAME = "series_name";
     private static final String KEY_SERIES_YEAR = "series_year";
+    private static final String KEY_SERIES_FAVOURITE = "series_favourite";
     //endregion
 
     //region Create Statement
     private static final String CREATE_TABLE_SERIES = "CREATE TABLE " + TABLE_SERIES + "(" +
             KEY_SERIES_ID + " INTEGER PRIMARY KEY," +
             KEY_SERIES_NAME + " TEXT," +
-            KEY_SERIES_YEAR + " INTEGER)";
+            KEY_SERIES_YEAR + " INTEGER," +
+            KEY_SERIES_FAVOURITE + " INTEGER)";
     //endregion
     //endregion
 
@@ -152,16 +154,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      *
      * @return list of all races
      */
-    public ArrayList<Race> getUpcomingRaces() {
-        return getUpcomingRaces(null);
-    }
-
-    /**
-     * Retrieves all upcoming races in the database from given series
-     *
-     * @return list of all races
-     */
-    public ArrayList<Race> getUpcomingRaces(String seriesIds) {
+    public ArrayList<Race> getUpcomingRaces(boolean favouritesOnly) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME +
@@ -169,8 +162,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " WHERE r." + KEY_RACE_DATE + ">('").append(today).append("')");
 
-        if (seriesIds != null && seriesIds.length() > 0)
-            sBuilder.append(" AND r." + KEY_RACE_SERIES_ID + " IN(").append(seriesIds).append(")");
+        if (favouritesOnly)
+            sBuilder.append(" AND s." + KEY_SERIES_FAVOURITE + "=1");
 
         sBuilder.append(" ORDER BY r." + KEY_RACE_DATE);
 
@@ -218,8 +211,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
                 int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
+                boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
 
-                list.add(new Series(id, name, year));
+                list.add(new Series(id, name, year, favourite));
             } while (cursor.moveToNext());
         }
 
@@ -230,6 +224,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_SERIES_ID, series.getId());
         values.put(KEY_SERIES_NAME, series.getName());
         values.put(KEY_SERIES_YEAR, series.getYear());
+        values.put(KEY_SERIES_FAVOURITE, series.getIsFavourite() ? 1 : 0);
         return values;
     }
     private ArrayList<Series> querySeries(String query) {

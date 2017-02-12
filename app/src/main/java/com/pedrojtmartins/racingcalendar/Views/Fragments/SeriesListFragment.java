@@ -5,13 +5,13 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pedrojtmartins.racingcalendar.Adapters.SeriesAdapter;
+import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesAdapter;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;

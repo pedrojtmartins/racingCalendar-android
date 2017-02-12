@@ -1,17 +1,17 @@
 package com.pedrojtmartins.racingcalendar.Views.Fragments;
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pedrojtmartins.racingcalendar.Adapters.RaceAdapter;
+import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.R;
@@ -21,6 +21,14 @@ public class RaceListFragment extends Fragment {
     private IRaceList mIRaceList;
     private FragmentListBinding mBinding;
     private ObservableArrayList<Race> mList;
+    private boolean mFavouritesOnly;
+
+    public Fragment newInstance(final boolean favouritesOnly) {
+        RaceListFragment f = new RaceListFragment();
+        f.mFavouritesOnly = favouritesOnly;
+
+        return f;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +42,7 @@ public class RaceListFragment extends Fragment {
 
         // By doing it this way we guarantee that databinding will work properly
         // when some change is made to the mList in the viewModel
-        mList = mIRaceList.getRacesList();
+        mList = mIRaceList.getRacesList(mFavouritesOnly);
 
         // Since we are specifying the item layout here and using databinding
         // we will be able to have different layouts easily without changing the adapter.

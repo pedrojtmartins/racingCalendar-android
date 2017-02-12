@@ -1,4 +1,4 @@
-package com.pedrojtmartins.racingcalendar.Adapters;
+package com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews;
 
 import android.databinding.ObservableArrayList;
 

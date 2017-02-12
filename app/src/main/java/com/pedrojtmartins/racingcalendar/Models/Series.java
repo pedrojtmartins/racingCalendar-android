@@ -40,9 +40,20 @@ public class Series extends BaseObservable {
         mYear = year;
     }
 
-    public Series(int id, String name, int year) {
+    public Series(int id, String name, int year, boolean isFavourite) {
         mId = id;
         mName = name;
         mYear = year;
+        mIsFavourite=isFavourite;
+    }
+
+    @SerializedName("f")
+    @Bindable
+    private boolean mIsFavourite;
+    public boolean getIsFavourite() {
+        return mIsFavourite;
+    }
+    public void setFavourite(boolean favourite) {
+        mIsFavourite = favourite;
     }
 }

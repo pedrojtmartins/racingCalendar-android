@@ -22,10 +22,14 @@ public class MainViewModel implements IDataUpdater {
     private final ApiManager mApiManager;
     private final SharedPreferencesManager mSharedPreferencesManager;
 
-    public ObservableArrayList<Race> getRaceList() {
-        return mRaceList;
+    public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
+        if (favouritesOnly)
+            return mFavouriteRaces;
+        else
+            return mAllRaces;
     }
-    private ObservableArrayList<Race> mRaceList;
+    private ObservableArrayList<Race> mFavouriteRaces;
+    private ObservableArrayList<Race> mAllRaces;
 
     public ObservableArrayList<Series> getSeriesList() {
         return mSeriesList;
@@ -37,7 +41,8 @@ public class MainViewModel implements IDataUpdater {
         mApiManager = apiManager;
         mSharedPreferencesManager = sharedPreferencesManager;
 
-        mRaceList = new ObservableArrayList<>();
+        mFavouriteRaces = new ObservableArrayList<>();
+        mAllRaces = new ObservableArrayList<>();
         mSeriesList = new ObservableArrayList<>();
 
         loadDataFromLocalDb();
@@ -45,15 +50,20 @@ public class MainViewModel implements IDataUpdater {
     }
 
     private void loadDataFromLocalDb() {
-        mRaceList.clear();
-        ArrayList<Race> raceList = mDbManager.getUpcomingRaces();
-        if (raceList != null && raceList.size() > 0)
-            mRaceList.addAll(raceList);
-
         mSeriesList.clear();
         ArrayList<Series> seriesList = mDbManager.getSeries();
         if (seriesList != null && seriesList.size() > 0)
             mSeriesList.addAll(seriesList);
+
+        mFavouriteRaces.clear();
+        ArrayList<Race> favsList = mDbManager.getUpcomingRaces(true);
+        if (favsList != null && favsList.size() > 0)
+            mFavouriteRaces.addAll(favsList);
+
+        mAllRaces.clear();
+        ArrayList<Race> raceList = mDbManager.getUpcomingRaces(false);
+        if (raceList != null && raceList.size() > 0)
+            mAllRaces.addAll(raceList);
     }
 
     private void initDataUpdate() {
