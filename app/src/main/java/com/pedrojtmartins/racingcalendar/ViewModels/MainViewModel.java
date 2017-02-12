@@ -1,6 +1,7 @@
 package com.pedrojtmartins.racingcalendar.ViewModels;
 
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableInt;
 
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
@@ -21,6 +22,9 @@ public class MainViewModel implements IDataUpdater {
     private final DatabaseManager mDbManager;
     private final ApiManager mApiManager;
     private final SharedPreferencesManager mSharedPreferencesManager;
+
+    //This will be observed by the activity and will display a message when needed
+    public ObservableInt updatedFromServer;
 
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
         if (favouritesOnly)
@@ -44,6 +48,8 @@ public class MainViewModel implements IDataUpdater {
         mFavouriteRaces = new ObservableArrayList<>();
         mAllRaces = new ObservableArrayList<>();
         mSeriesList = new ObservableArrayList<>();
+
+        updatedFromServer = new ObservableInt(0);
 
         loadDataFromLocalDb();
         initDataUpdate();
@@ -83,5 +89,7 @@ public class MainViewModel implements IDataUpdater {
         mDbManager.addSeries(data.series);
 
         loadDataFromLocalDb();
+
+        updatedFromServer.set(updatedFromServer.get() + 1);
     }
 }

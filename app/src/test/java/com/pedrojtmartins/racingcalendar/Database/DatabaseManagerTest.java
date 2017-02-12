@@ -45,7 +45,7 @@ public class DatabaseManagerTest {
     public void racesShouldBeAdded() throws Exception {
         assertTrue(populateRaceSeriesDB(db) == 3);
 
-        ArrayList<Race> list = db.getUpcomingRaces();
+        ArrayList<Race> list = db.getUpcomingRaces(true);
 
         assertTrue(list.size() == 3);
 
@@ -66,12 +66,7 @@ public class DatabaseManagerTest {
     @Test
     public void shouldReturnAllRaces() throws Exception {
         populateRaceSeriesDB(db);
-        assertTrue(db.getUpcomingRaces().size() == 3);
-    }
-    @Test
-    public void shouldReturnRaceFromSeries() throws Exception {
-        populateRaceSeriesDB(db);
-        assertTrue(db.getUpcomingRacesFromSeries(1).size() == 1);
+        assertTrue(db.getUpcomingRaces(true).size() == 3);
     }
 
     @Test
@@ -93,7 +88,7 @@ public class DatabaseManagerTest {
         races.add(new Race(3, 3, 3, "name3", "location3", "2000-01-03T08:00:00", ""));
         db.addRaces(races);
 
-        ArrayList<Race> list = db.getUpcomingRaces();
+        ArrayList<Race> list = db.getUpcomingRaces(true);
         assertTrue(list.get(0).getFullDate().startsWith("2000-01-01"));
         assertTrue(list.get(1).getFullDate().startsWith("2000-01-02"));
         assertTrue(list.get(2).getFullDate().startsWith("2000-01-03"));
@@ -111,9 +106,9 @@ public class DatabaseManagerTest {
     private int addFakeSeries(DatabaseManager db) {
 
         ArrayList<Series> series = new ArrayList<>();
-        series.add(new Series(1, "series1", 1));
-        series.add(new Series(2, "series2", 2));
-        series.add(new Series(3, "series3", 3));
+        series.add(new Series(1, "series1", 1, false));
+        series.add(new Series(2, "series2", 2, false));
+        series.add(new Series(3, "series3", 3, false));
 
         return db.addSeries(series);
     }

@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data></data>
-
-    <!--<RelativeLayout-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:id="@+id/activity_main"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context="com.pedrojtmartins.racingcalendar.Views.Activities.MainActivity">-->
-
-    <!--<FrameLayout-->
-    <!--android:id="@+id/fragment1_container"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"/>-->
-
-    <!--</RelativeLayout>-->
+    <!--<data></data>-->
 
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,15 +10,15 @@
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         tools:context="com.pedrojtmartins.tabtests.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
-            <!--android:paddingTop="@dimen/appbar_padding_top"-->
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -42,6 +27,12 @@
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/races"-->
+                    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark"/>-->
 
             </android.support.v7.widget.Toolbar>
 

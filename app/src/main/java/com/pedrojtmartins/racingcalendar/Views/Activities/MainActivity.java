@@ -1,13 +1,17 @@
 package com.pedrojtmartins.racingcalendar.Views.Activities;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.Helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
@@ -37,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         ApiManager apiManager = new ApiManager();
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         mViewModel = new MainViewModel(dbManager, apiManager, sharedPreferencesManager);
+
+        mViewModel.updatedFromServer.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
+            }
+        });
     }
     private void initToolBar() {
         setSupportActionBar(mBinding.toolbar);
