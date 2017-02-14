@@ -30,7 +30,7 @@ public class FavoritesViewModel {
         mSeries.addAll(mDatabaseManager.getSeries());
     }
 
-    public void saveFavourites() {
+    public void saveFavorites() {
         mDatabaseManager.setSeriesFavorite(mSeries);
     }
 }

@@ -9,4 +9,8 @@
     <string name="maintab_all">All</string>
     <string name="races">Races</string>
     <string name="dataUpdated">Data was updated</string>
+    <string name="save_avorites">save_avorites</string>
+    <string name="discardFavorites">Discard changes?</string>
+    <string name="discard">Discard</string>
+    <string name="cancel">Cancel</string>
 </resources>

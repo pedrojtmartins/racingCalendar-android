@@ -280,6 +280,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return amount of rows added
      */
     public int addSeries(ArrayList<Series> list) {
+        // TODO: 14/02/2017 Check if the series that we're adding is a favorite and update it 
         int totalRowsInserted = 0;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -320,7 +321,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
                 String whereClause = KEY_SERIES_ID + "=" + series.getId();
 
-               db.update(TABLE_SERIES, contentValues, whereClause, null);
+                db.update(TABLE_SERIES, contentValues, whereClause, null);
             }
 
             db.setTransactionSuccessful();

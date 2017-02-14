@@ -42,7 +42,7 @@ public class SeriesListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.row_series, mList));
+        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.card_series, mList));
     }
 
     @Override
