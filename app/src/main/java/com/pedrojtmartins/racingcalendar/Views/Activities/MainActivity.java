@@ -1,12 +1,12 @@
 package com.pedrojtmartins.racingcalendar.Views.Activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableBoolean;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
@@ -59,6 +59,13 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
     //endregion
 
+    //region OnClicks
+    public void onClick_SelectFavorites(View v) {
+        Intent intent = new Intent(this, FavoritesActivity.class);
+        startActivityForResult(intent, 1);
+    }
+    //endregion
+
     //region Callbacks
     @Override
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
@@ -69,4 +76,12 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         return mViewModel.getSeriesList();
     }
     //endregion
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            mViewModel.updateFavorites();
+        }
+    }
 }

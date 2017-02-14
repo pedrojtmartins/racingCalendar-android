@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.databinding.ObservableArrayList;
 
 import com.pedrojtmartins.racingcalendar.Helpers.DateHelper;
 import com.pedrojtmartins.racingcalendar.Models.Race;
@@ -224,7 +225,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_SERIES_ID, series.getId());
         values.put(KEY_SERIES_NAME, series.getName());
         values.put(KEY_SERIES_YEAR, series.getYear());
-        values.put(KEY_SERIES_FAVOURITE, series.getIsFavourite() ? 1 : 0);
+        values.put(KEY_SERIES_FAVOURITE, series.isFavorite() ? 1 : 0);
         return values;
     }
     private ArrayList<Series> querySeries(String query) {
@@ -302,6 +303,31 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
 
         return totalRowsInserted;
+    }
+
+    public void setSeriesFavorite(ObservableArrayList<Series> list) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Series series = list.get(i);
+                if (series == null)
+                    continue;
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(KEY_SERIES_FAVOURITE, series.isFavorite() ? 1 : 0);
+
+                String whereClause = KEY_SERIES_ID + "=" + series.getId();
+
+               db.update(TABLE_SERIES, contentValues, whereClause, null);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            closeDatabase(db);
+        }
     }
     //endregion
 

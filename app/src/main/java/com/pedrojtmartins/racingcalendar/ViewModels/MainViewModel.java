@@ -92,4 +92,8 @@ public class MainViewModel implements IDataUpdater {
 
         updatedFromServer.set(updatedFromServer.get() + 1);
     }
+
+    public void updateFavorites() {
+        loadDataFromLocalDb();
+    }
 }

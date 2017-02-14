@@ -26,6 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:checked="@{data.isFavourite}"/>
+            android:checked="@={data.favorite}"/>
     </FrameLayout>
 </layout>
