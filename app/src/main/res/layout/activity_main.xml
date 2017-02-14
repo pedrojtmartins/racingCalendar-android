@@ -29,10 +29,10 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/races"-->
-                    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark"/>-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/races"-->
+                <!--android:theme="@style/ThemeOverlay.AppCompat.Dark"/>-->
 
             </android.support.v7.widget.Toolbar>
 
@@ -42,11 +42,23 @@
                 android:layout_height="wrap_content"/>
 
         </android.support.design.widget.AppBarLayout>
+
         <android.support.v4.view.ViewPager
-            android:id="@+id/container"
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="onClick_SelectFavorites"
+            app:layout_anchor="@id/viewPager"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/add_favorites"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

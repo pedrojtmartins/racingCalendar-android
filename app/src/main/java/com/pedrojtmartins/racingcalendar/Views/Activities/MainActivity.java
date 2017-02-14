@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -54,8 +55,28 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
     private void initViewPager() {
         MainPagerAdapter pageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
-        mBinding.container.setAdapter(pageAdapter);
-        mBinding.tabs.setupWithViewPager(mBinding.container);
+        mBinding.viewPager.setAdapter(pageAdapter);
+        mBinding.tabs.setupWithViewPager(mBinding.viewPager);
+
+        mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state != ViewPager.SCROLL_STATE_IDLE) {
+                    mBinding.fab.hide();
+                } else {
+                    if (mBinding.viewPager.getCurrentItem() == 0) {
+                        mBinding.fab.show();
+                    }
+                }
+            }
+        });
     }
     //endregion
 
