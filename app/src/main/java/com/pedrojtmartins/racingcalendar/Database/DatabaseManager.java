@@ -70,6 +70,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
     //endregion
 
+    //region Table Favorites
+    private static final String TABLE_FAVOURITES = "favourites";
+
+    //region Columns
+    private static final String KEY_FAVOURITES_ID = "race_id";
+    private static final String KEY_FAVOURITES_SERIES_ID = "race_seriesId";
+    //endregion
+
+    //region Create Statement
+    private static final String CREATE_TABLE_FAVOURITES = "CREATE TABLE " + TABLE_FAVOURITES + "(" +
+            KEY_FAVOURITES_ID + " INTEGER PRIMARY KEY," +
+            KEY_FAVOURITES_SERIES_ID + " INTEGER)";
+    //endregion
+    //endregion
+
     /**
      * @param context Requesting context
      * @return the instance of the DatabaseManager
@@ -88,11 +103,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_RACES);
         db.execSQL(CREATE_TABLE_SERIES);
+//        db.execSQL(CREATE_TABLE_FAVOURITES);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SERIES);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVOURITES);
 
         onCreate(db);
     }
@@ -189,7 +206,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 if (race == null)
                     continue;
 
-                long rowId = db.insert(TABLE_RACES, null, createRaceContentValue(race));
+                ContentValues cValues = createRaceContentValue(race);
+                long rowId = db.insert(TABLE_RACES, null, cValues);
+                if (rowId == -1) {
+                    cValues.remove(KEY_RACE_ID);
+                    rowId = db.update(TABLE_RACES, cValues, KEY_RACE_ID + "=" + race.getId(), null);
+                }
+
                 if (rowId != -1)
                     totalRowsInserted++;
             }
@@ -204,7 +227,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
     //endregion
 
-    //region series
+    //region Series
     private ArrayList<Series> buildSeries(Cursor cursor) {
         ArrayList<Series> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -280,7 +303,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return amount of rows added
      */
     public int addSeries(ArrayList<Series> list) {
-        // TODO: 14/02/2017 Check if the series that we're adding is a favorite and update it 
+        // TODO: 14/02/2017 This solution to insert or update is not the best
         int totalRowsInserted = 0;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -292,7 +315,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 if (series == null)
                     continue;
 
-                long rowId = db.insert(TABLE_SERIES, null, createSeriesContentValue(series));
+                ContentValues cValues = createSeriesContentValue(series);
+                long rowId = db.insert(TABLE_SERIES, null, cValues);
+                if (rowId == -1) {
+                    cValues.remove(KEY_SERIES_ID);
+                    cValues.remove(KEY_SERIES_FAVOURITE);
+                    rowId = db.update(TABLE_SERIES, cValues, KEY_SERIES_ID + "=" + series.getId(), null);
+                }
+
                 if (rowId != -1)
                     totalRowsInserted++;
             }
@@ -330,6 +360,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
             closeDatabase(db);
         }
     }
+    //endregion
+
+    //region Favourites
+
     //endregion
 
     private void close(SQLiteDatabase db, Cursor cursor) {
