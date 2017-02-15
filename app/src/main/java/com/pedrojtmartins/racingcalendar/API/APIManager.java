@@ -39,7 +39,7 @@ public class ApiManager {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 int version = response.body();
-                if (response.code() == 200 && version > currVersion) {
+                if (response.code() == 200 && version != currVersion) {
                     updateData(dataUpdater, version);
                 } else {
                     //TODO: Handle unsuccessful call
