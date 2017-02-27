@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Pedro Martins
@@ -80,6 +82,52 @@ public class DateFormatter {
 
         } catch (ParseException pe) {
             return 0;
+        }
+    }
+
+    public static int getThisWeekNumber() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String get24Hour(String date) {
+        if (date == null || !date.contains("T") || !date.contains(":"))
+            return "";
+
+        try {
+            DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(utcFormat.parse(date));
+
+            DateFormat format24 = new SimpleDateFormat("HH:mm");
+            TimeZone thisTimeZone =TimeZone.getDefault();
+            format24.setTimeZone(thisTimeZone);
+            Date dDate = calendar.getTime();
+            String sDate = format24.format(dDate);
+            return sDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getAmPmHour(String date) {
+        try {
+            DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(utcFormat.parse(date));
+
+            DateFormat format24 = new SimpleDateFormat("hh:mm a");
+            format24.setTimeZone(TimeZone.getDefault());
+            return format24.format(calendar);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }

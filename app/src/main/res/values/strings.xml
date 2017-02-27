@@ -13,4 +13,6 @@
     <string name="discardFavorites">Discard changes?</string>
     <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
+    <string name="thisWeek">This week</string>
+    <string name="nextWeek">Next week</string>
 </resources>

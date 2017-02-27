@@ -50,7 +50,7 @@ public class RaceListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList));
+        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList, getResources()));
     }
 
     @Override

@@ -84,10 +84,7 @@ public class Race extends BaseObservable {
         return "";
     }
     public String getHour() {
-        if (mDate != null && mDate.contains("T"))
-            return mDate.split("T")[1];
-
-        return "";
+        return DateFormatter.get24Hour(mDate);
     }
     public void setDate(String date) {
         mDate = date;

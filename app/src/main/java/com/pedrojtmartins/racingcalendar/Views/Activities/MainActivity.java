@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
@@ -32,9 +34,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        initAdMob();
         initViewModel();
         initToolBar();
         initViewPager();
+    }
+    private void initAdMob() {
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
+
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mBinding.adView.loadAd(adRequest);
     }
 
     private void initViewModel() {
