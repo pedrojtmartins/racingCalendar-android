@@ -28,7 +28,7 @@ public class DateFormatter {
 
         try {
             SimpleDateFormat currFormat = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat newFormat = new SimpleDateFormat("dd MMM");
+            SimpleDateFormat newFormat = new SimpleDateFormat(Settings.DAY_MONTH_FORMAT);
 
             return newFormat.format(currFormat.parse(date));
         } catch (ParseException e) {
@@ -137,7 +137,7 @@ public class DateFormatter {
         }
     }
     public static String getHour(String date) {
-        return Settings.isIn12Hours ? getAmPmHour(date) : get24Hour(date);
+        return Settings.IS_12_HOURS_FORMAT ? getAmPmHour(date) : get24Hour(date);
     }
 
     public static String getDayOfWeekShort(String date) {

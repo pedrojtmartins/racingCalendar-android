@@ -8,5 +8,6 @@ package com.pedrojtmartins.racingcalendar._Constants;
 public class Settings {
     public final static boolean PRO_VERSION = false;
 
-    public static boolean isIn12Hours;
+    public static boolean IS_12_HOURS_FORMAT;
+    public static String DAY_MONTH_FORMAT;
 }
