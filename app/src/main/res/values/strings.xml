@@ -15,4 +15,6 @@
     <string name="cancel">Cancel</string>
     <string name="thisWeek">This week</string>
     <string name="nextWeek">Next week</string>
+    <string name="maintab_series">Series</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

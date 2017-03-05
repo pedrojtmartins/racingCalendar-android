@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesAdapter;
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
@@ -19,8 +20,8 @@ import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
 public class SeriesListFragment extends Fragment {
     private ISeriesList mISeriesList;
+    private ISeriesCallback mISeriesCallback;
     private FragmentListBinding mBinding;
-    private ObservableArrayList<Series> mList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class SeriesListFragment extends Fragment {
 
         // By doing it this way we guarantee that databinding will work properly
         // when some change is made to the mList in the viewModel
-        mList = mISeriesList.getSeriesList();
+        ObservableArrayList<Series> list = mISeriesList.getSeriesList();
 
         // Since we are specifying the item layout here and using databinding
         // we will be able to have different layouts easily without changing the adapter.
@@ -42,7 +43,7 @@ public class SeriesListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.card_series, mList));
+        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.card_series, list, mISeriesCallback));
     }
 
     @Override
@@ -53,6 +54,12 @@ public class SeriesListFragment extends Fragment {
             mISeriesList = (ISeriesList) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement IRaceList");
+        }
+
+        try {
+            mISeriesCallback = (ISeriesCallback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement ISeriesCallback");
         }
     }
 }

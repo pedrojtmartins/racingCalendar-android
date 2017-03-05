@@ -21,11 +21,12 @@
             android:name=".Views.Activities.FavoritesActivity"
             android:parentActivityName=".Views.Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             //This will be used by the go back button in the app bar
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Views.Activities.MainActivity"/>
+        </activity>
+        <activity android:name=".Views.Activities.SettingsActivity">
         </activity>
     </application>
 

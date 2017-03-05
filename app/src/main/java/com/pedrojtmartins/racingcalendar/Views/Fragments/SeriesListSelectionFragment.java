@@ -11,34 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.RaceAdapter;
-import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
-import com.pedrojtmartins.racingcalendar.Models.Race;
+import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesSelectionAdapter;
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
+import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
-
-public class RaceListFragment extends Fragment {
-    private IRaceList mIRaceList;
+public class SeriesListSelectionFragment extends Fragment {
+    private ISeriesList mISeriesList;
     private FragmentListBinding mBinding;
-    private ObservableArrayList<Race> mList;
-
-    private boolean mFavouritesOnly;
-    private int mSeriesId;
-
-    public Fragment newInstance(final boolean favouritesOnly) {
-        RaceListFragment f = new RaceListFragment();
-        f.mFavouritesOnly = favouritesOnly;
-
-        return f;
-    }
-
-    public Fragment newInstance(final int seriesId) {
-        RaceListFragment f = new RaceListFragment();
-        f.mSeriesId = seriesId;
-
-        return f;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,11 +33,7 @@ public class RaceListFragment extends Fragment {
 
         // By doing it this way we guarantee that databinding will work properly
         // when some change is made to the mList in the viewModel
-        if (mSeriesId > 0) {
-            mList = mIRaceList.getRacesListBySeries(mSeriesId);
-        } else {
-            mList = mIRaceList.getRacesList(mFavouritesOnly);
-        }
+        ObservableArrayList<Series> list = mISeriesList.getSeriesList();
 
         // Since we are specifying the item layout here and using databinding
         // we will be able to have different layouts easily without changing the adapter.
@@ -64,7 +41,7 @@ public class RaceListFragment extends Fragment {
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList, getResources()));
+        mBinding.recyclerView.setAdapter(new SeriesSelectionAdapter(R.layout.row_series_selection, list));
     }
 
     @Override
@@ -72,7 +49,7 @@ public class RaceListFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            mIRaceList = (IRaceList) context;
+            mISeriesList = (ISeriesList) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement IRaceList");
         }

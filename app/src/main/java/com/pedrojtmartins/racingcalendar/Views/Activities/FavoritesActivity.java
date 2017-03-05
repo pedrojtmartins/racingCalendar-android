@@ -7,14 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.util.DisplayMetrics;
-import android.view.Display;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesAdapter;
+import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesSelectionAdapter;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Helpers.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.R;
@@ -52,15 +50,15 @@ public class FavoritesActivity extends AppCompatActivity {
         }
     }
     private void initRecyclerView() {
-        SeriesAdapter adapter = new SeriesAdapter(R.layout.card_series, mViewModel.getSeries());
-        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(this, getNumberOfRows()));
+        SeriesSelectionAdapter adapter = new SeriesSelectionAdapter(R.layout.row_series_selection, mViewModel.getSeries());
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(adapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.favorites_menu, menu);
+        inflater.inflate(R.menu.favorites, menu);
         return true;
     }
     @Override
@@ -114,16 +112,16 @@ public class FavoritesActivity extends AppCompatActivity {
         mViewModel.saveFavorites();
     }
 
-    private int getNumberOfRows() {
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-
-        float density = getResources().getDisplayMetrics().density;
-        int dpHeight = (int) (outMetrics.heightPixels / density);
-        int dpWidth = (int) (outMetrics.widthPixels / density);
-
-        int dp = dpHeight < dpWidth ? dpHeight : dpWidth;
-        return dp / 90;
-    }
+//    private int getNumberOfRows() {
+//        Display display = getWindowManager().getDefaultDisplay();
+//        DisplayMetrics outMetrics = new DisplayMetrics();
+//        display.getMetrics(outMetrics);
+//
+//        float density = getResources().getDisplayMetrics().density;
+//        int dpHeight = (int) (outMetrics.heightPixels / density);
+//        int dpWidth = (int) (outMetrics.widthPixels / density);
+//
+//        int dp = dpHeight < dpWidth ? dpHeight : dpWidth;
+//        return dp / 90;
+//    }
 }

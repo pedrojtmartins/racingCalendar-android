@@ -32,6 +32,15 @@ public class MainViewModel implements IDataUpdater {
         else
             return mAllRaces;
     }
+    public ObservableArrayList<Race> getRacesList(int seriesId) {
+        ArrayList<Race> aList = mDbManager.getUpcomingRaces(seriesId);
+        if (aList == null)
+            return null;
+
+        ObservableArrayList<Race> list = new ObservableArrayList<>();
+        list.addAll(aList);
+        return list;
+    }
     private ObservableArrayList<Race> mFavouriteRaces;
     private ObservableArrayList<Race> mAllRaces;
 
@@ -96,4 +105,5 @@ public class MainViewModel implements IDataUpdater {
     public void updateFavorites() {
         loadDataFromLocalDb();
     }
+
 }

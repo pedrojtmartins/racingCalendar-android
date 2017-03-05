@@ -2,6 +2,8 @@ package com.pedrojtmartins.racingcalendar.Helpers;
 
 import android.annotation.SuppressLint;
 
+import com.pedrojtmartins.racingcalendar._Constants.Settings;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,8 +93,9 @@ public class DateFormatter {
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
+
     @SuppressLint("SimpleDateFormat")
-    public static String get24Hour(String date) {
+    private static String get24Hour(String date) {
         if (date == null || !date.contains("T") || !date.contains(":"))
             return "";
 
@@ -103,7 +106,7 @@ public class DateFormatter {
             calendar.setTime(utcFormat.parse(date));
 
             DateFormat format24 = new SimpleDateFormat("HH:mm");
-            TimeZone thisTimeZone =TimeZone.getDefault();
+            TimeZone thisTimeZone = TimeZone.getDefault();
             format24.setTimeZone(thisTimeZone);
             Date dDate = calendar.getTime();
             String sDate = format24.format(dDate);
@@ -115,17 +118,49 @@ public class DateFormatter {
     }
 
     @SuppressLint("SimpleDateFormat")
-    public static String getAmPmHour(String date) {
+    private static String getAmPmHour(String date) {
         try {
             DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(utcFormat.parse(date));
 
-            DateFormat format24 = new SimpleDateFormat("hh:mm a");
-            format24.setTimeZone(TimeZone.getDefault());
-            return format24.format(calendar);
+            DateFormat format24 = new SimpleDateFormat("h:mm a");
+            TimeZone thisTimeZone = TimeZone.getDefault();
+            format24.setTimeZone(thisTimeZone);
+            Date dDate = calendar.getTime();
+            String sDate = format24.format(dDate);
+            return sDate;
         } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    public static String getHour(String date) {
+        return Settings.isIn12Hours ? getAmPmHour(date) : get24Hour(date);
+    }
+
+    public static String getDayOfWeekShort(String date) {
+        try {
+            DateFormat utcFormat = null;
+            if (date.contains("T")) {
+                utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            } else {
+                utcFormat = new SimpleDateFormat("yyyy-MM-dd");
+            }
+
+            utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(utcFormat.parse(date));
+
+            DateFormat newFormat = new SimpleDateFormat("EEE");
+            TimeZone thisTimeZone = TimeZone.getDefault();
+            newFormat.setTimeZone(thisTimeZone);
+            Date dDate = calendar.getTime();
+            String sDate = newFormat.format(dDate);
+            return sDate;
+        } catch (
+                ParseException e) {
             e.printStackTrace();
             return "";
         }

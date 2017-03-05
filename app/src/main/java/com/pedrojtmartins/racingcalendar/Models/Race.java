@@ -37,7 +37,7 @@ public class Race extends BaseObservable {
         return mRaceNumber;
     }
     public String getRaceNumberString() {
-        return Integer.toString(mRaceNumber);
+        return "#" + Integer.toString(mRaceNumber);
     }
     public void setRaceNumber(int raceNumber) {
         mRaceNumber = raceNumber;
@@ -72,6 +72,9 @@ public class Race extends BaseObservable {
     public String getSimplifiedDate() {
         return DateFormatter.getSimplifiedDate(mDate);
     }
+    public String getDayOfWeekShort() {
+        return DateFormatter.getDayOfWeekShort(mDate);
+    }
     public String getDate() {
         if (mDate != null) {
             if (mDate.contains("T"))
@@ -84,7 +87,7 @@ public class Race extends BaseObservable {
         return "";
     }
     public String getHour() {
-        return DateFormatter.get24Hour(mDate);
+        return DateFormatter.getHour(mDate);
     }
     public void setDate(String date) {
         mDate = date;

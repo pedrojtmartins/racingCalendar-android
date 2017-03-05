@@ -7,6 +7,8 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
@@ -14,19 +16,24 @@ import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.Helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.Helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.ViewModels.MainViewModel;
+import com.pedrojtmartins.racingcalendar._Constants.Settings;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList {
+
+public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
     private ActivityMainBinding mBinding;
     private MainViewModel mViewModel;
+    private MainPagerAdapter mPageAdapter;
 
     //region Initialization
     @Override
@@ -34,24 +41,29 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        SettingsHelper.detectSystemSettings(this);
+
         initAdMob();
         initViewModel();
         initToolBar();
         initViewPager();
     }
     private void initAdMob() {
-        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
-
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mBinding.adView.loadAd(adRequest);
+        if (!Settings.PRO_VERSION) {
+            MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            mBinding.adView.loadAd(adRequest);
+        } else {
+            mBinding.adView.setVisibility(View.GONE);
+        }
     }
-
     private void initViewModel() {
         DatabaseManager dbManager = DatabaseManager.getInstance(this);
         ApiManager apiManager = new ApiManager();
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         mViewModel = new MainViewModel(dbManager, apiManager, sharedPreferencesManager);
 
+        //This will show a snackbar when the data is updated from the server
         mViewModel.updatedFromServer.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
@@ -63,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         setSupportActionBar(mBinding.toolbar);
     }
     private void initViewPager() {
-        MainPagerAdapter pageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
-        mBinding.viewPager.setAdapter(pageAdapter);
+        mPageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
+        mBinding.viewPager.setAdapter(mPageAdapter);
         mBinding.tabs.setupWithViewPager(mBinding.viewPager);
 
         mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -87,6 +99,25 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             }
         });
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
     //endregion
 
     //region OnClicks
@@ -102,11 +133,19 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         return mViewModel.getRacesList(favouritesOnly);
     }
     @Override
+    public ObservableArrayList<Race> getRacesListBySeries(int seriesId) {
+        return mViewModel.getRacesList(seriesId);
+    }
+    @Override
     public ObservableArrayList<Series> getSeriesList() {
         return mViewModel.getSeriesList();
     }
-    //endregion
 
+    @Override
+    public void displayRacesFromSeries(int seriesId) {
+//        mPageAdapter.replaceSeriesWithRaces(seriesId);
+    }
+    //endregion
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -187,6 +187,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return queryRaces(sBuilder.toString());
     }
+    public ArrayList<Race> getUpcomingRaces(int seriesId) {
+        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String query = ("SELECT  r.*, s." + KEY_SERIES_NAME +
+                " FROM " + TABLE_RACES + " r" +
+                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " WHERE r." + KEY_RACE_DATE + ">('" + today + "')" +
+                " AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
+                " ORDER BY r." + KEY_RACE_DATE);
+
+        return queryRaces(query);
+    }
+
 
     /**
      * Inserts Races into the database
@@ -378,4 +390,5 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor != null && !cursor.isClosed())
             cursor.close();
     }
+
 }
