@@ -183,7 +183,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (favouritesOnly)
             sBuilder.append(" AND s." + KEY_SERIES_FAVOURITE + "=1");
 
-        sBuilder.append(" ORDER BY r." + KEY_RACE_DATE);
+        sBuilder.append(" ORDER BY r." + KEY_RACE_DATE + ",s." + KEY_SERIES_NAME);
 
         return queryRaces(sBuilder.toString());
     }
@@ -194,7 +194,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " WHERE r." + KEY_RACE_DATE + ">('" + today + "')" +
                 " AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
-                " ORDER BY r." + KEY_RACE_DATE);
+                " ORDER BY r." + KEY_RACE_DATE + ",s." + KEY_SERIES_NAME);
 
         return queryRaces(query);
     }

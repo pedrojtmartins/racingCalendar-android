@@ -57,11 +57,20 @@ public class DateFormatter {
             String endDay = dayFormat.format(calendar.getTime());
             String endMonth = monthFormat.format(calendar.getTime());
 
-            String fDate = startDay;
-            if (!startMonth.equals(endMonth)) {
-                fDate += " " + startMonth;
+            String fDate;
+            if (Settings.DAY_MONTH_FORMAT.startsWith("M")) {
+                if (!startMonth.equals(endMonth)) {
+                    fDate = startMonth + " " + startDay + " - " + endMonth + " " + endDay;
+                } else {
+                    fDate = startMonth + " " + startDay + " - " + endDay;
+                }
+            } else {
+                if (!startMonth.equals(endMonth)) {
+                    fDate = startDay + " " + startMonth + " - " + endDay + " " + endMonth;
+                } else {
+                    fDate = startDay + " - " + endDay + " " + endMonth;
+                }
             }
-            fDate += " - " + endDay + " " + endMonth;
 
             return fDate;
         } catch (ParseException pe) {
