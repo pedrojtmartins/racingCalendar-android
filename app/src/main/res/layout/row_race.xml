@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -24,7 +25,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="#f2f2f2"
             android:orientation="horizontal">
 
@@ -43,7 +43,8 @@
                     android:text="@{data.seriesName}"
                     android:textColor="#333"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    tools:text="F1 - Formula 1"/>
                 <!--android:text="WTCC - World Touring Car Championship"-->
 
                 <LinearLayout
@@ -57,7 +58,6 @@
                         android:text="@{data.raceNumberString}"
                         android:textColor="#333"
                         android:textSize="14sp"/>
-                    <!--android:text="#13"-->
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -6,7 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +42,8 @@ public class SeriesListFragment extends Fragment {
         // To achieve that the fragment will need to be aware of the selected layout.
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
-        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.card_series, list, mISeriesCallback));
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.row_series, list, mISeriesCallback));
     }
 
     @Override
