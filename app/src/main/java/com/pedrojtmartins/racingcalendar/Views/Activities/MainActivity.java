@@ -26,7 +26,7 @@ import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.SharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.ViewModels.MainViewModel;
-import com.pedrojtmartins.racingcalendar._Constants.Settings;
+import com.pedrojtmartins.racingcalendar._Settings.Settings;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 
 
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
-        if (!mPageAdapter.undoFragmentReplace())
+        if (!mPageAdapter.undoFragmentReplace(mBinding.viewPager.getCurrentItem()))
             super.onBackPressed();
     }
 

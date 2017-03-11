@@ -3,7 +3,7 @@ package com.pedrojtmartins.racingcalendar.Helpers;
 import android.content.Context;
 import android.text.format.DateFormat;
 
-import com.pedrojtmartins.racingcalendar._Constants.Settings;
+import com.pedrojtmartins.racingcalendar._Settings.Settings;
 
 /**
  * Pedro Martins

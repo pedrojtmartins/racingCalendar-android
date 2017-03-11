@@ -2,7 +2,7 @@ package com.pedrojtmartins.racingcalendar.Helpers;
 
 import android.annotation.SuppressLint;
 
-import com.pedrojtmartins.racingcalendar._Constants.Settings;
+import com.pedrojtmartins.racingcalendar._Settings.Settings;
 
 import java.text.DateFormat;
 import java.text.ParseException;

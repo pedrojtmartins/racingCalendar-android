@@ -103,10 +103,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Undoes the fragment transition if one is in place
      *
+     * @param currPos the position where the viewPager is currently on
      * @return true if an undo was completed. false otherwise
      */
-    public boolean undoFragmentReplace() {
-        if (mTempFragment != null) {
+    public boolean undoFragmentReplace(int currPos) {
+        if (mTempFragment != null && currPos == PAGE_FAVOURITES) {
             mFragments[PAGE_SERIES] = mTempFragment;
             mTempFragment = null;
             notifyDataSetChanged();

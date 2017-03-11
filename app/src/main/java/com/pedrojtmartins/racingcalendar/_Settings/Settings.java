@@ -1,4 +1,4 @@
-package com.pedrojtmartins.racingcalendar._Constants;
+package com.pedrojtmartins.racingcalendar._Settings;
 
 /**
  * Pedro Martins
@@ -6,7 +6,7 @@ package com.pedrojtmartins.racingcalendar._Constants;
  */
 
 public class Settings {
-    public final static boolean PRO_VERSION = true;
+    public final static boolean PRO_VERSION = false;
 
     public static boolean IS_12_HOURS_FORMAT;
     public static String DAY_MONTH_FORMAT;
