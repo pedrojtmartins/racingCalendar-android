@@ -92,12 +92,20 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 if (state != ViewPager.SCROLL_STATE_IDLE) {
                     mBinding.fab.hide();
                 } else {
-                    if (mBinding.viewPager.getCurrentItem() == 0) {
+                    if (mBinding.viewPager.getCurrentItem() == MainPagerAdapter.PAGE_FAVOURITES) {
                         mBinding.fab.show();
                     }
                 }
             }
         });
+
+        //In case there is no favourites in the db display the All tab by default
+        DatabaseManager dbManager = DatabaseManager.getInstance(this);
+        if (dbManager.getFavouritesCount() == 0) {
+            mBinding.fab.hide(); // Keep in mind the page change listener won't be called
+            mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_ALL, true);
+        }
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,6 +126,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         return true;
     }
+    //endregion
+
+    //region System callbacks
+    @Override
+    public void onBackPressed() {
+        // We might have some transaction in place on our fragments
+        // In this case we need to go back to the original fragment
+        // and continue without finishing the activity.
+        if (!mPageAdapter.undoFragmentReplace())
+            super.onBackPressed();
+    }
+
     //endregion
 
     //region OnClicks
@@ -143,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     public void displayRacesFromSeries(int seriesId) {
-//        mPageAdapter.replaceSeriesWithRaces(seriesId);
+        mPageAdapter.replaceSeriesWithRaces(seriesId);
+//        mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_SERIES);
     }
     //endregion
 

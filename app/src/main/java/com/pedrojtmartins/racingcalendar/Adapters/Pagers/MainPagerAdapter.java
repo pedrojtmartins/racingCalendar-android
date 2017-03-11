@@ -3,75 +3,116 @@ package com.pedrojtmartins.racingcalendar.Adapters.Pagers;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.Views.Fragments.RaceListFragment;
+import com.pedrojtmartins.racingcalendar.Views.Fragments.SeriesListFragment;
 
 /**
  * Pedro Martins
  * 12/02/2017
  */
 
-public class MainPagerAdapter extends FragmentPagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
-    private final FragmentManager mFragmentManager;
-    Fragment[] mFragments;
+    private static final int TOTAL_PAGES = 3;
+    public static final int PAGE_FAVOURITES = 0;
+    public static final int PAGE_SERIES = 1;
+    public static final int PAGE_ALL = 2;
+
+    private Fragment[] mFragments;
     private final Resources mResources;
+
+    // This adapter will provide fragment transition capabilities
+    // To control it we'll need a couple of temp variables.
+    // NOTE: For now it will only have one fragment that can change
+    //       If more than one is needed in the future we need to use an array of temps
+    private Fragment mTempFragment; //This will be used to store any fragment that must be replaced
+
+    //In case we have transitions on multiple fragments we'll need this variable
+    //private int[] tempFragmentPosition; //This int will be used to check if we need to undo the transition
 
     public MainPagerAdapter(FragmentManager fm, Resources resources) {
         super(fm);
 
-        mFragmentManager = fm;
         mFragments = new Fragment[getCount()];
         mResources = resources;
     }
 
     @Override
-    public int getItemPosition(Object object){
+    public int getItemPosition(Object object) {
         return PagerAdapter.POSITION_NONE;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 1:
-                if (mFragments[1] == null) {
-                    mFragments[1] = new RaceListFragment().newInstance(false);
+            case PAGE_ALL:
+                if (mFragments[PAGE_ALL] == null) {
+                    mFragments[PAGE_ALL] = new RaceListFragment().newInstance(false);
+
                 }
-                return mFragments[1];
+                return mFragments[PAGE_ALL];
 
-//            case 2:
-//                if (mFragments[2] == null) {
-//                    mFragments[2] = new SeriesListFragment();
-//                }
-//                return mFragments[2];
+            case PAGE_SERIES:
+                if (mFragments[PAGE_SERIES] == null) {
+                    mFragments[PAGE_SERIES] = new SeriesListFragment();
+                }
+                return mFragments[PAGE_SERIES];
 
-            case 0:
+            case PAGE_FAVOURITES:
             default:
-                if (mFragments[0] == null) {
-                    mFragments[0] = new RaceListFragment().newInstance(true);
+                if (mFragments[PAGE_FAVOURITES] == null) {
+                    mFragments[PAGE_FAVOURITES] = new RaceListFragment().newInstance(true);
                 }
-                return mFragments[0];
+                return mFragments[PAGE_FAVOURITES];
         }
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return TOTAL_PAGES;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0:
+            case PAGE_FAVOURITES:
                 return mResources.getString(R.string.maintab_favourites);
-            case 1:
+            case PAGE_ALL:
                 return mResources.getString(R.string.maintab_all);
-//            case 2:
-//                return mResources.getString(R.string.maintab_series);
+            case PAGE_SERIES:
+                return mResources.getString(R.string.maintab_series);
         }
         return null;
+    }
+
+    /**
+     * Replaces the current series list fragment for a race list
+     *
+     * @param seriesId what series will be loaded
+     */
+    public void replaceSeriesWithRaces(int seriesId) {
+        mTempFragment = mFragments[PAGE_SERIES];
+        mFragments[PAGE_SERIES] = new RaceListFragment().newInstance(seriesId);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Undoes the fragment transition if one is in place
+     *
+     * @return true if an undo was completed. false otherwise
+     */
+    public boolean undoFragmentReplace() {
+        if (mTempFragment != null) {
+            mFragments[PAGE_SERIES] = mTempFragment;
+            mTempFragment = null;
+            notifyDataSetChanged();
+            return true;
+        }
+
+        return false;
     }
 }

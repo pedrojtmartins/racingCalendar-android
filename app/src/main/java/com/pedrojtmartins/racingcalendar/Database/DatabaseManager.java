@@ -3,6 +3,7 @@ package com.pedrojtmartins.racingcalendar.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -375,7 +376,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
 
     //region Favourites
-
+    /**
+     * @return amount of favourites
+     */
+    public int getFavouritesCount() {
+        SQLiteDatabase db = null;
+        try {
+            db = getReadableDatabase();
+            return (int) DatabaseUtils.queryNumEntries(db, TABLE_SERIES, KEY_SERIES_FAVOURITE + "=1");
+        } finally {
+            closeDatabase(db);
+        }
+    }
     //endregion
 
     private void close(SQLiteDatabase db, Cursor cursor) {
@@ -390,5 +402,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor != null && !cursor.isClosed())
             cursor.close();
     }
+
 
 }
