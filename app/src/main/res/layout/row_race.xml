@@ -8,6 +8,8 @@
         <variable
             name="data"
             type="com.pedrojtmartins.racingcalendar.Models.Race"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -119,7 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{data.hour}"
-                    android:textColor="#333"/>
+                    android:textColor="#333"
+                    android:visibility="@{data.hour.length() > 0 ? View.VISIBLE : View.GONE}"/>
                 <!--android:text="2:00pm"-->
             </LinearLayout>
 
