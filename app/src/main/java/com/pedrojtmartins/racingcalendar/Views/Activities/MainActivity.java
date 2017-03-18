@@ -49,7 +49,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         initViewModel();
         initToolBar();
         initViewPager();
+
+        checkDatabaseDataCount();
     }
+
     private void initAdMob() {
         if (!Settings.PRO_VERSION) {
             MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
@@ -138,6 +141,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     }
 
+    private void checkDatabaseDataCount() {
+        // We only need to check if series table is populated.
+        // The races table will be in the same state.
+        // In case we have no series show a snackbar to warn the user
+        // that the data is being downloaded from the server.
+        ObservableArrayList<Series> seriesList = mViewModel.getSeriesList();
+        if (seriesList == null || seriesList.size() == 0) {
+            SnackBarHelper.display(mBinding.mainContent, R.string.firstTimeDataDownload, Snackbar.LENGTH_INDEFINITE);
+        }
+    }
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.main, menu);
 //        return true;

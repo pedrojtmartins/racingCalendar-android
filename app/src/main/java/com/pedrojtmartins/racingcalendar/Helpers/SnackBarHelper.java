@@ -10,8 +10,12 @@ import android.view.View;
 
 public class SnackBarHelper {
     public static void display(View view, int stringResourceId) {
+        display(view, stringResourceId, Snackbar.LENGTH_LONG);
+    }
+
+    public static void display(View view, int stringResourceId, int duration) {
         if (view != null)
-            Snackbar.make(view, stringResourceId, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, stringResourceId, duration).show();
     }
 
     public static void displayWithAction(final View view,

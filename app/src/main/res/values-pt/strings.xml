@@ -6,8 +6,8 @@
     <string name="dataUpdated">Dados atualizados</string>
     <string name="discard">Descartar</string>
     <string name="discardFavorites">Descartar alterações?</string>
-    <string name="maintab_all">Todos</string>
-    <string name="maintab_favourites">Favoritos</string>
+    <string name="maintab_all">Todas</string>
+    <string name="maintab_favourites">Favoritas</string>
     <string name="maintab_series">Séries</string>
     <string name="newAppVersion">Nova versão disponível</string>
     <string name="nextWeek">Próxima semana</string>
@@ -17,4 +17,5 @@
     <string name="title_activity_settings">Definições</string>
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
+    <string name="firstTimeDataDownload">A descarregar dados...</string>
 </resources>
