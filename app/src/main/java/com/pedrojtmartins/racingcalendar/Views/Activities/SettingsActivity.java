@@ -1,7 +1,7 @@
 package com.pedrojtmartins.racingcalendar.Views.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.pedrojtmartins.racingcalendar.R;
 

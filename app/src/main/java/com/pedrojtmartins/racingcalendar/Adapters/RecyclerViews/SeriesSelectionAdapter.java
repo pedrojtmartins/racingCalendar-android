@@ -2,8 +2,8 @@ package com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews;
 
 import android.databinding.ObservableArrayList;
 
-import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.BR;
+import com.pedrojtmartins.racingcalendar.Models.Series;
 
 /**
  * Pedro Martins

@@ -70,6 +70,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
                 android:onClick="onClick_SelectFavorites"
+                app:backgroundTint="@color/primary"
                 app:layout_anchor="@id/viewPager"
                 app:layout_anchorGravity="bottom|end"
                 app:srcCompat="@drawable/add_favorites"/>

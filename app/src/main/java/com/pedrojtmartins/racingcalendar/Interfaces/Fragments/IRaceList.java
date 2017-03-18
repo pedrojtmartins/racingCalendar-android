@@ -11,5 +11,6 @@ import com.pedrojtmartins.racingcalendar.Models.Race;
 
 public interface IRaceList {
     ObservableArrayList<Race> getRacesList(boolean favouritesOnly);
+
     ObservableArrayList<Race> getRacesListBySeries(int seriesId);
 }
