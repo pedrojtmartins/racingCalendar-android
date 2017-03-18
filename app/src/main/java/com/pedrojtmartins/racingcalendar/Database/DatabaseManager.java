@@ -287,7 +287,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of series
      */
     public ArrayList<Series> getSeries() {
-        String query = "SELECT  * FROM " + TABLE_SERIES;
+        String query = "SELECT  * FROM " + TABLE_SERIES + " ORDER BY " + KEY_SERIES_NAME;
 
         return querySeries(query);
     }
