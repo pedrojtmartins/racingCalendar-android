@@ -18,8 +18,8 @@ import com.pedrojtmartins.racingcalendar.Views.Fragments.SeriesListFragment;
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_PAGES = 3;
-    public static final int PAGE_FAVOURITES = 0;
-    public static final int PAGE_SERIES = 1;
+    public static final int PAGE_SERIES = 0;
+    public static final int PAGE_FAVOURITES = 1;
     public static final int PAGE_ALL = 2;
 
     private Fragment[] mFragments;
