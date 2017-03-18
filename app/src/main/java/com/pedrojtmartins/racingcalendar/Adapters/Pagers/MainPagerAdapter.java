@@ -18,9 +18,9 @@ import com.pedrojtmartins.racingcalendar.Views.Fragments.SeriesListFragment;
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_PAGES = 3;
-    public static final int PAGE_SERIES = 0;
+    public static final int PAGE_ALL = 0;
     public static final int PAGE_FAVOURITES = 1;
-    public static final int PAGE_ALL = 2;
+    public static final int PAGE_SERIES = 2;
 
     private Fragment[] mFragments;
     private final Resources mResources;
@@ -107,7 +107,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
      * @return true if an undo was completed. false otherwise
      */
     public boolean undoFragmentReplace(int currPos) {
-        if (mTempFragment != null && currPos == PAGE_FAVOURITES) {
+        if (mTempFragment != null && currPos == PAGE_SERIES) {
             mFragments[PAGE_SERIES] = mTempFragment;
             mTempFragment = null;
             notifyDataSetChanged();
