@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Racing Calendar</string>
+    <string name="action_settings">Definições</string>
+    <string name="cancel">Cancelar</string>
+    <string name="dataUpdated">Dados atualizados</string>
+    <string name="discard">Descartar</string>
+    <string name="discardFavorites">Descartar alterações?</string>
+    <string name="maintab_all">Todos</string>
+    <string name="maintab_favourites">Favoritos</string>
+    <string name="maintab_series">Séries</string>
+    <string name="newAppVersion">Nova versão disponível</string>
+    <string name="nextWeek">Próxima semana</string>
+    <string name="races">Corridas</string>
+    <string name="save_avorites">Guardar favoritos</string>
+    <string name="thisWeek">Esta semana</string>
+    <string name="title_activity_settings">Definições</string>
+    <string name="update">Atualizar</string>
+    <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
+</resources>
