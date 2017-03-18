@@ -17,5 +17,5 @@
     <string name="title_activity_settings">Definições</string>
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
-    <string name="firstTimeDataDownload">A descarregar dados...</string>
+    <string name="firstTimeDataDownload">A descarregar dados…</string>
 </resources>
