@@ -1,10 +1,12 @@
 package com.pedrojtmartins.racingcalendar.ViewModels;
 
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.Helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.Models.Race;
 import com.pedrojtmartins.racingcalendar.Models.Series;
@@ -25,6 +27,7 @@ public class MainViewModel implements IDataUpdater {
 
     //This will be observed by the activity and will display a message when needed
     public ObservableInt updatedFromServer;
+    public ObservableBoolean newAppUpdate;
 
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
         if (favouritesOnly)
@@ -59,9 +62,12 @@ public class MainViewModel implements IDataUpdater {
         mSeriesList = new ObservableArrayList<>();
 
         updatedFromServer = new ObservableInt(0);
+        newAppUpdate = new ObservableBoolean(false);
 
         loadDataFromLocalDb();
         initDataUpdate();
+
+        checkAppVersion();
     }
 
     private void loadDataFromLocalDb() {
@@ -100,6 +106,15 @@ public class MainViewModel implements IDataUpdater {
         loadDataFromLocalDb();
 
         updatedFromServer.set(updatedFromServer.get() + 1);
+    }
+
+    private void checkAppVersion() {
+        int currVersion = AppVersionHelper.getCurrentAppVersionCode();
+        mApiManager.checkAppVersion(this, currVersion);
+    }
+    @Override
+    public void newAppVersionIsAvailable() {
+        newAppUpdate.set(true);
     }
 
     public void updateFavorites() {

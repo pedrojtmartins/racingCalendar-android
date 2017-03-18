@@ -69,4 +69,25 @@ public class ApiManager {
             }
         });
     }
+
+    public void checkAppVersion(final IDataUpdater dataUpdater, final int currVersion) {
+        if (dataUpdater == null)
+            return;
+
+        getApi().getAppVersion().enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                int version = response.body();
+                if (version > currVersion) {
+                    dataUpdater.newAppVersionIsAvailable();
+                } else {
+                    //TODO: Handle unsuccessful call
+                }
+            }
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                //TODO: Handle unsuccessful call
+            }
+        });
+    }
 }

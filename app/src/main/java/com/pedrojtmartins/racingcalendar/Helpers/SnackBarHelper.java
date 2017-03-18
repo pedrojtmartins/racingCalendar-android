@@ -13,4 +13,26 @@ public class SnackBarHelper {
         if (view != null)
             Snackbar.make(view, stringResourceId, Snackbar.LENGTH_LONG).show();
     }
+
+    public static void displayWithAction(final View view,
+                                         final int stringResourceId,
+                                         final int stringActionResourceId,
+                                         final View.OnClickListener clickListener) {
+        displayWithAction(view, stringResourceId, stringActionResourceId, clickListener, Snackbar.LENGTH_LONG);
+    }
+
+    public static void displayWithAction(final View view,
+                                         final int stringResourceId,
+                                         final int stringActionResourceId,
+                                         final View.OnClickListener clickListener,
+                                         final int duration) {
+        if (view != null) {
+            Snackbar snackBar = Snackbar.make(view, stringResourceId, duration);
+
+            if (clickListener != null)
+                snackBar.setAction(stringActionResourceId, clickListener);
+
+            snackBar.show();
+        }
+    }
 }

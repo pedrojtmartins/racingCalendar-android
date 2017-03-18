@@ -23,4 +23,7 @@ public interface IRacingCalendarAPI {
      */
     @GET(ApiAddresses.URL_DATA)
     Call<ServerData> getData();
+
+    @GET(ApiAddresses.URL_APP_VERSION)
+    Call<Integer> getAppVersion();
 }

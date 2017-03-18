@@ -5,16 +5,19 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.Api.ApiManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.Helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.Helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.Helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRaceList;
@@ -51,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (!Settings.PRO_VERSION) {
             MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            mBinding.adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    mBinding.adView.setVisibility(View.VISIBLE);
+                }
+            });
             mBinding.adView.loadAd(adRequest);
         } else {
             mBinding.adView.setVisibility(View.GONE);
@@ -67,6 +77,25 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             @Override
             public void onPropertyChanged(Observable observable, int i) {
                 SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
+            }
+        });
+
+        //This will show a snackbar when a new app update is availabel
+        mViewModel.newAppUpdate.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                SnackBarHelper.displayWithAction(
+                        mBinding.mainContent,
+                        R.string.newAppVersion,
+                        R.string.update,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager());
+                                startActivity(intent);
+                            }
+                        },
+                        Snackbar.LENGTH_INDEFINITE);
             }
         });
     }
