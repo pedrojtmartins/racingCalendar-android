@@ -31,7 +31,7 @@ public class SeriesAdapter extends ObservableAdapter<Series> {
                 @Override
                 public void onClick(View view) {
                     if (mCallback != null)
-                        mCallback.displayRacesFromSeries(currSeries.getId());
+                        mCallback.displayRacesFromSeries(currSeries);
                 }
             });
         }

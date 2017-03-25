@@ -13,4 +13,6 @@ public interface IRaceList {
     ObservableArrayList<Race> getRacesList(boolean favouritesOnly);
 
     ObservableArrayList<Race> getRacesListBySeries(int seriesId);
+
+    boolean undoFragmentTransition();
 }

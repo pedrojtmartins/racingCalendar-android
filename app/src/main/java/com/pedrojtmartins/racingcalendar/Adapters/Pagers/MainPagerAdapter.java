@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRecyclerViewFragment;
+import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.Views.Fragments.RaceListFragment;
 import com.pedrojtmartins.racingcalendar.Views.Fragments.SeriesListFragment;
@@ -92,11 +94,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Replaces the current series list fragment for a race list
      *
-     * @param seriesId what series will be loaded
+     * @param series what series will be loaded
      */
-    public void replaceSeriesWithRaces(int seriesId) {
+    public void replaceSeriesWithRaces(Series series) {
         mTempFragment = mFragments[PAGE_SERIES];
-        mFragments[PAGE_SERIES] = new RaceListFragment().newInstance(seriesId);
+        mFragments[PAGE_SERIES] = new RaceListFragment().newInstance(series);
         notifyDataSetChanged();
     }
 
@@ -115,5 +117,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         }
 
         return false;
+    }
+    public void smoothScrollToTop(int pos) {
+        if (pos < 0 || pos > mFragments.length)
+            return;
+
+        Fragment fragment = mFragments[pos];
+        if (fragment instanceof IRecyclerViewFragment) {
+            ((IRecyclerViewFragment) fragment).smoothScrollToTop();
+        }
     }
 }

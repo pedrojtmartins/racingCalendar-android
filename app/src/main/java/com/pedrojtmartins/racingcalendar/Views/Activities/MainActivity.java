@@ -6,6 +6,7 @@ import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -56,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     private void initAdMob() {
         if (!Settings.PRO_VERSION) {
             MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice(Settings.TEST_DEVICE_ID)
+                    .build();
+
             mBinding.adView.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
@@ -108,7 +113,22 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     private void initViewPager() {
         mPageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
         mBinding.viewPager.setAdapter(mPageAdapter);
+
         mBinding.tabs.setupWithViewPager(mBinding.viewPager);
+        mBinding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                mPageAdapter.smoothScrollToTop(tab.getPosition());
+            }
+        });
 
         mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -178,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
-        if (!mPageAdapter.undoFragmentReplace(mBinding.viewPager.getCurrentItem()))
+        if (!undoFragmentTransition())
             super.onBackPressed();
     }
 
@@ -201,12 +221,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         return mViewModel.getRacesList(seriesId);
     }
     @Override
+    public boolean undoFragmentTransition() {
+        return mPageAdapter.undoFragmentReplace(mBinding.viewPager.getCurrentItem());
+    }
+    @Override
     public ObservableArrayList<Series> getSeriesList() {
         return mViewModel.getSeriesList();
     }
 
     @Override
-    public void displayRacesFromSeries(int seriesId) {
+    public void displayRacesFromSeries(Series seriesId) {
         mPageAdapter.replaceSeriesWithRaces(seriesId);
 //        mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_SERIES);
     }

@@ -12,13 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.Adapters.RecyclerViews.SeriesAdapter;
+import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.Interfaces.Fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.Models.Series;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
-public class SeriesListFragment extends Fragment {
+public class SeriesListFragment extends Fragment implements IRecyclerViewFragment {
     private ISeriesList mISeriesList;
     private ISeriesCallback mISeriesCallback;
     private FragmentListBinding mBinding;
@@ -61,5 +62,10 @@ public class SeriesListFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement ISeriesCallback");
         }
+    }
+
+    @Override
+    public void smoothScrollToTop() {
+        mBinding.recyclerView.smoothScrollToPosition(0);
     }
 }
