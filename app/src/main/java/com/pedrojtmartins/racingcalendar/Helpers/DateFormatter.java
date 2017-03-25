@@ -104,7 +104,7 @@ public class DateFormatter {
 
 
     @SuppressLint("SimpleDateFormat")
-    private static String get24Hour(String date) {
+    private static String getHour(String date, String format) {
         if (date == null || !date.contains("T") || !date.contains(":"))
             return "";
 
@@ -114,39 +114,17 @@ public class DateFormatter {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(utcFormat.parse(date));
 
-            DateFormat format24 = new SimpleDateFormat("HH:mm");
-            TimeZone thisTimeZone = TimeZone.getDefault();
-            format24.setTimeZone(thisTimeZone);
-            Date dDate = calendar.getTime();
-            String sDate = format24.format(dDate);
-            return sDate;
+            DateFormat format24 = new SimpleDateFormat(format);
+            format24.setTimeZone(TimeZone.getDefault());
+            return format24.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private static String getAmPmHour(String date) {
-        try {
-            DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(utcFormat.parse(date));
-
-            DateFormat format24 = new SimpleDateFormat("h:mm a");
-            TimeZone thisTimeZone = TimeZone.getDefault();
-            format24.setTimeZone(thisTimeZone);
-            Date dDate = calendar.getTime();
-            String sDate = format24.format(dDate);
-            return sDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
     public static String getHour(String date) {
-        return Settings.IS_12_HOURS_FORMAT ? getAmPmHour(date) : get24Hour(date);
+        return Settings.IS_12_HOURS_FORMAT ? getHour(date, "h:mm a") : getHour(date, "HH:mm");
     }
 
     public static String getDayOfWeekShort(String date) {
