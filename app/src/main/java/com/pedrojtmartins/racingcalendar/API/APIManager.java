@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 29/01/2017
  */
 
-public class ApiManager {
+public class APIManager {
     private static IRacingCalendarAPI mApi;
     private static IRacingCalendarAPI getApi() {
         if (mApi == null) {
@@ -28,7 +28,7 @@ public class ApiManager {
         return mApi;
     }
 
-    public ApiManager() {
+    public APIManager() {
     }
 
     public void updateDataIfRequired(final IDataUpdater dataUpdater, final int currVersion) {

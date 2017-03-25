@@ -4,7 +4,7 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 
-import com.pedrojtmartins.racingcalendar.Api.ApiManager;
+import com.pedrojtmartins.racingcalendar.Api.APIManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.Interfaces.ViewModels.IDataUpdater;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class MainViewModel implements IDataUpdater {
     private final DatabaseManager mDbManager;
-    private final ApiManager mApiManager;
+    private final APIManager mApiManager;
     private final SharedPreferencesManager mSharedPreferencesManager;
 
     //This will be observed by the activity and will display a message when needed
@@ -52,7 +52,7 @@ public class MainViewModel implements IDataUpdater {
     }
     private ObservableArrayList<Series> mSeriesList;
 
-    public MainViewModel(DatabaseManager dbManager, ApiManager apiManager, SharedPreferencesManager sharedPreferencesManager) {
+    public MainViewModel(DatabaseManager dbManager, APIManager apiManager, SharedPreferencesManager sharedPreferencesManager) {
         mDbManager = dbManager;
         mApiManager = apiManager;
         mSharedPreferencesManager = sharedPreferencesManager;

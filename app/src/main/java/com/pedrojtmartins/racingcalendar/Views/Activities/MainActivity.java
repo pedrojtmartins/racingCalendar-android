@@ -15,7 +15,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.Adapters.Pagers.MainPagerAdapter;
-import com.pedrojtmartins.racingcalendar.Api.ApiManager;
+import com.pedrojtmartins.racingcalendar.Api.APIManager;
 import com.pedrojtmartins.racingcalendar.Database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.Helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.Helpers.SettingsHelper;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
     private void initViewModel() {
         DatabaseManager dbManager = DatabaseManager.getInstance(this);
-        ApiManager apiManager = new ApiManager();
+        APIManager apiManager = new APIManager();
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         mViewModel = new MainViewModel(dbManager, apiManager, sharedPreferencesManager);
 
