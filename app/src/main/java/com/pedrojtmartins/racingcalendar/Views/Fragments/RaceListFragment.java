@@ -70,6 +70,16 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList, getResources()));
+
+        // When transitioning between fragments the recyclerview could be
+        // initialized not on the top because of fragment recycling.
+        // This forces it to the top every time.
+        mBinding.recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.recyclerView.scrollToPosition(0);
+            }
+        });
     }
 
     private void setupHeader() {
