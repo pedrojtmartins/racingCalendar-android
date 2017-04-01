@@ -179,7 +179,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_RACES + " r" +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " WHERE r." + KEY_RACE_DATE + ">('").append(today).append("')");
+                " WHERE r." + KEY_RACE_DATE + ">=('").append(today).append("')");
 
         if (favouritesOnly)
             sBuilder.append(" AND s." + KEY_SERIES_FAVOURITE + "=1");
@@ -193,7 +193,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         String query = ("SELECT  r.*, s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_RACES + " r" +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " WHERE r." + KEY_RACE_DATE + ">('" + today + "')" +
+                " WHERE r." + KEY_RACE_DATE + ">=('" + today + "')" +
                 " AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
                 " ORDER BY r." + KEY_RACE_DATE + ",s." + KEY_SERIES_NAME);
 
