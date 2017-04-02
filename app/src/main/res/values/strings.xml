@@ -18,4 +18,7 @@
     <string name="newAppVersion">New app version</string>
     <string name="update">Update</string>
     <string name="firstTimeDataDownload">Downloading data…</string>
+    <string name="next">Next race:</string>
+    <string name="of">of</string>
+    <string name="seriesIsOver">Completed</string>
 </resources>

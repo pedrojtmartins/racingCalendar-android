@@ -8,6 +8,8 @@
         <variable
             name="data"
             type="com.pedrojtmartins.racingcalendar.Models.Series"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -29,8 +31,47 @@
                     tools:text="F1 - Formula 1"/>
 
                 <TextView
+                    android:id="@+id/seriesCompleted"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/seriesIsOver"
+                    android:textColor="#333"
+                    android:visibility="@{data.percentageCompleted >= 100 ? View.VISIBLE : View.GONE}"/>
+
+                <LinearLayout
+                    android:id="@+id/seriesState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{data.percentageCompleted >= 100 ? View.GONE : View.VISIBLE}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/next"
+                        android:textColor="#333"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@{data.nextRaceString}"
+                        android:textColor="#333"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/of"
+                        android:textColor="#333"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.totalRacesString}"
+                        android:textColor="#333"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -47,11 +88,12 @@
 
 
         <ProgressBar
+            android:id="@+id/progressbar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:indeterminate="false"
-            android:progress="25"
+            android:progress="@{data.percentageCompleted}"
             android:progressDrawable="@drawable/series_progressbar"/>
     </LinearLayout>
 </layout>

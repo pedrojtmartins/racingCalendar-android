@@ -18,4 +18,7 @@
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
     <string name="firstTimeDataDownload">A descarregar dados…</string>
+    <string name="of">of</string>
+    <string name="next">Próxima corrida:</string>
+    <string name="seriesIsOver">Completed</string>
 </resources>

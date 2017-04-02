@@ -55,6 +55,12 @@ public class Series extends BaseObservable {
     public int getCurrentRace() {
         return mCurrentRace;
     }
+    public int getNextRace() {
+        return mCurrentRace + 1;
+    }
+    public String getNextRaceString() {
+        return "#" + getNextRace();
+    }
     public void setCurrentRace(int currentRace) {
         mCurrentRace = currentRace;
     }
@@ -64,8 +70,23 @@ public class Series extends BaseObservable {
     public int getTotalRaces() {
         return mTotalRaces;
     }
+    public String getTotalRacesString() {
+        return getTotalRaces() + "";
+    }
     public void setTotalRaces(int totalRaces) {
         mTotalRaces = totalRaces;
+    }
+
+    @Bindable
+    private int percentageCompleted = -1;
+    public int getPercentageCompleted() {
+        if (percentageCompleted == -1) {
+            percentageCompleted = 0;
+            if (getCurrentRace() > 0) {
+                percentageCompleted = getCurrentRace() * 100 / getTotalRaces();
+            }
+        }
+        return percentageCompleted;
     }
 
     public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace) {
