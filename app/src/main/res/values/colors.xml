@@ -11,4 +11,8 @@
 
     <color name="listDividerTopRow">#585858</color>
     <color name="listDividerBottomRow">#c6c6c6</color>
+
+    <color name="arrowsTint">#9b9b9b</color>
+
+    <color name="seriesProgressbarBackground">#9b9b9b</color>
 </resources>

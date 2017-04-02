@@ -40,13 +40,6 @@ public class Series extends BaseObservable {
         mYear = year;
     }
 
-    public Series(int id, String name, int year, boolean isFavorite) {
-        mId = id;
-        mName = name;
-        mYear = year;
-        mIsFavorite = isFavorite;
-    }
-
     @SerializedName("f")
     @Bindable
     private boolean mIsFavorite;
@@ -55,5 +48,32 @@ public class Series extends BaseObservable {
     }
     public void setFavorite(boolean favorite) {
         mIsFavorite = favorite;
+    }
+
+    @Bindable
+    private int mCurrentRace;
+    public int getCurrentRace() {
+        return mCurrentRace;
+    }
+    public void setCurrentRace(int currentRace) {
+        mCurrentRace = currentRace;
+    }
+
+    @Bindable
+    private int mTotalRaces;
+    public int getTotalRaces() {
+        return mTotalRaces;
+    }
+    public void setTotalRaces(int totalRaces) {
+        mTotalRaces = totalRaces;
+    }
+
+    public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace) {
+        mId = id;
+        mName = name;
+        mYear = year;
+        mIsFavorite = isFavorite;
+        mTotalRaces = totalRaces;
+        mCurrentRace = currRace;
     }
 }

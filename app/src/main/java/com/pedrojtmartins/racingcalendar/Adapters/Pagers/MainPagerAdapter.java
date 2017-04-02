@@ -118,11 +118,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
         return false;
     }
-    public void smoothScrollToTop(int pos) {
-        if (pos < 0 || pos > mFragments.length)
+    public void smoothScrollToTop(int tab) {
+        if (tab < 0 || tab > mFragments.length)
             return;
 
-        Fragment fragment = mFragments[pos];
+        Fragment fragment = mFragments[tab];
         if (fragment instanceof IRecyclerViewFragment) {
             ((IRecyclerViewFragment) fragment).smoothScrollToTop();
         }

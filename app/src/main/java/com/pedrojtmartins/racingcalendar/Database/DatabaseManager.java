@@ -245,12 +245,20 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ArrayList<Series> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_ID));
-                String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
-                int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
-                boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
+//                int id = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_ID));
+//                String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+//                int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
+//                boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
 
-                list.add(new Series(id, name, year, favourite));
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                int year = cursor.getInt(2);
+                boolean favourite = cursor.getInt(3) == 1;
+                int totalRaces = cursor.getInt(4);
+                int currRace = cursor.getInt(5);
+
+
+                list.add(new Series(id, name, year, favourite, totalRaces, currRace));
             } while (cursor.moveToNext());
         }
 
@@ -287,7 +295,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of series
      */
     public ArrayList<Series> getSeries() {
-        String query = "SELECT  * FROM " + TABLE_SERIES + " ORDER BY " + KEY_SERIES_NAME;
+        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME + ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE + ",COUNT(r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
+                " FROM " + TABLE_SERIES + " s " +
+                " LEFT JOIN " + TABLE_RACES + " r ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " LEFT JOIN " + TABLE_RACES + " rr ON rr." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID + " AND rr." + KEY_RACE_DATE + "<('" + today + "')" +
+                " GROUP BY s." + KEY_SERIES_ID +
+                " ORDER BY s." + KEY_SERIES_NAME;
 
         return querySeries(query);
     }

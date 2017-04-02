@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,12 +10,48 @@
             type="com.pedrojtmartins.racingcalendar.Models.Series"/>
     </data>
 
-    <FrameLayout
-        style="@style/SeriesRowBackground">
+    <LinearLayout
+        style="@style/SeriesRowParent">
 
-        <TextView
-            style="@style/SeriesRowText"
-            android:text="@{data.name}"
-            tools:text="F1 - Formula 1"/>
-    </FrameLayout>
+        <LinearLayout
+            style="@style/SeriesRow">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SeriesTitle"
+                    android:text="@{data.name}"
+                    tools:text="F1 - Formula 1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:tint="@color/arrowsTint"
+                app:srcCompat="@drawable/right_arrow_black"/>
+
+
+        </LinearLayout>
+
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:indeterminate="false"
+            android:progress="25"
+            android:progressDrawable="@drawable/series_progressbar"/>
+    </LinearLayout>
 </layout>
