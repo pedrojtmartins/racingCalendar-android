@@ -296,7 +296,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      */
     public ArrayList<Series> getSeries() {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME + ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE + ",COUNT(r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
+        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME + ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE + ",COUNT(DISTINCT r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
                 " FROM " + TABLE_SERIES + " s " +
                 " LEFT JOIN " + TABLE_RACES + " r ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " LEFT JOIN " + TABLE_RACES + " rr ON rr." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID + " AND rr." + KEY_RACE_DATE + "<('" + today + "')" +
@@ -312,7 +312,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param id series id
      * @return series
      */
-    public Series getSeriesWithId(int id) {
+    Series getSeriesWithId(int id) {
         String query = "SELECT  * FROM " + TABLE_SERIES +
                 " WHERE " + KEY_SERIES_ID + "=" + id;
 

@@ -106,9 +106,9 @@ public class DatabaseManagerTest {
     private int addFakeSeries(DatabaseManager db) {
 
         ArrayList<Series> series = new ArrayList<>();
-        series.add(new Series(1, "series1", 1, false));
-        series.add(new Series(2, "series2", 2, false));
-        series.add(new Series(3, "series3", 3, false));
+//        series.add(new Series(1, "series1", 1, false));
+  //      series.add(new Series(2, "series2", 2, false));
+    //    series.add(new Series(3, "series3", 3, false));
 
         return db.addSeries(series);
     }
