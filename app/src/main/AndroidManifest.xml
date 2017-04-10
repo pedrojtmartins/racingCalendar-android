@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".Views.Activities.MainActivity"
+            android:name=".views.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,16 +22,16 @@
         </activity>
 
         <activity
-            android:name=".Views.Activities.FavoritesActivity"
-            android:parentActivityName=".Views.Activities.MainActivity"
+            android:name=".views.activities.FavoritesActivity"
+            android:parentActivityName=".views.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             //This will be used by the go back button in the app bar
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Views.Activities.MainActivity"/>
+                android:value=".views.activities.MainActivity"/>
         </activity>
 
-        <activity android:name=".Views.Activities.SettingsActivity">
+        <activity android:name=".views.activities.SettingsActivity">
         </activity>
 
     </application>

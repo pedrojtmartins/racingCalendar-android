@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.Models.Race"/>
+            type="com.pedrojtmartins.racingcalendar.models.Race"/>
     </data>
 
     <LinearLayout

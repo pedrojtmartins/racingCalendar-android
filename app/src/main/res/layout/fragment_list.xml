@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.Models.Series"/>
+            type="com.pedrojtmartins.racingcalendar.models.Series"/>
     </data>
 
     <LinearLayout
@@ -41,7 +41,7 @@
             android:name="com.pedrojtmartins.racingcalendar.Views.RaceListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.pedrojtmartins.racingcalendar.Views.Fragments.RaceListFragment"
+            tools:context="com.pedrojtmartins.racingcalendar.views.fragments.RaceListFragment"
             tools:listitem="@layout/row_race"/>
     </LinearLayout>
 </layout>

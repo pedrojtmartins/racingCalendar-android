@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.Models.Series"/>
+            type="com.pedrojtmartins.racingcalendar.models.Series"/>
 
         <import type="android.view.View"/>
     </data>
