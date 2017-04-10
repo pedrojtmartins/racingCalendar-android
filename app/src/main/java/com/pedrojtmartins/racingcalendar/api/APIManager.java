@@ -39,11 +39,12 @@ public class APIManager {
         getApi().getDataVersion().enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response == null || response.code() != 200)
+                    return;
+
                 int version = response.body();
-                if (response.code() == 200 && version != currVersion) {
+                if (version != currVersion) {
                     updateData(dataUpdater, version);
-                } else {
-                    //TODO: Handle unsuccessful call
                 }
             }
 
@@ -58,12 +59,13 @@ public class APIManager {
         getApi().getData().enqueue(new Callback<ServerData>() {
             @Override
             public void onResponse(Call<ServerData> call, Response<ServerData> response) {
+                if (response == null || response.code() != 200)
+                    return;
+
                 ServerData data = response.body();
-                if (response.code() == 200 && data != null && data.races != null && data.series != null) {
+                if (data != null && data.races != null && data.series != null) {
                     data.version = version;
                     dataUpdater.newDataIsReady(data);
-                } else {
-                    //TODO: Handle unsuccessful call
                 }
             }
 
@@ -81,11 +83,12 @@ public class APIManager {
         getApi().getAppVersion().enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response == null || response.code() != 200)
+                    return;
+
                 int version = response.body();
                 if (version > currVersion) {
                     dataUpdater.newAppVersionIsAvailable();
-                } else {
-                    //TODO: Handle unsuccessful call
                 }
             }
 
