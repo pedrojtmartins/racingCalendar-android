@@ -131,6 +131,7 @@ public class DatabaseManagerTest {
         return db.addNotifications(list);
     }
 
+    //region Add Tests
     @Test
     public void addNotificationsShouldCheckNulls() throws Exception {
         assertTrue(db.addNotifications(null) == 0);
@@ -149,17 +150,33 @@ public class DatabaseManagerTest {
     public void addNotificationsShouldAddValues() throws Exception {
         assertTrue(addNotifications() == 3);
     }
+//endregion
+
+    //region Get tests
+    @Test
+    public void getNotificationsShouldReturnEmptyListIfDBEmpty() throws Exception {
+        ArrayList<RCNotification> values = db.getNotifications();
+        assertNotNull(values);
+        assertTrue(values.size() == 0);
+    }
 
     @Test
     public void getNotificationsShouldReturnValues() throws Exception {
-        //addNotifications();
-//
-        //ArrayList<RCNotification> values = db.getNotifications();
-//
-        //assertNotNull(values);
-        //assertTrue(values.size() == 3);
+        addNotifications();
+
+        ArrayList<RCNotification> values = db.getNotifications();
+        assertNotNull(values);
+        assertTrue(values.size() == 3);
     }
 
+    //@Test
+    //public void getNotificationsShouldReturnDateOrderedValues() throws Exception {
+    //    addNotifications();
+//
+    //    ArrayList<RCNotification> values = db.getNotifications();
+    //    assertTrue(values.size() == 0);
+    //}
+    //endregion
     //endregion
 
 

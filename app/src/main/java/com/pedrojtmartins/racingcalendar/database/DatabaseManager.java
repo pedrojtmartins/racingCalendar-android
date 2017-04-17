@@ -421,31 +421,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
 
     //region Notifications
-    //private ArrayList<RCNotification> buildNotification(Cursor cursor) {
-    //    ArrayList<Race> list = new ArrayList<>();
-    //    if (cursor.moveToFirst()) {
-    //        do {
-    //            int id = cursor.getInt(cursor.getColumnIndex(KEY_RACE_ID));
-    //            int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_RACE_SERIES_ID));
-    //            int raceNo = cursor.getInt(cursor.getColumnIndex(KEY_RACE_NUMBER));
-    //            String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
-    //            String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
-    //            String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
+    private ArrayList<RCNotification> buildNotifications(Cursor cursor) {
+        ArrayList<RCNotification> list = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_ID));
+                int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_EVENT_ID));
+                boolean isSeries = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_IS_SERIES)) == 1;
+                int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
 
-    //            String seriesName = "";
-    //            int seriesNameId = cursor.getColumnIndex(KEY_SERIES_NAME);
-    //            if (seriesNameId > 0) {
-    //                seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
-    //                if (seriesName == null)
-    //                    seriesName = "";
-    //            }
+                list.add(new RCNotification(id, seriesId, isSeries, minutesBefore));
+            } while (cursor.moveToNext());
+        }
 
-    //            list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName));
-    //        } while (cursor.moveToNext());
-    //    }
-
-    //    return list;
-    //}
+        return list;
+    }
 
     private ContentValues createNotificationContentValue(RCNotification notification) {
         ContentValues values = new ContentValues();
@@ -455,6 +445,22 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return values;
     }
 
+    private ArrayList<RCNotification> queryNotifications(String query) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+
+        try {
+            db = getReadableDatabase();
+            cursor = db.rawQuery(query, null);
+
+            return buildNotifications(cursor);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            close(db, cursor);
+        }
+    }
 
     public int addNotifications(ArrayList<RCNotification> list) {
         if (list == null || list.size() == 0)
@@ -487,7 +493,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return totalRowsInserted;
     }
 
+    public ArrayList<RCNotification> getNotifications() {
+        String query = "SELECT * FROM " + TABLE_NOTIFICATIONS;
+        return queryNotifications(query);
 
+    }
     //endregion
 
     private void close(SQLiteDatabase db, Cursor cursor) {
