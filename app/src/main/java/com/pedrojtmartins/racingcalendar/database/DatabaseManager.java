@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.databinding.ObservableArrayList;
 
 import com.pedrojtmartins.racingcalendar.helpers.DateHelper;
+import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 
@@ -29,6 +30,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     //endregion
 
+    //region Tables
     //region Table Races
     private static final String TABLE_RACES = "races";
 
@@ -71,18 +73,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
     //endregion
 
-    //region Table Favorites
-    private static final String TABLE_FAVOURITES = "favourites";
+    //region Table Notifications
+    private static final String TABLE_NOTIFICATIONS = "notifications";
 
     //region Columns
-    private static final String KEY_FAVOURITES_ID = "race_id";
-    private static final String KEY_FAVOURITES_SERIES_ID = "race_seriesId";
+    private static final String KEY_NOTIFICATIONS_ID = "notif_id";
+    private static final String KEY_NOTIFICATIONS_EVENT_ID = "event_id";
+    private static final String KEY_NOTIFICATIONS_IS_SERIES = "is_series";
+    private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "mins_before";
     //endregion
 
     //region Create Statement
-    private static final String CREATE_TABLE_FAVOURITES = "CREATE TABLE " + TABLE_FAVOURITES + "(" +
-            KEY_FAVOURITES_ID + " INTEGER PRIMARY KEY," +
-            KEY_FAVOURITES_SERIES_ID + " INTEGER)";
+    private static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
+            KEY_NOTIFICATIONS_ID + " INTEGER PRIMARY KEY," +
+            KEY_NOTIFICATIONS_EVENT_ID + " INTEGER," +
+            KEY_NOTIFICATIONS_IS_SERIES + " INTEGER," +
+            KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER)";
+    //endregion
     //endregion
     //endregion
 
@@ -96,6 +103,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return mDatabaseManager;
     }
+
     private DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -104,8 +112,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_RACES);
         db.execSQL(CREATE_TABLE_SERIES);
-//        db.execSQL(CREATE_TABLE_FAVOURITES);
+        db.execSQL(CREATE_TABLE_NOTIFICATIONS);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
@@ -141,6 +150,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return list;
     }
+
     private ContentValues createRaceContentValue(Race race) {
         ContentValues values = new ContentValues();
         values.put(KEY_RACE_ID, race.getId());
@@ -151,6 +161,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_RACE_DATE, race.getFullDate());
         return values;
     }
+
     private ArrayList<Race> queryRaces(String query) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -188,6 +199,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return queryRaces(sBuilder.toString());
     }
+
     public ArrayList<Race> getUpcomingRaces(int seriesId) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         String query = ("SELECT  r.*, s." + KEY_SERIES_NAME +
@@ -245,17 +257,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ArrayList<Series> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-//                int id = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_ID));
-//                String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
-//                int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
-//                boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
+                int id = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_ID));
+                String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+                int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
+                boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
 
-                int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                int year = cursor.getInt(2);
-                boolean favourite = cursor.getInt(3) == 1;
-                int totalRaces = cursor.getInt(4);
-                int currRace = cursor.getInt(5);
+                int totalRaces = 0;
+                if (cursor.getColumnCount() > 4)
+                    totalRaces = cursor.getInt(4);
+
+                int currRace = 0;
+                if (cursor.getColumnCount() > 5)
+                    currRace = cursor.getInt(5);
 
 
                 list.add(new Series(id, name, year, favourite, totalRaces, currRace));
@@ -264,6 +277,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return list;
     }
+
     private ContentValues createSeriesContentValue(Series series) {
         ContentValues values = new ContentValues();
         values.put(KEY_SERIES_ID, series.getId());
@@ -272,6 +286,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_SERIES_FAVOURITE, series.isFavorite() ? 1 : 0);
         return values;
     }
+
     private ArrayList<Series> querySeries(String query) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -390,6 +405,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
 
     //region Favourites
+
     /**
      * @return amount of favourites
      */
@@ -404,14 +420,86 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
     //endregion
 
+    //region Notifications
+    //private ArrayList<RCNotification> buildNotification(Cursor cursor) {
+    //    ArrayList<Race> list = new ArrayList<>();
+    //    if (cursor.moveToFirst()) {
+    //        do {
+    //            int id = cursor.getInt(cursor.getColumnIndex(KEY_RACE_ID));
+    //            int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_RACE_SERIES_ID));
+    //            int raceNo = cursor.getInt(cursor.getColumnIndex(KEY_RACE_NUMBER));
+    //            String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
+    //            String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
+    //            String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
+
+    //            String seriesName = "";
+    //            int seriesNameId = cursor.getColumnIndex(KEY_SERIES_NAME);
+    //            if (seriesNameId > 0) {
+    //                seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+    //                if (seriesName == null)
+    //                    seriesName = "";
+    //            }
+
+    //            list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName));
+    //        } while (cursor.moveToNext());
+    //    }
+
+    //    return list;
+    //}
+
+    private ContentValues createNotificationContentValue(RCNotification notification) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_NOTIFICATIONS_EVENT_ID, notification.eventId);
+        values.put(KEY_NOTIFICATIONS_IS_SERIES, notification.isSeries);
+        values.put(KEY_NOTIFICATIONS_MINUTES_BEFORE, notification.minutesBefore);
+        return values;
+    }
+
+
+    public int addNotifications(ArrayList<RCNotification> list) {
+        if (list == null || list.size() == 0)
+            return 0;
+
+        int totalRowsInserted = 0;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            for (RCNotification notification : list) {
+                if (notification == null)
+                    continue;
+
+                ContentValues cValues = createNotificationContentValue(notification);
+                if (cValues == null)
+                    continue;
+
+                if (db.insert(TABLE_NOTIFICATIONS, null, cValues) != -1)
+                    totalRowsInserted++;
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            closeDatabase(db);
+        }
+
+        return totalRowsInserted;
+    }
+
+
+    //endregion
+
     private void close(SQLiteDatabase db, Cursor cursor) {
         closeCursor(cursor);
         closeDatabase(db);
     }
+
     private void closeDatabase(SQLiteDatabase db) {
         if (db != null && db.isOpen())
             db.close();
     }
+
     private void closeCursor(Cursor cursor) {
         if (cursor != null && !cursor.isClosed())
             cursor.close();
