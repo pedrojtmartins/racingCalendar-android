@@ -152,4 +152,25 @@ public class DateFormatter {
             return "";
         }
     }
+
+    public static Calendar getCalendar(String sDate) {
+        if (sDate == null || sDate.isEmpty() || !sDate.contains("-"))
+            return null;
+
+        if (!sDate.contains("T")) {
+            sDate += "T00:00:00";
+        }
+
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+            Date date = format.parse(sDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

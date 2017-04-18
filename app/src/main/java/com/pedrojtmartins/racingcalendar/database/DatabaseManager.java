@@ -443,11 +443,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_ID));
-                int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_EVENT_ID));
+                int eventId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_EVENT_ID));
                 String time = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_TIME));
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
 
-                list.add(new RCNotification(id, seriesId, time, minutesBefore));
+                list.add(new RCNotification(id, eventId, time, minutesBefore));
             } while (cursor.moveToNext());
         }
 
@@ -479,6 +479,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Add notifications into the database
+     *
+     * @param list Notifications to add
+     * @return amount of Notifications added
+     */
     public int addNotifications(ArrayList<RCNotification> list) {
         if (list == null || list.size() == 0)
             return 0;
@@ -510,11 +516,49 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return totalRowsInserted;
     }
 
+    /**
+     * Retrieve all notifications in the database
+     *
+     * @return list of notifications
+     */
     public ArrayList<RCNotification> getNotifications() {
-        // TODO: 18/04/2017 This list needs to be ORDERED by something (notification date probably)
-        String query = "SELECT * FROM " + TABLE_NOTIFICATIONS;
+        String query = "SELECT *" +
+                " FROM " + TABLE_NOTIFICATIONS +
+                " ORDER BY " + KEY_NOTIFICATIONS_TIME;
+
         return queryNotifications(query);
 
+    }
+
+
+    /**
+     * Remove notifications from the database
+     *
+     * @param notifications List of notifications to remove
+     * @return amount of lines removed
+     */
+    public int removeNotifications(ArrayList<RCNotification> notifications) {
+        if (notifications == null || notifications.isEmpty())
+            return 0;
+
+        int removed = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (RCNotification notification : notifications) {
+                if (notification == null)
+                    continue;
+
+                removed += db.delete(TABLE_NOTIFICATIONS, KEY_NOTIFICATIONS_ID + "=" + notification.id, null);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            closeDatabase(db);
+        }
+
+        return removed;
     }
     //endregion
 }

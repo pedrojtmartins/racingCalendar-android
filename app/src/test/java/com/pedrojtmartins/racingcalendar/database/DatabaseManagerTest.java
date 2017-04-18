@@ -30,15 +30,11 @@ import static junit.framework.Assert.assertTrue;
 @Config(constants = BuildConfig.class)
 public class DatabaseManagerTest {
 
-    private Context fakeContext;
     private DatabaseManager db;
-
-    private int addedNotifications;
 
     @Before
     public void setUp() throws Exception {
-        fakeContext = RuntimeEnvironment.application;
-        db = DatabaseManager.getInstance(fakeContext);
+        db = DatabaseManager.getInstance(RuntimeEnvironment.application);
     }
 
 //    @Test
@@ -125,8 +121,8 @@ public class DatabaseManagerTest {
     private int addNotifications() {
         ArrayList<RCNotification> list = new ArrayList<>();
         list.add(new RCNotification(1, "2017-01-12T00:00:00", 5));
-        list.add(new RCNotification(3, "2017-10-17T22:30:00", 15));
-        list.add(new RCNotification(2, "2017-04-01T13:00:00", 60));
+        list.add(new RCNotification(2, "2017-10-17T22:30:00", 15));
+        list.add(new RCNotification(3, "2017-01-12T13:00:00", 60));
 
         return db.addNotifications(list);
     }
@@ -150,7 +146,7 @@ public class DatabaseManagerTest {
     public void addNotificationsShouldAddValues() throws Exception {
         assertTrue(addNotifications() == 3);
     }
-//endregion
+    //endregion
 
     //region Get tests
     @Test
@@ -169,13 +165,40 @@ public class DatabaseManagerTest {
         assertTrue(values.size() == 3);
     }
 
-    //@Test
-    //public void getNotificationsShouldReturnDateOrderedValues() throws Exception {
-    //    addNotifications();
-//
-    //    ArrayList<RCNotification> values = db.getNotifications();
-    //    assertTrue(values.size() == 0);
-    //}
+    @Test
+    public void getNotificationsShouldReturnDateOrderedValues() throws Exception {
+        addNotifications();
+
+        ArrayList<RCNotification> values = db.getNotifications();
+        assertTrue(values.get(0).id == 1);
+        assertTrue(values.get(1).id == 3);
+        assertTrue(values.get(2).id == 2);
+    }
+    //endregion
+
+    //region Delete Tests
+
+    @Test
+    public void removeNotificationsShouldIgnoreEmptyAndNulls() throws Exception {
+        addNotifications();
+
+        assertTrue(db.removeNotifications(null) == 0);
+
+        ArrayList<RCNotification> empty = new ArrayList<>();
+        assertTrue(db.removeNotifications(empty) == 0);
+
+        ArrayList<RCNotification> withNull = new ArrayList<>();
+        withNull.add(null);
+        assertTrue(db.removeNotifications(withNull) == 0);
+    }
+
+    @Test
+    public void removeNotificationsShouldRemove() throws Exception {
+        addNotifications();
+        ArrayList<RCNotification> notifications = db.getNotifications();
+        assertTrue(db.removeNotifications(notifications) == 3);
+    }
+
     //endregion
     //endregion
 
