@@ -77,17 +77,19 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TABLE_NOTIFICATIONS = "notifications";
 
     //region Columns
+
     private static final String KEY_NOTIFICATIONS_ID = "notif_id";
     private static final String KEY_NOTIFICATIONS_EVENT_ID = "event_id";
-    private static final String KEY_NOTIFICATIONS_IS_SERIES = "is_series";
+    private static final String KEY_NOTIFICATIONS_TIME = "time";
     private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "mins_before";
+
     //endregion
 
     //region Create Statement
     private static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
             KEY_NOTIFICATIONS_ID + " INTEGER PRIMARY KEY," +
             KEY_NOTIFICATIONS_EVENT_ID + " INTEGER," +
-            KEY_NOTIFICATIONS_IS_SERIES + " INTEGER," +
+            KEY_NOTIFICATIONS_TIME + " TEXT," +
             KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER)";
     //endregion
     //endregion
@@ -119,9 +121,24 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SERIES);
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVOURITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATIONS);
 
         onCreate(db);
+    }
+
+    private void close(SQLiteDatabase db, Cursor cursor) {
+        closeCursor(cursor);
+        closeDatabase(db);
+    }
+
+    private void closeDatabase(SQLiteDatabase db) {
+        if (db != null && db.isOpen())
+            db.close();
+    }
+
+    private void closeCursor(Cursor cursor) {
+        if (cursor != null && !cursor.isClosed())
+            cursor.close();
     }
 
     //region Race
@@ -427,10 +444,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_ID));
                 int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_EVENT_ID));
-                boolean isSeries = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_IS_SERIES)) == 1;
+                String time = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_TIME));
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
 
-                list.add(new RCNotification(id, seriesId, isSeries, minutesBefore));
+                list.add(new RCNotification(id, seriesId, time, minutesBefore));
             } while (cursor.moveToNext());
         }
 
@@ -440,7 +457,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private ContentValues createNotificationContentValue(RCNotification notification) {
         ContentValues values = new ContentValues();
         values.put(KEY_NOTIFICATIONS_EVENT_ID, notification.eventId);
-        values.put(KEY_NOTIFICATIONS_IS_SERIES, notification.isSeries);
+        values.put(KEY_NOTIFICATIONS_TIME, notification.time);
         values.put(KEY_NOTIFICATIONS_MINUTES_BEFORE, notification.minutesBefore);
         return values;
     }
@@ -494,26 +511,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public ArrayList<RCNotification> getNotifications() {
+        // TODO: 18/04/2017 This list needs to be ORDERED by something (notification date probably)
         String query = "SELECT * FROM " + TABLE_NOTIFICATIONS;
         return queryNotifications(query);
 
     }
     //endregion
-
-    private void close(SQLiteDatabase db, Cursor cursor) {
-        closeCursor(cursor);
-        closeDatabase(db);
-    }
-
-    private void closeDatabase(SQLiteDatabase db) {
-        if (db != null && db.isOpen())
-            db.close();
-    }
-
-    private void closeCursor(Cursor cursor) {
-        if (cursor != null && !cursor.isClosed())
-            cursor.close();
-    }
-
-
 }

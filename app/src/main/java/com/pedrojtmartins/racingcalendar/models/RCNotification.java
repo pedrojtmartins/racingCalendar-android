@@ -7,19 +7,19 @@ package com.pedrojtmartins.racingcalendar.models;
 public class RCNotification {
     public int id;
     public int eventId;
-    public boolean isSeries;
+    public String time;
     public int minutesBefore;
 
-    public RCNotification(int id, int eventId, boolean isSeries, int minutesBefore) {
+    public RCNotification(int id, int eventId, String time, int minutesBefore) {
         this.id = id;
         this.eventId = eventId;
-        this.isSeries = isSeries;
+        this.time = time;
         this.minutesBefore = minutesBefore;
     }
 
-    public RCNotification(int eventId, boolean isSeries, int minutesBefore) {
+    public RCNotification(int eventId, String time, int minutesBefore) {
         this.eventId = eventId;
-        this.isSeries = isSeries;
+        this.time = time;
         this.minutesBefore = minutesBefore;
     }
 }
