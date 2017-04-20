@@ -9,6 +9,7 @@ public class RCNotification {
     public int eventId;
     public String time;
     public int minutesBefore;
+    public String seriesName;
 
     public RCNotification(int id, int eventId, String time, int minutesBefore) {
         this.id = id;
