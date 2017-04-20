@@ -20,5 +20,8 @@
     <string name="firstTimeDataDownload">A descarregar dados…</string>
     <string name="of">of</string>
     <string name="next">Próxima corrida:</string>
-    <string name="seriesIsOver">Completed</string>
+    <string name="seriesIsOver">Completa</string>
+    <string name="notifRaceBefore" formatted="false">A corrida de %s vai começar dentro de %d minutos</string>
+    <string name="notifRace" formatted="false">A corrida de %s está a começar</string>
+    <string name="notifRaceToday" formatted="false">Corrida de %s hoje</string>
 </resources>

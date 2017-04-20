@@ -21,4 +21,8 @@
     <string name="next">Next race:</string>
     <string name="of">of</string>
     <string name="seriesIsOver">Completed</string>
+
+    <string name="notifRaceBefore" formatted="false">%s race is staring in %d minutes</string>
+    <string name="notifRace" formatted="false">%s race is staring</string>
+    <string name="notifRaceToday" formatted="false">%s race today</string>
 </resources>

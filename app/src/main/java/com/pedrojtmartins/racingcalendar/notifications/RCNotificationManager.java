@@ -48,17 +48,17 @@ public class RCNotificationManager {
             if (resources == null || seriesName == null || notification == null)
                 return "";
 
-            String title = seriesName + " ";
+            String title;
             if (notification.time.contains("T")) {
                 if (notification.minutesBefore > 0) {
-                    title += resources.getString(R.string.isStartingIn) + " " +
-                            notification.minutesBefore + " " +
-                            resources.getString(R.string.minutes);
+                    title = String.format(
+                            resources.getString(R.string.notifRaceBefore),
+                            seriesName, notification.minutesBefore);
                 } else {
-                    title += resources.getString(R.string.isStarting);
+                    title = String.format(resources.getString(R.string.notifRace), seriesName);
                 }
             } else {
-                title += resources.getString(R.string.raceToday);
+                title = String.format(resources.getString(R.string.notifRaceToday), seriesName);
             }
             return title;
         }

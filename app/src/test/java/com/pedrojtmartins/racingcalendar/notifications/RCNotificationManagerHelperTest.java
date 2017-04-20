@@ -28,10 +28,9 @@ public class RCNotificationManagerHelperTest {
     @Before
     public void setUp() throws Exception {
         resources = Mockito.mock(Resources.class);
-        when(resources.getString(R.string.isStartingIn)).thenReturn("race is starting in");
-        when(resources.getString(R.string.minutes)).thenReturn("minutes");
-        when(resources.getString(R.string.isStarting)).thenReturn("race is starting");
-        when(resources.getString(R.string.raceToday)).thenReturn("race today");
+        when(resources.getString(R.string.notifRaceBefore)).thenReturn("%s race is starting in %d minutes");
+        when(resources.getString(R.string.notifRace)).thenReturn("%s race is starting");
+        when(resources.getString(R.string.notifRaceToday)).thenReturn("%s race today");
 
     }
 
