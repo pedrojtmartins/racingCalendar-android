@@ -6,14 +6,11 @@ import android.app.PendingIntent;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
- * Created by pedro on 18/04/2017.
+ * Pedro Martins
+ * 18/04/2017
  */
 
 public class RCAlarmManager {
@@ -37,7 +34,8 @@ public class RCAlarmManager {
         if (notification.minutesBefore > 0 && notification.time.contains("T"))
             calendar.add(Calendar.MINUTE, -notification.minutesBefore);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        long timeInMillis = calendar.getTimeInMillis();
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
         return true;
     }
 
