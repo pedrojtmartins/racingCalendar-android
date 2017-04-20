@@ -1,11 +1,7 @@
 package com.pedrojtmartins.racingcalendar.database;
 
-import android.content.Context;
-
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
-import com.pedrojtmartins.racingcalendar.models.Race;
-import com.pedrojtmartins.racingcalendar.models.Series;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +10,11 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -127,7 +123,23 @@ public class DatabaseManagerTest {
         return db.addNotifications(list);
     }
 
+    private long addNotification() {
+        RCNotification rcNotification = new RCNotification(1, "2017-01-12T00:00:00", 5);
+        return db.addNotification(rcNotification);
+    }
+
     //region Add Tests
+    @Test
+    public void addNotificationShouldCheckNulls() throws Exception {
+        assertTrue(db.addNotification(null) == -1);
+    }
+
+    @Test
+    public void addNotificationShouldAddValue() throws Exception {
+        assertTrue(addNotification() > 0);
+    }
+
+
     @Test
     public void addNotificationsShouldCheckNulls() throws Exception {
         assertTrue(db.addNotifications(null) == 0);
@@ -149,6 +161,29 @@ public class DatabaseManagerTest {
     //endregion
 
     //region Get tests
+
+
+    @Test
+    public void getNotificationShouldReturnNullIfInvalidId() throws Exception {
+        assertNull(db.getNotification(-1));
+    }
+
+    @Test
+    public void getNotificationShouldReturnNullIfNotFound() throws Exception {
+        assertNull(db.getNotification(1));
+    }
+
+    @Test
+    public void getNotificationShouldReturnNotificationIfValid() throws Exception {
+        addNotification();
+
+        RCNotification rcNotification = db.getNotification(1);
+        assertNotNull(rcNotification);
+        assertEquals(rcNotification.eventId, 1);
+        assertEquals(rcNotification.time, "2017-01-12T00:00:00");
+        assertEquals(rcNotification.minutesBefore, 5);
+    }
+
     @Test
     public void getNotificationsShouldReturnEmptyIfDBEmpty() throws Exception {
         ArrayList<RCNotification> values = db.getNotifications();

@@ -196,6 +196,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+    public Race getRace(int id) {
+        String query = "SELECT *" +
+                " FROM " + TABLE_RACES +
+                " WHERE " + KEY_RACE_ID + "=" + id;
+
+        ArrayList<Race> races = queryRaces(query);
+        if (races == null || races.isEmpty())
+            return null;
+
+        return races.get(0);
+    }
+
     /**
      * Retrieves all upcoming races in the database
      *
@@ -455,6 +467,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     private ContentValues createNotificationContentValue(RCNotification notification) {
+        if (notification == null)
+            return null;
+
         ContentValues values = new ContentValues();
         values.put(KEY_NOTIFICATIONS_EVENT_ID, notification.eventId);
         values.put(KEY_NOTIFICATIONS_TIME, notification.time);
@@ -480,6 +495,32 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     /**
+     * Add a single notification into the database
+     *
+     * @param notification Notification to add
+     * @return id of the added row, -1 if not successful
+     */
+    public long addNotification(RCNotification notification) {
+        if (notification == null)
+            return -1;
+
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cValues = createNotificationContentValue(notification);
+            if (cValues == null)
+                return -1;
+
+            return db.insert(TABLE_NOTIFICATIONS, null, cValues);
+        } finally {
+            if (db != null) {
+                closeDatabase(db);
+            }
+        }
+    }
+
+    /**
      * Add notifications into the database
      *
      * @param list Notifications to add
@@ -490,11 +531,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return 0;
 
         int totalRowsInserted = 0;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = null;
 
         try {
+            db = this.getWritableDatabase();
+            db.beginTransaction();
+
             for (RCNotification notification : list) {
                 if (notification == null)
                     continue;
@@ -509,8 +551,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
             db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
-            closeDatabase(db);
+            if (db != null) {
+                db.endTransaction();
+                closeDatabase(db);
+            }
         }
 
         return totalRowsInserted;
@@ -530,6 +574,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    public RCNotification getNotification(long id) {
+        String query = "SELECT *" +
+                " FROM " + TABLE_NOTIFICATIONS +
+                " WHERE " + KEY_NOTIFICATIONS_ID + "=" + id;
+
+        ArrayList<RCNotification> notifications = queryNotifications(query);
+        if (notifications == null || notifications.isEmpty())
+            return null;
+
+        return notifications.get(0);
+    }
 
     /**
      * Remove notifications from the database
@@ -560,5 +615,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return removed;
     }
+
+
     //endregion
 }
