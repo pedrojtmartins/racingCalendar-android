@@ -8,6 +8,7 @@ import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.viewModels.IDataUpdater;
+import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.models.ServerData;
@@ -131,4 +132,13 @@ public class MainViewModel implements IDataUpdater {
         loadDataFromLocalDb();
     }
 
+    public RCNotification addNotification(final Race race, final int minutesBefore) {
+        RCNotification rcNotification = new RCNotification(race.getId(), race.getFullDate(), minutesBefore);
+        long id = mDbManager.addNotification(rcNotification);
+        if (id <= 0) {// TODO: 20/04/2017 Log error
+            return null;
+        }
+
+        return mDbManager.getNotification(id);
+    }
 }

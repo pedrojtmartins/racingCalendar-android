@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.SeriesSelectionAdapter;
+import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
 public class SeriesListSelectionFragment extends Fragment {
     private ISeriesList mISeriesList;

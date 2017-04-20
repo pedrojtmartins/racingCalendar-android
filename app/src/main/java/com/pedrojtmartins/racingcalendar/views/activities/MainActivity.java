@@ -1,5 +1,8 @@
 package com.pedrojtmartins.racingcalendar.views.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
@@ -15,22 +18,25 @@ import android.view.View;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
+import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
+import com.pedrojtmartins.racingcalendar.alarms.RCAlarmBroadcastReceiver;
+import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
+import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.viewModels.MainViewModel;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
-import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
@@ -73,6 +79,13 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 public void onAdLoaded() {
                     super.onAdLoaded();
                     mBinding.adView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                    // TODO: 20/04/2017 set network state listener
+
                 }
             });
             mBinding.adView.loadAd(adRequest);
@@ -249,6 +262,25 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void displayRacesFromSeries(Series seriesId) {
         mPageAdapter.replaceSeriesWithRaces(seriesId);
 //        mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_SERIES);
+    }
+    //endregion
+
+    //region Alarms
+    public boolean setAlarm(Race race, int minutesBefore) {
+        RCNotification rcNotification = mViewModel.addNotification(race, minutesBefore);
+        if (rcNotification == null)
+            return false;
+
+        Intent intent = new Intent(this, RCAlarmBroadcastReceiver.class);
+        intent.setAction(RCAlarmBroadcastReceiver.ACTION_NOTIFY);
+        intent.putExtra("notifId", rcNotification.id);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(this, rcNotification.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        return RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
     }
     //endregion
 

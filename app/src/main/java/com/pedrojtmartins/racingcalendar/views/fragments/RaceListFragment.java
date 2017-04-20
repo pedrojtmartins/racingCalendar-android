@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.BR;
+import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
+import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 
 
 public class RaceListFragment extends Fragment implements IRecyclerViewFragment {

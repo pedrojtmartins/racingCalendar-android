@@ -4,9 +4,9 @@ import android.databinding.ObservableArrayList;
 import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.BR;
+import com.pedrojtmartins.racingcalendar.databinding.RowSeriesBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.databinding.RowSeriesBinding;
 
 /**
  * Pedro Martins

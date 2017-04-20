@@ -15,4 +15,6 @@ public interface IRaceList {
     ObservableArrayList<Race> getRacesListBySeries(int seriesId);
 
     boolean undoFragmentTransition();
+
+    boolean setAlarm(Race race, int minutesBefore);
 }

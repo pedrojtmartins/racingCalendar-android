@@ -5,10 +5,10 @@ import android.databinding.ObservableArrayList;
 import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.BR;
-import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
-import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.RowRaceBinding;
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
+import com.pedrojtmartins.racingcalendar.models.Race;
 
 public class RaceAdapter extends ObservableAdapter<Race> {
     private final String sThisWeek;

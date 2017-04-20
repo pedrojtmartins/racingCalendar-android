@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
+import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.views.fragments.RaceListFragment;
 import com.pedrojtmartins.racingcalendar.views.fragments.SeriesListFragment;
 
