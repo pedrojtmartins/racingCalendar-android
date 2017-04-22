@@ -2,6 +2,8 @@ package com.pedrojtmartins.racingcalendar.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
@@ -53,5 +55,30 @@ public class RCAlarmManager {
 
         alarmManager.cancel(pendingIntent);
         return true;
+    }
+
+    /**
+     * @param date
+     * @return 1 if in the future. -1 if today with no set hour. -2 if in the past
+     */
+    public static int isValid(String date) {
+        if (date == null || date.isEmpty())
+            return -3;
+
+        if (!date.contains("T") && DateFormatter.isToday(date))
+            return -1;
+
+        if (!DateFormatter.isInTheFuture(date))
+            return -2;
+
+        return 1;
+    }
+
+    public static PendingIntent generatePendingIntent(Context context, RCNotification rcNotification) {
+        Intent intent = new Intent(context, RCAlarmBroadcastReceiver.class);
+        intent.setAction(RCAlarmBroadcastReceiver.ACTION_NOTIFY);
+        intent.putExtra("notifId", rcNotification.id);
+
+        return PendingIntent.getBroadcast(context, rcNotification.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

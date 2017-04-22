@@ -128,12 +128,16 @@ public class MainViewModel implements IDataUpdater {
         newAppUpdate.set(true);
     }
 
-    public void updateFavorites() {
+    public void reload() {
         loadDataFromLocalDb();
     }
 
     public RCNotification addNotification(final Race race, final int minutesBefore) {
-        RCNotification rcNotification = new RCNotification(race.getId(), race.getFullDate(), minutesBefore);
+        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
+        if (rcNotification != null)
+            return rcNotification;
+
+        rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(), minutesBefore);
         long id = mDbManager.addNotification(rcNotification);
         if (id <= 0) {// TODO: 20/04/2017 Log error
             return null;

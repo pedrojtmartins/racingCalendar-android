@@ -1,124 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.models.Race"/>
+            type="com.pedrojtmartins.racingcalendar.models.Race" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="16dp"-->
-        <!--android:visibility="gone">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="W23"/>-->
 
         <TextView
             android:id="@+id/weekTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:visibility="gone"
-            />
-
-        <!--</LinearLayout>-->
+            android:padding="16dp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="#f2f2f2"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="1dp"
-                android:layout_marginRight="1dp"
-                android:padding="8dp"
-                android:text="@{data.hour}"
-                android:textColor="#fff"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#bbb"
-                android:ellipsize="marquee"
-                android:lines="1"
-                android:padding="8dp"
-                android:text="@{data.seriesName}"
-                android:textColor="#000"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#f2f2f2"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:lines="1"
+                        android:text="@{data.seriesName}"
+                        android:textColor="#333"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="F1 - Formula 1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{data.raceNumberString}"
+                            android:textColor="#333"
+                            android:textSize="14sp"
+                            tools:text="#13" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - "
+                            android:textColor="#333"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:lines="1"
+                            android:text="@{data.name}"
+                            android:textColor="#333"
+                            android:textSize="14sp"
+                            tools:text="Spanish GP" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:lines="1"
+                        android:text="@{data.location}"
+                        android:textColor="#333"
+                        android:textSize="14sp"
+                        tools:text="Circuit de Catalunya, Barcelona, Spain" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/race_row_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:clickable="true"
+                        android:padding="5dp"
+                        app:srcCompat="@drawable/more_vertical_black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#1e000000"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="3dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="3dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{data.raceNumberString}"
-                    android:textSize="14sp"/>
+                    android:text="@{data.simplifiedDate}"
+                    android:textColor="#333"
+                    tools:text="26 Mar" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:text="@{data.dayOfWeekShort}"
+                    android:textColor="#333"
+                    tools:text="Sab" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:lines="1"
-                    android:text="@{data.name}"
-                    android:textSize="14sp"/>
+                    android:layout_marginLeft="8dp"
+                    android:text="@{data.hour}"
+                    android:textColor="#333"
+                    android:visibility="@{data.hour.length() > 0 ? View.VISIBLE : View.GONE}"
+                    tools:text="2:00pm" />
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:tint="#A0A0A0"
+                    android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"
+                    app:srcCompat="@drawable/alarm_on_black" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!--<android.support.v7.widget.AppCompatImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:clickable="true"-->
+                <!--android:rotation="90"-->
+                <!--android:tint="#555"-->
+                <!--app:srcCompat="@drawable/arrow_black" />-->
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:lines="1"
-                android:text="@{data.location}"
-                android:textSize="12sp"/>
+                android:background="#f2f2f2"
+                android:orientation="vertical">
+
+                <!--<GridLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_column="0"-->
+                <!--android:layout_row="0">-->
+
+                <!--<include layout="@layout/row_race_detail" />-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_column="0"-->
+                <!--android:layout_row="1">-->
+
+                <!--<include layout="@layout/row_race_detail" />-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<include layout="@layout/row_race_detail" />-->
+                <!--</LinearLayout>-->
+
+                <!--</GridLayout>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#666"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#bbb"/>
-
+            android:layout_height="2dp"
+            android:background="#0ccc" />
     </LinearLayout>
 </layout>

@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -197,18 +198,23 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             SnackBarHelper.display(mBinding.mainContent, R.string.firstTimeDataDownload, Snackbar.LENGTH_INDEFINITE);
         }
     }
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+            case R.id.action_notifications:
+                startActivityForResult(new Intent(this, NotificationsActivity.class), 1);
                 break;
+
+//            case R.id.action_settings:
+//                startActivity(new Intent(this, SettingsActivity.class));
+//                break;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -266,28 +272,40 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     //region Alarms
-    public boolean setAlarm(Race race, int minutesBefore) {
-        RCNotification rcNotification = mViewModel.addNotification(race, minutesBefore);
+    public boolean setAlarm(Race race) {
+        int valid = RCAlarmManager.isValid(race.getDate());
+        switch (valid) {
+            case -1:
+                SnackBarHelper.display(mBinding.mainContent, R.string.raceToday);
+                return false;
+
+            case -2:
+                SnackBarHelper.display(mBinding.mainContent, R.string.alarmInPast);
+                return false;
+        }
+
+        RCNotification rcNotification = mViewModel.addNotification(race, 0);
         if (rcNotification == null)
             return false;
 
-        Intent intent = new Intent(this, RCAlarmBroadcastReceiver.class);
-        intent.setAction(RCAlarmBroadcastReceiver.ACTION_NOTIFY);
-        intent.putExtra("notifId", rcNotification.id);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(this, rcNotification.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
 
-        return RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
+        boolean result = RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
+        if (result) {
+            SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
+        } else {
+            SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
+        }
+
+        return result;
     }
     //endregion
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            mViewModel.updateFavorites();
+            mViewModel.reload();
         }
     }
 }

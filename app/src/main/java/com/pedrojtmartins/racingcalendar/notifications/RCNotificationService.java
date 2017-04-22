@@ -14,7 +14,6 @@ import android.support.v7.app.NotificationCompat;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
-import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.views.activities.MainActivity;
 
 /**
@@ -44,15 +43,9 @@ public class RCNotificationService extends Service {
             return START_NOT_STICKY;
         }
 
-        Race race = db.getRace(rcNotification.eventId);
-        if (race == null) {
-            // TODO: 20/04/2017 log error
-            return START_NOT_STICKY;
-        }
-
         //Create pending intent
         Intent touchIntent = new Intent(this, MainActivity.class);
-        intent.putExtra("raceId", rcNotification.eventId);
+        intent.putExtra("raceId", rcNotification.raceId);
         intent.putExtra("notifId", rcNotification.id);
 
         PendingIntent pendingIntent =
@@ -62,7 +55,6 @@ public class RCNotificationService extends Service {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         String title = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(
                 getResources(),
-                race.getSeriesName(),
                 rcNotification);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);

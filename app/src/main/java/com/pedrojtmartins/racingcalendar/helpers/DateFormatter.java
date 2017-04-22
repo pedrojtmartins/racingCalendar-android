@@ -177,4 +177,20 @@ public class DateFormatter {
             return null;
         }
     }
+
+    public static boolean isToday(String date) {
+        Calendar now = Calendar.getInstance();
+        Calendar checking = DateFormatter.getCalendar(date);
+
+        return now.get(Calendar.YEAR) == checking.get(Calendar.YEAR) &&
+                now.get(Calendar.MONTH) == checking.get(Calendar.MONTH) &&
+                now.get(Calendar.DAY_OF_MONTH) == checking.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static boolean isInTheFuture(String date) {
+        Calendar now = Calendar.getInstance();
+        Calendar checking = DateFormatter.getCalendar(date);
+
+        return checking.after(now);
+    }
 }

@@ -19,7 +19,9 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
@@ -55,13 +57,13 @@ public class RCAlarmManagerTest {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         RCNotification rcNotification;
 
-        rcNotification = new RCNotification(1, "2017-01-12T00:00:00", 5);
+        rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 5);
         assertTrue(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
 
-        rcNotification = new RCNotification(1, "2017-01-12", 5);
+        rcNotification = new RCNotification(1, 2, "2017-01-12", 5);
         assertTrue(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
 
-        rcNotification = new RCNotification(1, "2017-01", 5);
+        rcNotification = new RCNotification(1, 3, "2017-01", 5);
         assertFalse(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
     }
 
@@ -75,6 +77,47 @@ public class RCAlarmManagerTest {
     @Test
     public void removeAlarmShouldRemoveAlarm() throws Exception {
         assertTrue(RCAlarmManager.removeAlarm(Mockito.mock(AlarmManager.class), Mockito.mock(PendingIntent.class)));
+    }
 
+    @Test
+    public void isValidShouldCheckNullsAndEmpties() throws Exception {
+        assertEquals(RCAlarmManager.isValid(null), -3);
+        assertEquals(RCAlarmManager.isValid(""), -3);
+    }
+
+    @Test
+    public void isValidShouldReturnTodayWithNoTime() throws Exception {
+        Calendar now = Calendar.getInstance();
+        String sTodayNoTime = now.get(Calendar.YEAR) + "-" +
+                (now.get(Calendar.MONTH) + 1) + "-" +
+                now.get(Calendar.DAY_OF_MONTH);
+
+        assertEquals(RCAlarmManager.isValid(sTodayNoTime), -1);
+    }
+
+    @Test
+    public void isValidShouldReturnInThePast() throws Exception {
+        Calendar now = Calendar.getInstance();
+        String sTodayNoTime = (now.get(Calendar.YEAR) - 1) + "-" +
+                (now.get(Calendar.MONTH) + 1) + "-" +
+                now.get(Calendar.DAY_OF_MONTH);
+
+        assertEquals(RCAlarmManager.isValid(sTodayNoTime), -2);
+
+        String sTodayWithTime = sTodayNoTime + "T00:00:00";
+        assertEquals(RCAlarmManager.isValid(sTodayWithTime), -2);
+    }
+
+    @Test
+    public void isValidShouldReturnValid() throws Exception {
+        Calendar now = Calendar.getInstance();
+        String sTodayNoTime = (now.get(Calendar.YEAR) + 1) + "-" +
+                (now.get(Calendar.MONTH) + 1) + "-" +
+                now.get(Calendar.DAY_OF_MONTH);
+
+        assertEquals(RCAlarmManager.isValid(sTodayNoTime), 1);
+
+        String sTodayWithTime = sTodayNoTime + "T00:00:00";
+        assertEquals(RCAlarmManager.isValid(sTodayWithTime), 1);
     }
 }

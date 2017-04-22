@@ -44,8 +44,9 @@ public class RCNotificationManager {
 
 
     static class NotificationManagerHelper {
-        static String getNotificationTitle(Resources resources, String seriesName, RCNotification notification) {
-            if (resources == null || seriesName == null || notification == null)
+        static String getNotificationTitle(Resources resources, RCNotification notification) {
+            if (resources == null || notification == null ||
+                    notification.seriesName == null || notification.seriesName.isEmpty())
                 return "";
 
             String title;
@@ -53,12 +54,12 @@ public class RCNotificationManager {
                 if (notification.minutesBefore > 0) {
                     title = String.format(
                             resources.getString(R.string.notifRaceBefore),
-                            seriesName, notification.minutesBefore);
+                            notification.seriesName, notification.minutesBefore);
                 } else {
-                    title = String.format(resources.getString(R.string.notifRace), seriesName);
+                    title = String.format(resources.getString(R.string.notifRace), notification.seriesName);
                 }
             } else {
-                title = String.format(resources.getString(R.string.notifRaceToday), seriesName);
+                title = String.format(resources.getString(R.string.notifRaceToday), notification.seriesName);
             }
             return title;
         }

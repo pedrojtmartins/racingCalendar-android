@@ -113,18 +113,18 @@ public class DatabaseManagerTest {
 //    }
 
 
-    //region Notifications
+    //region NotificationsActivity
     private int addNotifications() {
         ArrayList<RCNotification> list = new ArrayList<>();
-        list.add(new RCNotification(1, "2017-01-12T00:00:00", 5));
-        list.add(new RCNotification(2, "2017-10-17T22:30:00", 15));
-        list.add(new RCNotification(3, "2017-01-12T13:00:00", 60));
+        list.add(new RCNotification(1, 1, "2017-01-12T00:00:00", 5));
+        list.add(new RCNotification(2, 2, "2017-10-17T22:30:00", 15));
+        list.add(new RCNotification(3, 3, "2017-01-12T13:00:00", 60));
 
         return db.addNotifications(list);
     }
 
     private long addNotification() {
-        RCNotification rcNotification = new RCNotification(1, "2017-01-12T00:00:00", 5);
+        RCNotification rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 5);
         return db.addNotification(rcNotification);
     }
 
@@ -179,7 +179,7 @@ public class DatabaseManagerTest {
 
         RCNotification rcNotification = db.getNotification(1);
         assertNotNull(rcNotification);
-        assertEquals(rcNotification.eventId, 1);
+        assertEquals(rcNotification.raceId, 1);
         assertEquals(rcNotification.time, "2017-01-12T00:00:00");
         assertEquals(rcNotification.minutesBefore, 5);
     }

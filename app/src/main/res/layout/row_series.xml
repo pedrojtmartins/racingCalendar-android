@@ -81,7 +81,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:tint="@color/arrowsTint"
-                app:srcCompat="@drawable/right_arrow_black"/>
+                app:srcCompat="@drawable/arrow_black"/>
 
 
         </LinearLayout>

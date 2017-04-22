@@ -27,8 +27,6 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
-
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_favorites);
 
         initViewModel();
@@ -64,7 +62,7 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save_favorites:
+            case R.id.action_all_done:
                 saveFavorites();
                 goBack(true);
                 break;
@@ -82,7 +80,6 @@ public class FavoritesActivity extends AppCompatActivity {
         discardChanges();
     }
     private void discardChanges() {
-        // TODO: 14/02/2017 Check if something really changed before showing the dialog.
         AlertDialogHelper.displayYesNoDialog(this,
                 R.string.discardFavorites,
                 R.string.discard,

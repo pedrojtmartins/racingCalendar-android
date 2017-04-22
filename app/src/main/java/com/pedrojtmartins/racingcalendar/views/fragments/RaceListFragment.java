@@ -69,7 +69,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race, mList, getResources()));
+        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
 
         // When transitioning between fragments the recyclerview could be
         // initialized not on the top because of fragment recycling.

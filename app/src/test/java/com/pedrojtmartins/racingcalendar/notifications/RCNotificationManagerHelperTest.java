@@ -37,32 +37,35 @@ public class RCNotificationManagerHelperTest {
     //region getNotificationTitle
     @Test
     public void getNotificationTitle_shouldCheckNulls() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, "2017-10-01T10:00:00", 10);
-        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(null, "f1", mockedNotifications), "");
-        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, null, mockedNotifications), "");
-        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, "f1", null), "");
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 10);
+        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(null, mockedNotifications), "");
+        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, mockedNotifications), "");
+        assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, null), "");
     }
 
     @Test
     public void getNotificationTitle_shouldReturnTimeBefore() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, "2017-10-01T10:00:00", 10);
-        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, "f1", mockedNotifications);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 10);
+        mockedNotifications.seriesName="f1";
+        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, mockedNotifications);
         assertNotNull(res);
         assertTrue(res.equals("f1 race is starting in 10 minutes"));
     }
 
     @Test
     public void getNotificationTitle_shouldReturnSetTime() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, "2017-10-01T10:00:00", 0);
-        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, "f1", mockedNotifications);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 0);
+        mockedNotifications.seriesName="f1";
+        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, mockedNotifications);
         assertNotNull(res);
         assertTrue(res.equals("f1 race is starting"));
     }
 
     @Test
     public void getNotificationTitle_shouldReturnToday() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, "2017-10-01", 20);
-        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, "f1", mockedNotifications);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01", 20);
+        mockedNotifications.seriesName="f1";
+        String res = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(resources, mockedNotifications);
         assertNotNull(res);
         assertTrue(res.equals("f1 race today"));
     }

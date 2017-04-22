@@ -73,7 +73,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
     //endregion
 
-    //region Table Notifications
+    //region Table NotificationsActivity
     private static final String TABLE_NOTIFICATIONS = "notifications";
 
     //region Columns
@@ -455,7 +455,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
     //endregion
 
-    //region Notifications
+    //region NotificationsActivity
     private ArrayList<RCNotification> buildNotifications(Cursor cursor) {
         ArrayList<RCNotification> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -521,10 +521,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
         try {
             db = this.getWritableDatabase();
             ContentValues cValues = createNotificationContentValue(notification);
-            if (cValues == null)
-                return -1;
+            long rowId = db.insert(TABLE_NOTIFICATIONS, null, cValues);
+            if (rowId == -1) {
+                cValues.remove(KEY_NOTIFICATIONS_ID);
+                rowId = db.update(TABLE_NOTIFICATIONS, cValues, KEY_NOTIFICATIONS_ID + "=" + notification.id, null);
+            }
 
-            return db.insert(TABLE_NOTIFICATIONS, null, cValues);
+            return rowId;
         } finally {
             if (db != null) {
                 closeDatabase(db);
@@ -535,8 +538,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /**
      * Add notifications into the database
      *
-     * @param list Notifications to add
-     * @return amount of Notifications added
+     * @param list NotificationsActivity to add
+     * @return amount of NotificationsActivity added
      */
     public int addNotifications(ArrayList<RCNotification> list) {
         if (list == null || list.size() == 0)

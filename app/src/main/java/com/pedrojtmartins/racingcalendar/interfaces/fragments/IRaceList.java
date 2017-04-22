@@ -16,5 +16,5 @@ public interface IRaceList {
 
     boolean undoFragmentTransition();
 
-    boolean setAlarm(Race race, int minutesBefore);
+    boolean setAlarm(Race race);
 }
