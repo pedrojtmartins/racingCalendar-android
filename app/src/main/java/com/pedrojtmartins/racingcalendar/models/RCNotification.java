@@ -6,21 +6,26 @@ package com.pedrojtmartins.racingcalendar.models;
 
 public class RCNotification {
     public int id;
-    public int eventId;
+    public int raceId;
+    public int seriesId;
     public String time;
     public int minutesBefore;
     public String seriesName;
 
-    public RCNotification(int id, int eventId, String time, int minutesBefore) {
+    public RCNotification(int id, int raceId, int seriesId, String time, int minutesBefore, String seriesName) {
         this.id = id;
-        this.eventId = eventId;
+        this.raceId = raceId;
+        this.seriesId = seriesId;
         this.time = time;
         this.minutesBefore = minutesBefore;
+        this.seriesName = seriesName;
     }
 
-    public RCNotification(int eventId, String time, int minutesBefore) {
-        this.eventId = eventId;
+    public RCNotification(int eventId, int seriesId, String time, int minutesBefore) {
+        this.raceId = eventId;
+        this.seriesId = seriesId;
         this.time = time;
         this.minutesBefore = minutesBefore;
+        this.seriesName = "";
     }
 }
