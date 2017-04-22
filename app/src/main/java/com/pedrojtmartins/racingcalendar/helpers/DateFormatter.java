@@ -18,6 +18,9 @@ import java.util.TimeZone;
 
 public class DateFormatter {
 
+    private static String defaultFormat = "yyyy-MM-dd'T'HH:mm:ss";
+    private static String defaultDataOnlyFormat = "yyyy-MM-dd";
+
     @SuppressLint("SimpleDateFormat")
     public static String getSimplifiedDate(String date) {
         if (date == null || date.isEmpty() || !date.contains("-"))
@@ -27,7 +30,7 @@ public class DateFormatter {
             date = date.split("T")[0];
 
         try {
-            SimpleDateFormat currFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat currFormat = new SimpleDateFormat(defaultDataOnlyFormat);
             SimpleDateFormat newFormat = new SimpleDateFormat(Settings.DAY_MONTH_FORMAT);
 
             return newFormat.format(currFormat.parse(date));
@@ -43,7 +46,7 @@ public class DateFormatter {
             if (date.contains("T"))
                 date = date.split("T")[0];
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat(defaultDataOnlyFormat);
             Calendar calendar = Calendar.getInstance();
             calendar.setFirstDayOfWeek(Calendar.MONDAY);
             calendar.setTime(df.parse(date));
@@ -84,7 +87,7 @@ public class DateFormatter {
             if (date.contains("T"))
                 date = date.split("T")[0];
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat(defaultDataOnlyFormat);
             Calendar calendar = Calendar.getInstance();
             calendar.setFirstDayOfWeek(Calendar.MONDAY);
             calendar.setTime(df.parse(date));
@@ -109,7 +112,7 @@ public class DateFormatter {
             return "";
 
         try {
-            DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            DateFormat utcFormat = new SimpleDateFormat(defaultFormat);
             utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(utcFormat.parse(date));
@@ -131,9 +134,9 @@ public class DateFormatter {
         try {
             DateFormat utcFormat = null;
             if (date.contains("T")) {
-                utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                utcFormat = new SimpleDateFormat(defaultFormat);
             } else {
-                utcFormat = new SimpleDateFormat("yyyy-MM-dd");
+                utcFormat = new SimpleDateFormat(defaultDataOnlyFormat);
             }
 
             utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -162,7 +165,8 @@ public class DateFormatter {
         }
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat(defaultFormat);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date date = format.parse(sDate);
 
             Calendar calendar = Calendar.getInstance();
