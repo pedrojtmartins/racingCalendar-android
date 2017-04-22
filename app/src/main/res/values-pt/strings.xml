@@ -24,10 +24,13 @@
     <string name="notifRaceBefore" formatted="false">A corrida de %s vai começar dentro de %d minutos</string>
     <string name="notifRace" formatted="false">A corrida de %s está a começar</string>
     <string name="notifRaceToday" formatted="false">Corrida de %s hoje</string>
-    <string name="alarmSet">Alarm is set</string>
-    <string name="alarmNotSet">Error setting the alarm</string>
-    <string name="raceToday">Race is today</string>
-    <string name="alarmInPast">Can\'t set alarm in the past</string>
-    <string name="maintab_notifications">Notifications</string>
-    <string name="action_notifications">Notifications</string>
+
+    <string name="setAlarm">Definir alarme</string>
+    <string name="alarmSet">Novo alarme definido</string>
+    <string name="alarmNotSet">Não foi possível definir o alarme</string>
+    <string name="raceToday">Data de início hoje</string>
+    <string name="alarmInPast">Data de início passada</string>
+
+    <string name="maintab_notifications">Notificações</string>
+    <string name="action_notifications">Notificações</string>
 </resources>

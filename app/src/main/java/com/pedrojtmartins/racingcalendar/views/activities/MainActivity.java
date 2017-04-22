@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     //region Alarms
     public boolean setAlarm(Race race) {
-        int valid = RCAlarmManager.isValid(race.getDate());
+        int valid = RCAlarmManager.isValid(race.getFullDate());
         switch (valid) {
             case -1:
                 SnackBarHelper.display(mBinding.mainContent, R.string.raceToday);
