@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.Manifest.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -29,21 +30,45 @@
             android:name=".views.activities.FavoritesActivity"
             android:parentActivityName=".views.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            //This will be used by the go back button in the app bar
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.MainActivity" />
         </activity>
-        <activity android:name=".views.activities.SettingsActivity" />
+        <activity
+            android:name=".views.activities.SettingsActivity"
+            android:parentActivityName=".views.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.activities.NotificationsActivity"
+            android:parentActivityName=".views.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.MainActivity" />
+        </activity>
 
-
-        <!--Notifications-->
+        <!-- NotificationsActivity -->
         <receiver
             android:name=".alarms.RCAlarmBroadcastReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service android:name=".notifications.RCNotificationService" />
+
+        <!--This needs to happen to reset the alarms. When -->
+        <!--the device is turned off all alarms are removed-->
+        <receiver android:name=".alarms.RCAlarmResetBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".alarms.RCAlarmResetService"/>
+
     </application>
 
 </manifest>
