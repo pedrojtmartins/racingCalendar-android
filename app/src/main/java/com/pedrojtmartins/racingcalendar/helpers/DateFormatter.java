@@ -160,17 +160,23 @@ public class DateFormatter {
         if (sDate == null || sDate.isEmpty() || !sDate.contains("-"))
             return null;
 
-        if (!sDate.contains("T")) {
-            sDate += "T00:00:00";
-        }
+        boolean dateOnly = !sDate.contains("T");
+        String sFormat = dateOnly ? defaultDataOnlyFormat : defaultFormat;
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat(defaultFormat);
+            SimpleDateFormat format = new SimpleDateFormat(sFormat);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date date = format.parse(sDate);
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
+
+            if (dateOnly) {
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+            }
+
             return calendar;
         } catch (ParseException e) {
             e.printStackTrace();

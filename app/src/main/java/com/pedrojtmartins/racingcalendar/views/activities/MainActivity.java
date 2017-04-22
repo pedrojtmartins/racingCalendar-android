@@ -272,8 +272,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     //region Alarms
-    public boolean setAlarm(Race race, boolean state) {
-        if (!state) {
+    public boolean updateAlarm(Race race, boolean active) {
+        if (!active) {
             mViewModel.removeNotification(race);
             return true;
         }

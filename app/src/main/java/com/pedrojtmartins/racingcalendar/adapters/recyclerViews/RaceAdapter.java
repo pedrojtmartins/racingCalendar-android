@@ -76,13 +76,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.one:
-                                if (mCallback.setAlarm(race, true)) {
+                                if (mCallback.updateAlarm(race, true)) {
                                     race.setIsAlarmSet(true);
                                 }
                                 break;
 
                             case R.id.two:
-                                if (mCallback.setAlarm(race, false)) {
+                                if (mCallback.updateAlarm(race, false)) {
                                     race.setIsAlarmSet(false);
                                 }
                                 break;
