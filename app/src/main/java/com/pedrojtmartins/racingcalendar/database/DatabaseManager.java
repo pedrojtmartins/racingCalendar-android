@@ -79,16 +79,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //region Columns
 
     private static final String KEY_NOTIFICATIONS_ID = "notif_id";
-    private static final String KEY_NOTIFICATIONS_EVENT_ID = "event_id";
-    private static final String KEY_NOTIFICATIONS_TIME = "time";
-    private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "mins_before";
+    private static final String KEY_NOTIFICATIONS_RACE_ID = "notif_race_id";
+    private static final String KEY_NOTIFICATIONS_SERIES_ID = "notif_series_id";
+    private static final String KEY_NOTIFICATIONS_TIME = "notif_time";
+    private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "notif_mins_before";
 
     //endregion
 
     //region Create Statement
     private static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
             KEY_NOTIFICATIONS_ID + " INTEGER PRIMARY KEY," +
-            KEY_NOTIFICATIONS_EVENT_ID + " INTEGER," +
+            KEY_NOTIFICATIONS_RACE_ID + " INTEGER," +
+            KEY_NOTIFICATIONS_SERIES_ID + " INTEGER," +
             KEY_NOTIFICATIONS_TIME + " TEXT," +
             KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER)";
     //endregion
@@ -161,7 +163,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                         seriesName = "";
                 }
 
-                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName));
+                boolean isAlarmSet = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_RACE_ID)) != 0;
+
+                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName, isAlarmSet));
             } while (cursor.moveToNext());
         }
 
@@ -196,17 +200,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
-    public Race getRace(int id) {
-        String query = "SELECT *" +
-                " FROM " + TABLE_RACES +
-                " WHERE " + KEY_RACE_ID + "=" + id;
-
-        ArrayList<Race> races = queryRaces(query);
-        if (races == null || races.isEmpty())
-            return null;
-
-        return races.get(0);
-    }
+//    public Race getRace(int id) {
+//        String query = "SELECT *" +
+//                " FROM " + TABLE_RACES +
+//                " WHERE " + KEY_RACE_ID + "=" + id;
+//
+//        ArrayList<Race> races = queryRaces(query);
+//        if (races == null || races.isEmpty())
+//            return null;
+//
+//        return races.get(0);
+//    }
 
     /**
      * Retrieves all upcoming races in the database
@@ -216,8 +220,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public ArrayList<Race> getUpcomingRaces(boolean favouritesOnly) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         StringBuilder sBuilder = new StringBuilder();
-        sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME +
+        sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_RACE_ID +
                 " FROM " + TABLE_RACES + " r" +
+                " LEFT OUTER JOIN " + TABLE_NOTIFICATIONS + " n ON r." + KEY_RACE_ID + "=n." + KEY_NOTIFICATIONS_RACE_ID +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " WHERE r." + KEY_RACE_DATE + ">=('").append(today).append("')");
 
@@ -231,8 +236,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public ArrayList<Race> getUpcomingRaces(int seriesId) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = ("SELECT  r.*, s." + KEY_SERIES_NAME +
+        String query = ("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_RACE_ID +
                 " FROM " + TABLE_RACES + " r" +
+                " LEFT OUTER JOIN " + TABLE_NOTIFICATIONS + " n ON r." + KEY_RACE_ID + "=n." + KEY_NOTIFICATIONS_RACE_ID +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " WHERE r." + KEY_RACE_DATE + ">=('" + today + "')" +
                 " AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
@@ -455,11 +461,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_ID));
-                int eventId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_EVENT_ID));
+                int raceId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_RACE_ID));
+                int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_SERIES_ID));
                 String time = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_TIME));
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
 
-                list.add(new RCNotification(id, eventId, time, minutesBefore));
+                String seriesName = "";
+                if (cursor.getColumnCount() > 5)
+                    seriesName = cursor.getString(5);
+
+                list.add(new RCNotification(id, raceId, seriesId, time, minutesBefore, seriesName));
             } while (cursor.moveToNext());
         }
 
@@ -471,7 +482,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return null;
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NOTIFICATIONS_EVENT_ID, notification.eventId);
+        values.put(KEY_NOTIFICATIONS_RACE_ID, notification.raceId);
+        values.put(KEY_NOTIFICATIONS_SERIES_ID, notification.seriesId);
         values.put(KEY_NOTIFICATIONS_TIME, notification.time);
         values.put(KEY_NOTIFICATIONS_MINUTES_BEFORE, notification.minutesBefore);
         return values;
@@ -566,17 +578,31 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of notifications
      */
     public ArrayList<RCNotification> getNotifications() {
-        String query = "SELECT *" +
-                " FROM " + TABLE_NOTIFICATIONS +
+        String query = "SELECT n.*,s." + KEY_SERIES_NAME +
+                " FROM " + TABLE_NOTIFICATIONS + " n " +
+                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON n." + KEY_NOTIFICATIONS_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " ORDER BY " + KEY_NOTIFICATIONS_TIME;
 
         return queryNotifications(query);
 
     }
 
-    public RCNotification getNotification(long id) {
+    public RCNotification getNotificationForEvent(long eventId) {
         String query = "SELECT *" +
                 " FROM " + TABLE_NOTIFICATIONS +
+                " WHERE " + KEY_NOTIFICATIONS_RACE_ID + "=" + eventId;
+
+        ArrayList<RCNotification> notifications = queryNotifications(query);
+        if (notifications == null || notifications.isEmpty())
+            return null;
+
+        return notifications.get(0);
+    }
+
+    public RCNotification getNotification(long id) {
+        String query = "SELECT n.*, s." + KEY_SERIES_NAME +
+                " FROM " + TABLE_NOTIFICATIONS + " n " +
+                " LEFT OUTER JOIN " + TABLE_SERIES + " s ON n." + KEY_NOTIFICATIONS_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " WHERE " + KEY_NOTIFICATIONS_ID + "=" + id;
 
         ArrayList<RCNotification> notifications = queryNotifications(query);
