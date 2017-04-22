@@ -615,6 +615,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return notifications.get(0);
     }
 
+    public int removeNotification(RCNotification notification) {
+        if (notification == null)
+            return -1;
+
+        ArrayList<RCNotification> notifications = new ArrayList<>();
+        notifications.add(notification);
+        return removeNotifications(notifications);
+    }
+
+
     /**
      * Remove notifications from the database
      *

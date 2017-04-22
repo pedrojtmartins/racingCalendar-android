@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/one" 
-        android:title="@string/setAlarm" />
+        android:id="@+id/one"
+        android:orderInCategory="1"
+        android:title="@string/setAlarm"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/two"
+        android:orderInCategory="1"
+        android:title="@string/removeAlarm"
+        app:showAsAction="never" />
 </menu>

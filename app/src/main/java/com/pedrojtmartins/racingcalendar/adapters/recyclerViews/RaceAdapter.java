@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.adapters.recyclerViews;
 
 import android.content.res.Resources;
 import android.databinding.ObservableArrayList;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -75,8 +76,14 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.one:
-                                if (mCallback.setAlarm(race)) {
+                                if (mCallback.setAlarm(race, true)) {
                                     race.setIsAlarmSet(true);
+                                }
+                                break;
+
+                            case R.id.two:
+                                if (mCallback.setAlarm(race, false)) {
+                                    race.setIsAlarmSet(false);
                                 }
                                 break;
 
@@ -85,6 +92,11 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                         return true;
                     }
                 });
+
+                Menu menu = popup.getMenu();
+                menu.findItem(R.id.one).setVisible(!race.getIsAlarmSet());
+                menu.findItem(R.id.two).setVisible(race.getIsAlarmSet());
+
                 popup.show();
             }
         });

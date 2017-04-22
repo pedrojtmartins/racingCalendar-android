@@ -26,12 +26,13 @@
     <string name="notifRace" formatted="false">%s race is staring</string>
     <string name="notifRaceToday" formatted="false">%s race today</string>
 
-    <string name="setAlarm">Set alarm</string>
-    <string name="alarmSet">New alarm set</string>
-    <string name="alarmNotSet">Error setting the alarm</string>
+    <string name="setAlarm">Set notification</string>
+    <string name="alarmSet">New notification set</string>
+    <string name="alarmNotSet">Error setting notification</string>
     <string name="raceToday">Start date today</string>
     <string name="alarmInPast">Start date in the past</string>
 
     <string name="maintab_notifications">Notifications</string>
     <string name="action_notifications">Notifications</string>
+    <string name="removeAlarm">Remove notification</string>
 </resources>

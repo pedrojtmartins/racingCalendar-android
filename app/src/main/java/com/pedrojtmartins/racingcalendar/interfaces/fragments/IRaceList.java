@@ -16,5 +16,5 @@ public interface IRaceList {
 
     boolean undoFragmentTransition();
 
-    boolean setAlarm(Race race);
+    boolean setAlarm(Race race, boolean state);
 }

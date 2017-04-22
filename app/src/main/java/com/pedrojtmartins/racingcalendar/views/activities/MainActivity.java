@@ -272,7 +272,12 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     //region Alarms
-    public boolean setAlarm(Race race) {
+    public boolean setAlarm(Race race, boolean state) {
+        if (!state) {
+            mViewModel.removeNotification(race);
+            return true;
+        }
+
         int valid = RCAlarmManager.isValid(race.getFullDate());
         switch (valid) {
             case -1:

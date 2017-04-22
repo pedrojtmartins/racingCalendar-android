@@ -145,4 +145,11 @@ public class MainViewModel implements IDataUpdater {
 
         return mDbManager.getNotification(id);
     }
+
+    public boolean removeNotification(final Race race) {
+        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
+        if (rcNotification != null)
+            return mDbManager.removeNotification(rcNotification) == 1;
+        return false;
+    }
 }

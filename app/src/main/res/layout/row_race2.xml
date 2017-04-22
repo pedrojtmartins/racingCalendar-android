@@ -115,10 +115,11 @@
                 </LinearLayout>
             </LinearLayout>
 
+                <!--android:background="#10000000"-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#1e000000"
+                android:background="@drawable/gradient"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="3dp"
@@ -126,9 +127,22 @@
                 android:paddingRight="8dp"
                 android:paddingTop="3dp">
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tint="#A0A0A0"
+                    android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"
+                    app:srcCompat="@drawable/alarm_on_black" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="@{data.simplifiedDate}"
                     android:textColor="#333"
                     tools:text="26 Mar" />
@@ -139,6 +153,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="@{data.dayOfWeekShort}"
                     android:textColor="#333"
+                    android:textStyle="bold"
                     tools:text="Sab" />
 
 
@@ -148,22 +163,10 @@
                     android:layout_marginLeft="8dp"
                     android:text="@{data.hour}"
                     android:textColor="#333"
+                    android:textStyle="bold"
                     android:visibility="@{data.hour.length() > 0 ? View.VISIBLE : View.GONE}"
                     tools:text="2:00pm" />
 
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:tint="#A0A0A0"
-                    android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"
-                    app:srcCompat="@drawable/alarm_on_black" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <!--<android.support.v7.widget.AppCompatImageView-->
                 <!--android:layout_width="wrap_content"-->

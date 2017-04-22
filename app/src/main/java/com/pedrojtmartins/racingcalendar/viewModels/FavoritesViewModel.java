@@ -33,4 +33,8 @@ public class FavoritesViewModel {
     public void saveFavorites() {
         mDatabaseManager.setSeriesFavorite(mSeries);
     }
+
+    public boolean somethingToChange() {
+        return true;
+    }
 }

@@ -38,6 +38,7 @@ public class FavoritesActivity extends AppCompatActivity {
         DatabaseManager databaseManager = DatabaseManager.getInstance(this);
         mViewModel = new FavoritesViewModel(databaseManager);
     }
+
     private void initToolBar() {
         setSupportActionBar(mBinding.toolbar);
 
@@ -47,6 +48,7 @@ public class FavoritesActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.maintab_favourites);
         }
     }
+
     private void initRecyclerView() {
         SeriesSelectionAdapter adapter = new SeriesSelectionAdapter(R.layout.row_series_selection, mViewModel.getSeries());
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,6 +61,7 @@ public class FavoritesActivity extends AppCompatActivity {
         inflater.inflate(R.menu.favorites, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -79,22 +82,28 @@ public class FavoritesActivity extends AppCompatActivity {
     public void onBackPressed() {
         discardChanges();
     }
-    private void discardChanges() {
-        AlertDialogHelper.displayYesNoDialog(this,
-                R.string.discardFavorites,
-                R.string.discard,
-                R.string.cancel,
-                new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message message) {
-                        if (message.what == 1) {
-                            goBack(false);
-                        }
 
-                        return true;
-                    }
-                }));
+    private void discardChanges() {
+        if (mViewModel.somethingToChange()) {
+            AlertDialogHelper.displayYesNoDialog(this,
+                    R.string.discardFavorites,
+                    R.string.discard,
+                    R.string.cancel,
+                    new Handler(new Handler.Callback() {
+                        @Override
+                        public boolean handleMessage(Message message) {
+                            if (message.what == 1) {
+                                goBack(false);
+                            }
+
+                            return true;
+                        }
+                    }));
+        } else {
+            goBack(false);
+        }
     }
+
     private void goBack(boolean reloadList) {
         if (reloadList) {
             //This will make the list update
