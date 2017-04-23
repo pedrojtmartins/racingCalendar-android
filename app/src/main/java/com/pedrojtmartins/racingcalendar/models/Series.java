@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
+import com.pedrojtmartins.racingcalendar.BR;
 
 /**
  * Pedro Martins
@@ -13,9 +14,11 @@ import com.google.gson.annotations.SerializedName;
 public class Series extends BaseObservable {
     @SerializedName("i")
     private int mId;
+
     public int getId() {
         return mId;
     }
+
     public void setId(int id) {
         mId = id;
     }
@@ -23,9 +26,11 @@ public class Series extends BaseObservable {
     @SerializedName("n")
     @Bindable
     private String mName;
+
     public String getName() {
         return mName;
     }
+
     public void setName(String name) {
         mName = name;
     }
@@ -33,52 +38,65 @@ public class Series extends BaseObservable {
     @SerializedName("y")
     @Bindable
     private int mYear;
+
     public int getYear() {
         return mYear;
     }
+
     public void setYear(int year) {
         mYear = year;
     }
 
     @SerializedName("f")
     @Bindable
-    private boolean mIsFavorite;
+    private boolean mFavorite;
+
     public boolean isFavorite() {
-        return mIsFavorite;
+        return mFavorite;
     }
+
     public void setFavorite(boolean favorite) {
-        mIsFavorite = favorite;
+        mFavorite = favorite;
+        notifyPropertyChanged(BR.favorite);
     }
 
     @Bindable
     private int mCurrentRace;
+
     public int getCurrentRace() {
         return mCurrentRace;
     }
+
     public int getNextRace() {
         return mCurrentRace + 1;
     }
+
     public String getNextRaceString() {
         return "#" + getNextRace();
     }
+
     public void setCurrentRace(int currentRace) {
         mCurrentRace = currentRace;
     }
 
     @Bindable
     private int mTotalRaces;
+
     public int getTotalRaces() {
         return mTotalRaces;
     }
+
     public String getTotalRacesString() {
         return getTotalRaces() + "";
     }
+
     public void setTotalRaces(int totalRaces) {
         mTotalRaces = totalRaces;
     }
 
     @Bindable
     private int percentageCompleted = -1;
+
     public int getPercentageCompleted() {
         if (percentageCompleted == -1) {
             percentageCompleted = 0;
@@ -93,7 +111,7 @@ public class Series extends BaseObservable {
         mId = id;
         mName = name;
         mYear = year;
-        mIsFavorite = isFavorite;
+        mFavorite = isFavorite;
         mTotalRaces = totalRaces;
         mCurrentRace = currRace;
     }

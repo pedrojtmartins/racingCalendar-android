@@ -19,9 +19,25 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/notification_none_set"
+                style="@style/SomethingMissing"
+                android:text="@string/noNotificationSet" />
+
+            <TextView
+                style="@style/SomethingMissingFix"
+                android:layout_below="@id/notification_none_set"
+                android:text="@string/noNotificationSetFix" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
     </LinearLayout>
 </layout>

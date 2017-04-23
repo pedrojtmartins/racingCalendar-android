@@ -7,7 +7,8 @@ import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 /**
- * Created by pedro on 17/04/2017.
+ * Pedro Martins
+ * 17/04/2017
  */
 
 public class RCNotification extends BaseObservable {
@@ -31,6 +32,7 @@ public class RCNotification extends BaseObservable {
     public boolean isToDelete() {
         return mToDelete;
     }
+
     public void setToDelete(boolean mToDelete) {
         this.mToDelete = mToDelete;
         notifyPropertyChanged(BR.toDelete);

@@ -95,6 +95,10 @@ public class MainViewModel implements IDataUpdater {
         ArrayList<Race> raceList = mDbManager.getUpcomingRaces(false);
         if (raceList != null && raceList.size() > 0)
             mAllRaces.addAll(raceList);
+
+        if (mAllRaces == null || mAllRaces.isEmpty() || mSeriesList == null || mSeriesList.isEmpty()) {
+            mSharedPreferencesManager.addDataVersion(-1);
+        }
     }
 
     private void initDataUpdate() {

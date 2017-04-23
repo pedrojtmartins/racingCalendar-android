@@ -40,8 +40,6 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
     }
 
     private void updateStatus(RCNotification notif, boolean res) {
-        notif.setToDelete( res);
+        notif.setToDelete(res);
     }
-
-
 }

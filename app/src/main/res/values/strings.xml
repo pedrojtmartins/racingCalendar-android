@@ -35,4 +35,9 @@
     <string name="maintab_notifications">Notifications</string>
     <string name="action_notifications">Notifications</string>
     <string name="removeAlarm">Remove notification</string>
+
+    <string name="noNotificationSet">No notification set</string>
+    <string name="noNotificationSetFix">To set your first notification select \"Set notification\" from the \"More options\" menu inside each race.</string>
+    <string name="noFavouriteSet">No favourite races set</string>
+    <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
 </resources>

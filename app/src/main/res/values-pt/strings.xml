@@ -34,4 +34,10 @@
     <string name="maintab_notifications">Notificações</string>
     <string name="action_notifications">Notificações</string>
     <string name="removeAlarm">Remove notification</string>
+
+    <string name="noNotificationSet">Sem notificações definidas</string>
+    <string name="noNotificationSetFix">Para definir a primeira notificação selecione \"Definir notificações\" no menu de \"Mais opções\" que se encontra em todas as corridas.</string>
+    <string name="noFavouriteSet">No favourite race set</string>
+    <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
+
 </resources>

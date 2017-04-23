@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data></data>
 
@@ -19,11 +19,26 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/favourite_none_set"-->
+        <!--style="@style/SomethingMissing"-->
+        <!--android:text="@string/noFavouriteSet" />-->
+
+        <!--<TextView-->
+        <!--style="@style/SomethingMissingFix"-->
+        <!--android:layout_below="@id/favourite_none_set"-->
+        <!--android:text="@string/noFavouriteSetFix" />-->
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"/>
+            android:layout_height="match_parent" />
+
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 </layout>

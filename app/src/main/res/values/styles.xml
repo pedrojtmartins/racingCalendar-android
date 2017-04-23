@@ -20,6 +20,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="MyActionBar.MenuTextStyle" parent="style/TextAppearance.AppCompat">
@@ -76,5 +77,24 @@
         <item name="android:lines">1</item>
         <item name="android:textColor">#333</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--SomethingMissing-->
+    <style name="SomethingMissing">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SomethingMissingFix">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
