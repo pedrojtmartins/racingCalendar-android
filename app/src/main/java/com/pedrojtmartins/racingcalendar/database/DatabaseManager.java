@@ -27,7 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     //endregion
 
     //region Tables
