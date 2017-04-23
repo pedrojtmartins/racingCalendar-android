@@ -212,6 +212,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 startActivityForResult(new Intent(this, NotificationsActivity.class), 1);
                 break;
 
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
+
 //            case R.id.action_settings:
 //                startActivity(new Intent(this, SettingsActivity.class));
 //                break;

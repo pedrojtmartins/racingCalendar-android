@@ -40,4 +40,9 @@
     <string name="noNotificationSetFix">To set your first notification select \"Set notification\" from the \"More options\" menu inside each race.</string>
     <string name="noFavouriteSet">No favourite races set</string>
     <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
+
+    <string name="maintab_about">About</string>
+    <string name="about">Pedro J T Martins\nracingcalendar.pm@gmail.com</string>
+    <string name="action_about">About</string>
+    <string name="dataVersion">Database</string>
 </resources>

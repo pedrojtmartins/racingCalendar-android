@@ -40,4 +40,10 @@
     <string name="noFavouriteSet">No favourite race set</string>
     <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
 
+    <string name="maintab_about">Acerca</string>
+    <string name="about">Pedro J T Martins\nracingcalendar.pm@gmail.com</string>
+    <string name="action_about">Acerca</string>
+    <string name="dataVersion">Base de dados</string>
+
+
 </resources>
