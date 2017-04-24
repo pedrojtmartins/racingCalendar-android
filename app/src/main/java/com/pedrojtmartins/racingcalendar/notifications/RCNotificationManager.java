@@ -23,6 +23,7 @@ public class RCNotificationManager {
                                  final NotificationCompat.Builder builder,
                                  final android.app.NotificationManager notificationManager,
                                  final String title,
+                                 final String msg,
                                  final int id,
                                  final Bitmap icon) {
         if (builder == null || pendingIntent == null || notificationManager == null || id <= 0 || icon == null)
@@ -33,8 +34,9 @@ public class RCNotificationManager {
                 .setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE | DEFAULT_LIGHTS)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
+                .setContentText(msg)
                 .setLargeIcon(icon)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher_notification)
                 .build();
 
         notificationManager.notify(id, notification);
@@ -44,22 +46,19 @@ public class RCNotificationManager {
 
 
     static class NotificationManagerHelper {
-        static String getNotificationTitle(Resources resources, RCNotification notification) {
-            if (resources == null || notification == null ||
-                    notification.seriesName == null || notification.seriesName.isEmpty())
+        static String getNotificationMessage(Resources resources, RCNotification notification) {
+            if (resources == null || notification == null)
                 return "";
 
             String title;
             if (notification.time.contains("T")) {
                 if (notification.minutesBefore > 0) {
-                    title = String.format(
-                            resources.getString(R.string.notifRaceBefore),
-                            notification.seriesName, notification.minutesBefore);
+                    title = String.format(resources.getString(R.string.notifRaceBefore), notification.minutesBefore);
                 } else {
-                    title = String.format(resources.getString(R.string.notifRace), notification.seriesName);
+                    title = resources.getString(R.string.notifRace);
                 }
             } else {
-                title = String.format(resources.getString(R.string.notifRaceToday), notification.seriesName);
+                title = resources.getString(R.string.notifRaceToday);
             }
             return title;
         }

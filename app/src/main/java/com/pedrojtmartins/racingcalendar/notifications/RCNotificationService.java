@@ -53,7 +53,8 @@ public class RCNotificationService extends Service {
 
         //Determine needed parameters
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        String title = RCNotificationManager.NotificationManagerHelper.getNotificationTitle(
+        String title = rcNotification.seriesName;
+        String msg = RCNotificationManager.NotificationManagerHelper.getNotificationMessage(
                 getResources(),
                 rcNotification);
 
@@ -61,7 +62,7 @@ public class RCNotificationService extends Service {
         NotificationManager notificationManager
                 = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        RCNotificationManager.notify(pendingIntent, builder, notificationManager, title, rcNotification.id, icon);
+        RCNotificationManager.notify(pendingIntent, builder, notificationManager, title, msg, rcNotification.id, icon);
 
         return START_NOT_STICKY;
     }
