@@ -16,13 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
-import com.pedrojtmartins.racingcalendar.alarms.RCAlarmBroadcastReceiver;
+import com.pedrojtmartins.racingcalendar.admob.AdmobHelper;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
@@ -44,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     private ActivityMainBinding mBinding;
     private MainViewModel mViewModel;
     private MainPagerAdapter mPageAdapter;
+    private AdmobHelper mAdmobHelper;
 
     //region Initialization
     @Override
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         SettingsHelper.detectSystemSettings(this);
 
-        initAdMob();
+        showAdMobBanner();
         initViewModel();
         initToolBar();
         initViewPager();
@@ -65,35 +62,25 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     protected void onStart() {
         super.onStart();
         mViewModel.recheckUpdates();
+
+//        new ViewDialog().showDialogNotificationsMinutesBefore(this);
+
     }
 
-    private void initAdMob() {
-        if (!Settings.PRO_VERSION) {
-            MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                    .addTestDevice(Settings.TEST_DEVICE_ID)
-                    .build();
-
-            mBinding.adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    mBinding.adView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    super.onAdFailedToLoad(i);
-                    // TODO: 20/04/2017 set network state listener
-
-                }
-            });
-            mBinding.adView.loadAd(adRequest);
-        } else {
-            mBinding.adView.setVisibility(View.GONE);
-        }
+    private void showAdMobBanner() {
+        mAdmobHelper = AdmobHelper.getInstance();
+        mAdmobHelper.showMainBanner(getApplicationContext(), getResources(), mBinding.adView);
     }
+
+    private void showAdMobInterstitial() {
+        SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+        int count = spManager.getNotificationsSetCount();
+        spManager.addNotificationsSet();
+
+        mAdmobHelper = AdmobHelper.getInstance();
+        mAdmobHelper.showNotificationInterstitial(getApplicationContext(), getResources(), count);
+    }
+
 
     private void initViewModel() {
         DatabaseManager dbManager = DatabaseManager.getInstance(this);
@@ -141,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         mBinding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
             }
 
             @Override
@@ -278,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //region Alarms
     public boolean updateAlarm(Race race, boolean active) {
         if (!active) {
-            mViewModel.removeNotification(race);
+            if (mViewModel.removeNotification(race)) {
+                race.setIsAlarmSet(false);
+            }
             return true;
         }
 
@@ -302,7 +290,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         boolean result = RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
         if (result) {
+            race.setIsAlarmSet(true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
+            showAdMobInterstitial();
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }

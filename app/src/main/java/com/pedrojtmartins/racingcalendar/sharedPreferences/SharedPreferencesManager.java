@@ -13,6 +13,7 @@ public class SharedPreferencesManager {
 
     private final String SHARED_PREFS = "sharedPrefs";
     private final String DATA_VERSION = "dataVersion";
+    private final String NOTIFICATIONS_SET = "notifsSet";
 
     public SharedPreferencesManager(Context context) {
         mContext = context;
@@ -22,10 +23,25 @@ public class SharedPreferencesManager {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         return sp.getInt(DATA_VERSION, 0);
     }
+
     public void addDataVersion(int version) {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt(DATA_VERSION, version);
+        editor.apply();
+    }
+
+    public int getNotificationsSetCount() {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        return sp.getInt(NOTIFICATIONS_SET, 0);
+    }
+
+    public void addNotificationsSet() {
+        int count = getNotificationsSetCount() + 1;
+
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(NOTIFICATIONS_SET, count);
         editor.apply();
     }
 }
