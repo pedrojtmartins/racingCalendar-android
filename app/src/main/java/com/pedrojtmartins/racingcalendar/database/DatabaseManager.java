@@ -27,7 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     //endregion
 
     //region Tables
@@ -121,11 +121,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SERIES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATIONS);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SERIES);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATIONS);
 
-        onCreate(db);
+//        onCreate(db);
+
+        if (DATABASE_VERSION == 2) {
+            db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+        }
     }
 
     private void close(SQLiteDatabase db, Cursor cursor) {
@@ -581,9 +585,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of notifications
      */
     public ArrayList<RCNotification> getNotifications() {
+        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         String query = "SELECT n.*,s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_NOTIFICATIONS + " n " +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON n." + KEY_NOTIFICATIONS_SERIES_ID + "=s." + KEY_SERIES_ID +
+                " WHERE n." + KEY_NOTIFICATIONS_TIME + ">=('" + today + "')" +
                 " ORDER BY " + KEY_NOTIFICATIONS_TIME;
 
         return queryNotifications(query);
