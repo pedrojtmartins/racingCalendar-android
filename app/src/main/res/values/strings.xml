@@ -6,7 +6,7 @@
     <string name="maintab_all">All</string>
     <string name="races">Races</string>
     <string name="dataUpdated">Data was updated</string>
-    <string name="save_avorites">save_avorites</string>
+    <string name="save_avorites">Save favourites</string>
     <string name="discardFavorites">Discard changes?</string>
     <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
@@ -21,28 +21,36 @@
     <string name="next">Next race:</string>
     <string name="of">of</string>
     <string name="seriesIsOver">Completed</string>
-
-    <string name="notifRaceBefore" formatted="false">%s race is staring in %d minutes</string>
-    <string name="notifRace" formatted="false">%s race is staring</string>
-    <string name="notifRaceToday" formatted="false">%s race today</string>
+    <string name="notifRaceBefore" formatted="false">Green flag in %d minutes</string>
+    <string name="notifRace" formatted="false">Green flag</string>
+    <string name="notifRaceToday" formatted="false">Race is today</string>
 
     <string name="setAlarm">Set notification</string>
-    <string name="alarmSet">New notification set</string>
+    <string name="alarmSet">Notification set</string>
     <string name="alarmNotSet">Error setting notification</string>
-    <string name="raceToday">Start date today</string>
-    <string name="alarmInPast">Start date in the past</string>
+    <string name="raceToday">Start date is today</string>
+    <string name="alarmInPast">Start date is in the past</string>
 
     <string name="maintab_notifications">Notifications</string>
     <string name="action_notifications">Notifications</string>
     <string name="removeAlarm">Remove notification</string>
 
-    <string name="noNotificationSet">No notification set</string>
+    <string name="noNotificationSet">You have no notification</string>
     <string name="noNotificationSetFix">To set your first notification select \"Set notification\" from the \"More options\" menu inside each race.</string>
-    <string name="noFavouriteSet">No favourite races set</string>
-    <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
+    <!--<string name="noFavouriteSet">You have no favourite series</string>-->
+    <!--<string name="noFavouriteSetFix">To set your first favourite series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and confirm the selection.</string>-->
 
     <string name="maintab_about">About</string>
-    <string name="about">Pedro J T Martins\nracingcalendar.pm@gmail.com</string>
     <string name="action_about">About</string>
     <string name="dataVersion">Database</string>
+    <string name="devName">Pedro J T Martins</string>
+    <string name="devEmail">racingcalendar.pm@gmail.com</string>
+
+    <string name="maintab_settings">Settings</string>
+    <string name="minutesBefore">min before green flag</string>
+    <string name="minutesShort">min</string>
+    <string name="notification_enable_defaults">Do not ask when setting</string>
+    <string name="remember">Remember</string>
+    <string name="notify">Notify</string>
+    <string name="ok">Ok</string>
 </resources>

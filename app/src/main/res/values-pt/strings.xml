@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Racing Calendar</string>
+
     <string name="action_settings">Definições</string>
     <string name="cancel">Cancelar</string>
     <string name="dataUpdated">Dados atualizados</string>
@@ -18,12 +19,12 @@
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
     <string name="firstTimeDataDownload">A descarregar dados…</string>
-    <string name="of">of</string>
+    <string name="of">de</string>
     <string name="next">Próxima corrida:</string>
     <string name="seriesIsOver">Completa</string>
-    <string name="notifRaceBefore" formatted="false">A corrida de %s vai começar dentro de %d minutos</string>
-    <string name="notifRace" formatted="false">A corrida de %s está a começar</string>
-    <string name="notifRaceToday" formatted="false">Corrida de %s hoje</string>
+    <string name="notifRaceBefore" formatted="false">A corrida vai começar dentro de %d minutos</string>
+    <string name="notifRace" formatted="false">A corrida está a começar</string>
+    <string name="notifRaceToday" formatted="false">Corrida hoje</string>
 
     <string name="setAlarm">Definir notificações</string>
     <string name="alarmSet">Nova notificação definida</string>
@@ -33,17 +34,22 @@
 
     <string name="maintab_notifications">Notificações</string>
     <string name="action_notifications">Notificações</string>
-    <string name="removeAlarm">Remove notification</string>
+    <string name="removeAlarm">Remover notificação</string>
 
     <string name="noNotificationSet">Sem notificações definidas</string>
     <string name="noNotificationSetFix">Para definir a primeira notificação selecione \"Definir notificações\" no menu de \"Mais opções\" que se encontra em todas as corridas.</string>
-    <string name="noFavouriteSet">No favourite race set</string>
-    <string name="noFavouriteSetFix">To set your first favourice series select the tab \"Favourites\" and touch on the bottom right button. Inside this menu select all your favourite races and comfirm the selection.</string>
+    <!--<string name="noFavouriteSet">Sem favoritos definidos</string>-->
+    <!--<string name="noFavouriteSetFix">Para definir o primeiro favorito toque no botão no canto inferior direito. Dentro do menu selecione todas as corridas favoritas e confirme a escolha.</string>-->
 
     <string name="maintab_about">Acerca</string>
-    <string name="about">Pedro J T Martins\nracingcalendar.pm@gmail.com</string>
     <string name="action_about">Acerca</string>
     <string name="dataVersion">Base de dados</string>
 
-
+    <string name="maintab_settings">Configurações</string>
+    <string name="notify">Notificar</string>
+    <string name="minutesBefore">min antes da partida</string>
+    <string name="minutesShort">min</string>
+    <string name="notification_enable_defaults">Não perguntar ao definir</string>
+    <string name="remember">Relembrar</string>
+    <string name="ok">Ok</string>
 </resources>
