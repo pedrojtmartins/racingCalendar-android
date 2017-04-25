@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.models.Series"/>
+            type="com.pedrojtmartins.racingcalendar.models.Series" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
-    <LinearLayout
-        style="@style/SeriesRowParent">
+    <LinearLayout style="@style/SeriesRowParent">
 
-        <LinearLayout
-            style="@style/SeriesRow">
+        <LinearLayout style="@style/SeriesRow">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -28,7 +26,7 @@
                 <TextView
                     style="@style/SeriesTitle"
                     android:text="@{data.name}"
-                    tools:text="F1 - Formula 1"/>
+                    tools:text="F1 - Formula 1" />
 
                 <TextView
                     android:id="@+id/seriesCompleted"
@@ -36,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/seriesIsOver"
                     android:textColor="#333"
-                    android:visibility="@{data.percentageCompleted >= 100 ? View.VISIBLE : View.GONE}"/>
+                    android:visibility="@{data.percentageCompleted >= 100 ? View.VISIBLE : View.GONE}" />
 
                 <LinearLayout
                     android:id="@+id/seriesState"
@@ -50,27 +48,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:text="@string/next"
-                        android:textColor="#333"/>
+                        android:textColor="#333" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:text="@{data.nextRaceString}"
-                        android:textColor="#333"/>
+                        android:textColor="#333" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:text="@string/of"
-                        android:textColor="#333"/>
+                        android:textColor="#333" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{data.totalRacesString}"
-                        android:textColor="#333"/>
+                        android:textColor="#333" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -81,7 +79,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:tint="@color/arrowsTint"
-                app:srcCompat="@drawable/arrow_black"/>
+                app:srcCompat="@drawable/arrow_black" />
 
 
         </LinearLayout>
@@ -94,6 +92,6 @@
             android:layout_height="5dp"
             android:indeterminate="false"
             android:progress="@{data.percentageCompleted}"
-            android:progressDrawable="@drawable/series_progressbar"/>
+            android:progressDrawable="@drawable/series_progressbar" />
     </LinearLayout>
 </layout>
