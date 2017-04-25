@@ -3,6 +3,8 @@ package com.pedrojtmartins.racingcalendar.sharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
+
 /**
  * Pedro Martins
  * 01/02/2017
@@ -15,6 +17,7 @@ public class SharedPreferencesManager {
     private final String DATA_VERSION = "dataVersion";
     private final String NOTIFICATIONS_SET = "notifsSet";
     private final String SETTINGS_NOTIFICATIONS = "notifSettings";
+    private final String RELEASE_NOTES1 = "notes1";
 
     public SharedPreferencesManager(Context context) {
         mContext = context;
@@ -46,15 +49,27 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public String getNotificationsSettings() {
+    public RCSettings getNotificationsSettings() {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        return sp.getString(SETTINGS_NOTIFICATIONS, "");
+        return new RCSettings(sp.getString(SETTINGS_NOTIFICATIONS, ""));
     }
 
     public void addNotificationsSettings(String settings) {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SETTINGS_NOTIFICATIONS, settings);
+        editor.apply();
+    }
+
+    public boolean getReleaseNotes1Shown() {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        return sp.getBoolean(RELEASE_NOTES1, false);
+    }
+
+    public void setReleaseNotes1Seen() {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(RELEASE_NOTES1, true);
         editor.apply();
     }
 }

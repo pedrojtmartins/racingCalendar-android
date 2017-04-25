@@ -14,9 +14,10 @@ import android.view.MenuItem;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.NotificationsAdapter;
+import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityNotificationsBinding;
-import com.pedrojtmartins.racingcalendar.helpers.AlertDialogHelper;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.INotificationsCallback;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.viewModels.NotificationsViewModel;
@@ -34,6 +35,9 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
         intiViewModel();
         initToolBar();
         initRecyclerView();
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTIVITY_NOTIFICATIONS);
+
     }
 
     private void discardChanges() {
@@ -88,7 +92,9 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_all_done:
-                goBack(mViewModel.saveChanges() > 0);
+                int total = mViewModel.saveChanges();
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_REMOVE_NOTIFICATION, total);
+                goBack(total > 0);
                 break;
 
             default:

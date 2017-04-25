@@ -14,9 +14,11 @@ public class FavoritesViewModel {
     private final DatabaseManager mDatabaseManager;
 
     private ObservableArrayList<Series> mSeries;
+
     public ObservableArrayList<Series> getSeries() {
         return mSeries;
     }
+
     public FavoritesViewModel(DatabaseManager databaseManager) {
         mDatabaseManager = databaseManager;
 

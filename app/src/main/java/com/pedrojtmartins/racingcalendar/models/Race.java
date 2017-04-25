@@ -144,4 +144,20 @@ public class Race extends BaseObservable {
         mSeriesName = seriesName;
         mIsAlarmSet = isAlarmSet;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Race race = (Race) o;
+
+        return mId == race.mId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return mId;
+    }
 }

@@ -18,8 +18,7 @@ public class SettingsViewModel {
     }
 
     private void loadSettings() {
-        String settings = mSharedPreferencesManager.getNotificationsSettings();
-        mSettings = new RCSettings(settings);
+        mSettings = mSharedPreferencesManager.getNotificationsSettings();
     }
 
     public void saveChanges() {

@@ -147,13 +147,28 @@ public class MainViewModel implements IDataUpdater {
             return null;
         }
 
+        propagateRaceAlarmUpdate(race, true);
         return mDbManager.getNotification(id);
     }
 
     public boolean removeNotification(final Race race) {
         RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
-        if (rcNotification != null)
-            return mDbManager.removeNotification(rcNotification) == 1;
+        if (rcNotification != null && mDbManager.removeNotification(rcNotification) == 1) {
+            propagateRaceAlarmUpdate(race, false);
+            return true;
+        }
         return false;
+    }
+
+    private void propagateRaceAlarmUpdate(Race race, boolean newState) {
+        // TODO: 23/04/2017 bad solution. probably there should be only 1 list?
+        int iAll = mAllRaces.indexOf(race);
+        if (iAll != -1) {
+            mAllRaces.get(iAll).setIsAlarmSet(newState);
+        }
+        int iFav = mFavouriteRaces.indexOf(race);
+        if (iFav != -1) {
+            mFavouriteRaces.get(iFav).setIsAlarmSet(newState);
+        }
     }
 }

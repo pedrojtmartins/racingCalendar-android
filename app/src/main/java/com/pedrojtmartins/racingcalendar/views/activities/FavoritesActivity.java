@@ -14,9 +14,10 @@ import android.view.MenuItem;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.SeriesSelectionAdapter;
+import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityFavoritesBinding;
-import com.pedrojtmartins.racingcalendar.helpers.AlertDialogHelper;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.viewModels.FavoritesViewModel;
 
 public class FavoritesActivity extends AppCompatActivity {
@@ -32,6 +33,9 @@ public class FavoritesActivity extends AppCompatActivity {
         initViewModel();
         initToolBar();
         initRecyclerView();
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTIVITY_FAVOURITES);
+
     }
 
     private void initViewModel() {

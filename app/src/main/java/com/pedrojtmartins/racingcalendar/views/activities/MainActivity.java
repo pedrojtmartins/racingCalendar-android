@@ -8,6 +8,8 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -20,16 +22,20 @@ import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.admob.AdmobHelper;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
+import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
+import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
@@ -56,7 +62,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         initViewPager();
 
         checkDatabaseDataCount();
+
+//        showReleaseNotes();
     }
+
+//    private void showReleaseNotes() {
+//        SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+//        boolean notesShown = spManager.getReleaseNotes1Shown();
+//        if (!notesShown) {
+//            AlertDialogHelper.displayOkDialog(this, R.string.release_notes_1);
+//            spManager.setReleaseNotes1Seen();
+//        }
+//    }
 
     @Override
     protected void onStart() {
@@ -202,9 +219,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
 
-//            case R.id.action_settings:
-//                startActivity(new Intent(this, SettingsActivity.class));
-//                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -241,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     public ObservableArrayList<Race> getRacesListBySeries(int seriesId) {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES);
         return mViewModel.getRacesList(seriesId);
     }
 
@@ -262,10 +280,11 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     //region Alarms
-    public boolean updateAlarm(Race race, boolean active) {
+    public boolean updateAlarm(final Race race, boolean active) {
         if (!active) {
             if (mViewModel.removeNotification(race)) {
                 race.setIsAlarmSet(false);
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_REMOVE_NOTIFICATION);
             }
             return true;
         }
@@ -281,9 +300,53 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 return false;
         }
 
+
+        final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+        final RCSettings rcSettings = spManager.getNotificationsSettings();
+        if (rcSettings.notificationsRemember) {
+            // Settings are stored. Use them
+            updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()));
+            return true;
+        } else {
+            // Settings are not stored. Let's ask the user what to do.
+            AlertDialogHelper.displayNewNotificationDialog(
+                    this,
+                    getLayoutInflater(),
+                    rcSettings.getNotificationMinutesBefore(),
+                    new Handler(new Handler.Callback() {
+                        @Override
+                        public boolean handleMessage(Message msg) {
+                            int minutesBefore = ParsingHelper.stringToInt(msg.getData().getString("timeBefore", "0"));
+
+                            if (msg.what == 2) {
+                                // User wants to remember the settings. Update the settings we have already
+                                rcSettings.notificationsRemember = true;
+                                rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+                                spManager.addNotificationsSettings(rcSettings.toString());
+                            } else {
+                                // Keep the minutes selected but just suggest next time
+                                rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+                                spManager.addNotificationsSettings(rcSettings.toString());
+                            }
+
+                            updateAlarm(race, minutesBefore);
+                            return true;
+                        }
+                    }));
+        }
+
+        return true;
+    }
+
+    //endregion
+
+    private void updateAlarm(Race race, int timeBefore) {
         RCNotification rcNotification = mViewModel.addNotification(race, 0);
-        if (rcNotification == null)
-            return false;
+        if (rcNotification == null) {
+            return;
+        }
+
+        rcNotification.minutesBefore = timeBefore;
 
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
@@ -292,14 +355,12 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (result) {
             race.setIsAlarmSet(true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
             showAdMobInterstitial();
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
-
-        return result;
     }
-    //endregion
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

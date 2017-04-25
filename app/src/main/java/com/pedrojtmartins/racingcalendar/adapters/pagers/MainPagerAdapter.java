@@ -118,6 +118,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
         return false;
     }
+
     public void smoothScrollToTop(int tab) {
         if (tab < 0 || tab > mFragments.length)
             return;

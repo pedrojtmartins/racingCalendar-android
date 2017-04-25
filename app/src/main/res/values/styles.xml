@@ -12,6 +12,10 @@
         <item name="android:itemTextAppearance">@style/MyActionBar.MenuTextStyle</item>
         <!--To change the background of options menu-->
         <item name="android:itemBackground">#fafafa</item>
+
+        <item name="popupMenuStyle">@style/Widget.AppCompat.PopupMenu</item>
+        <item name="editTextStyle">@style/EditTextDefault</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -97,4 +101,34 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="SCBSwitch">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/primary_dark</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/tintDisabled</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/tintDisabled</item>
+    </style>
+
+    <style name="EditTextDefault" parent="android:Widget.Holo.Light.EditText">
+        <item name="android:textColor">@color/primary_text</item>
+        <!--<item name="colorAccent">@color/primary_text</item>-->
+        <!--<item name="colorControlNormal">@color/primary_text</item>-->
+        <!--<item name="colorPrimary">@color/primary_text</item>-->
+        <!--<item name="colorPrimaryDark">@color/primary_text</item>-->
+
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">#000</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <!-- Used for the background -->
+        <item name="android:background">#fafafa</item>
+    </style>
+
 </resources>

@@ -35,20 +35,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:text="@{data.seriesName}"
-                    android:textColor="#000" />
+                    android:textColor="@{data.toDelete ? @color/tintDisabled : @color/primary_text}" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="@{data.dateTime}"
-                    android:textColor="#000" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.dateTime}"
+                        android:textColor="@{data.toDelete ? @color/tintDisabled : @color/primary_text}" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/notification_imv"
                 android:tint="@{data.toDelete ? @color/tintDisabled : @color/tintEnabled}"
                 app:srcCompat="@drawable/alarm_on_black" />
 

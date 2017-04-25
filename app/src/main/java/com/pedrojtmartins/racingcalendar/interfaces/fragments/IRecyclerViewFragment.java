@@ -5,6 +5,6 @@ package com.pedrojtmartins.racingcalendar.interfaces.fragments;
  * 25/03/2017
  */
 
-public  interface IRecyclerViewFragment {
+public interface IRecyclerViewFragment {
     void smoothScrollToTop();
 }

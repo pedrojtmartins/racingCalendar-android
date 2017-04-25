@@ -28,18 +28,22 @@ abstract class ObservableAdapter<T> extends RecyclerView.Adapter<ObservableAdapt
             public void onChanged(ObservableList<T> ts) {
                 notifyDataSetChanged();
             }
+
             @Override
             public void onItemRangeChanged(ObservableList<T> ts, int i, int i1) {
                 notifyDataSetChanged();
             }
+
             @Override
             public void onItemRangeInserted(ObservableList<T> ts, int i, int i1) {
                 notifyDataSetChanged();
             }
+
             @Override
             public void onItemRangeMoved(ObservableList<T> ts, int i, int i1, int i2) {
                 notifyDataSetChanged();
             }
+
             @Override
             public void onItemRangeRemoved(ObservableList<T> ts, int i, int i1) {
                 notifyDataSetChanged();
@@ -64,6 +68,7 @@ abstract class ObservableAdapter<T> extends RecyclerView.Adapter<ObservableAdapt
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ViewDataBinding mDataBinding;
+
         private ViewHolder(ViewDataBinding dataBinding) {
             super(dataBinding.getRoot());
             mDataBinding = dataBinding;

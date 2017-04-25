@@ -10,10 +10,21 @@ import android.databinding.Bindable;
 
 public class RCSettings extends BaseObservable {
     @Bindable
-    public boolean notifDefaults;
+    public boolean notificationsRemember;
 
     @Bindable
-    public String notifMinutesBefore;
+    private String notifMinutesBefore;
+
+    public String getNotificationMinutesBefore() {
+        return notifMinutesBefore;
+    }
+
+    public void setNotificationMinutesBefore(String notificationMinutesBefore) {
+        if (notificationMinutesBefore.isEmpty())
+            notificationMinutesBefore = "0";
+
+        this.notifMinutesBefore = notificationMinutesBefore;
+    }
 
     public RCSettings(String serialized) {
         setDefaults();
@@ -21,7 +32,7 @@ public class RCSettings extends BaseObservable {
         if (serialized != null && !serialized.isEmpty()) {
             String[] aSettings = serialized.split(";");
             if (aSettings.length > 0)
-                notifDefaults = aSettings[0].equals("1");
+                notificationsRemember = aSettings[0].equals("1");
 
             if (aSettings.length > 1)
                 notifMinutesBefore = aSettings[1];
@@ -29,12 +40,12 @@ public class RCSettings extends BaseObservable {
     }
 
     private void setDefaults() {
-        notifDefaults = false;
+        notificationsRemember = false;
         notifMinutesBefore = "0";
     }
 
     @Override
     public String toString() {
-        return (notifDefaults ? "1" : "0") + ";" + notifMinutesBefore;
+        return (notificationsRemember ? "1" : "0") + ";" + notifMinutesBefore;
     }
 }
