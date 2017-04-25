@@ -70,12 +70,25 @@
                     android:gravity="center" />
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
+                android:clickable="true"
                 android:gravity="center"
-                android:text="@string/about" />
+                android:onClick="onClick_sendEmail"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/devName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/devEmail" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

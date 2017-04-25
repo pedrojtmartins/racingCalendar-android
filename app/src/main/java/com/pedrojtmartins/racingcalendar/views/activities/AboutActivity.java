@@ -5,10 +5,14 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityAboutBinding;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
+import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
 public class AboutActivity extends AppCompatActivity {
@@ -25,6 +29,8 @@ public class AboutActivity extends AppCompatActivity {
         int dataVersion = new SharedPreferencesManager(this).getDataVersion();
         mBinding.aboutVersion.setText("v" + BuildConfig.VERSION_NAME);
         mBinding.aboutDataVersion.setText("v" + dataVersion);
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTIVITY_ABOUT);
     }
 
     private void initToolBar() {
@@ -36,4 +42,19 @@ public class AboutActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.maintab_about);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                onBackPressed();
+        }
+
+        return true;
+    }
+
+    public void onClick_sendEmail(View v) {
+        IntentHelper.composeEmail(this, new String[]{getString(R.string.devEmail)}, "");
+    }
+
 }
