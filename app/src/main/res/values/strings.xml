@@ -48,6 +48,7 @@
 
     <string name="maintab_settings">Settings</string>
     <string name="minutesBefore">min before green flag</string>
+    <string name="notifyBefore">Notify before green flag</string>
     <string name="minutesShort">min</string>
     <string name="notification_enable_defaults">Do not ask when setting</string>
     <string name="remember">Remember</string>

@@ -115,7 +115,8 @@
 
     <style name="EditTextDefault" parent="android:Widget.Holo.Light.EditText">
         <item name="android:textColor">@color/primary_text</item>
-        <!--<item name="colorAccent">@color/primary_text</item>-->
+        <item name="android:background">@drawable/custom_edit_text_background</item>
+        <!--<item name="back">@color/primary_text</item>-->
         <!--<item name="colorControlNormal">@color/primary_text</item>-->
         <!--<item name="colorPrimary">@color/primary_text</item>-->
         <!--<item name="colorPrimaryDark">@color/primary_text</item>-->
