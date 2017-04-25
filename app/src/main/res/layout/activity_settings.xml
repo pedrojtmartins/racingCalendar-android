@@ -32,7 +32,7 @@
             android:layout_margin="8dp"
             android:background="#fafafa"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,6 +66,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:orientation="horizontal">
 
@@ -73,7 +74,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/minutesBefore"
+                    android:text="@string/notifyBefore"
                     android:textColor="#000" />
 
                 <EditText
@@ -81,7 +82,7 @@
                     style="@style/EditTextDefault"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="3"
+                    android:ems="2"
                     android:gravity="center_horizontal"
                     android:inputType="number"
                     android:text="@={data.notificationMinutesBefore}"
@@ -90,6 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="@string/minutesShort"
                     android:textColor="#000" />
             </LinearLayout>

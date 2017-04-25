@@ -48,6 +48,7 @@
     <string name="maintab_settings">Configurações</string>
     <string name="notify">Notificar</string>
     <string name="minutesBefore">min antes da partida</string>
+    <string name="notifyBefore">Notificar antes da partida</string>
     <string name="minutesShort">min</string>
     <string name="notification_enable_defaults">Não perguntar ao definir</string>
     <string name="remember">Relembrar</string>
