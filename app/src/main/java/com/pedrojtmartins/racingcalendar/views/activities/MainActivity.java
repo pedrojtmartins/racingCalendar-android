@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     private void updateAlarm(Race race, int timeBefore) {
-        RCNotification rcNotification = mViewModel.addNotification(race, 0);
+        RCNotification rcNotification = mViewModel.addNotification(race, timeBefore);
         if (rcNotification == null) {
             return;
         }
