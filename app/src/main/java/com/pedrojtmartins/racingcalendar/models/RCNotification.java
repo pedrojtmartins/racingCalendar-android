@@ -38,6 +38,12 @@ public class RCNotification extends BaseObservable {
         notifyPropertyChanged(BR.toDelete);
     }
 
+    public String getMinutesBeforeString() {
+        if (minutesBefore > 0)
+            return "(-" + minutesBefore + ")";
+        else return "";
+    }
+
     public RCNotification(int id, int raceId, int seriesId, String time, int minutesBefore, String seriesName) {
         this.id = id;
         this.raceId = raceId;

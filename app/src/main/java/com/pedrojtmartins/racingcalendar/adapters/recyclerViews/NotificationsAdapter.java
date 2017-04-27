@@ -33,7 +33,6 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
 
             setTintForOlderApis(viewHolder.mDataBinding.getRoot(), currNotification.isToDelete(), viewHolder);
 
-
             viewHolder.mDataBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -51,6 +50,7 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
     private void setTintForOlderApis(View view, boolean res, ViewHolder viewHolder) {
         if (Build.VERSION.SDK_INT < 21) {
             View v = viewHolder.mDataBinding.getRoot().findViewById(R.id.notification_imv);
+
             if (v == null)
                 return;
 
