@@ -300,39 +300,44 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 return false;
         }
 
-
-        final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-        final RCSettings rcSettings = spManager.getNotificationsSettings();
-        if (rcSettings.notificationsRemember) {
-            // Settings are stored. Use them
-            updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()));
+        if (race.hasDateOnly()) {
+            updateAlarm(race, 0);
             return true;
         } else {
-            // Settings are not stored. Let's ask the user what to do.
-            AlertDialogHelper.displayNewNotificationDialog(
-                    this,
-                    getLayoutInflater(),
-                    rcSettings.getNotificationMinutesBefore(),
-                    new Handler(new Handler.Callback() {
-                        @Override
-                        public boolean handleMessage(Message msg) {
-                            int minutesBefore = ParsingHelper.stringToInt(msg.getData().getString("timeBefore", "0"));
 
-                            if (msg.what == 2) {
-                                // User wants to remember the settings. Update the settings we have already
-                                rcSettings.notificationsRemember = true;
-                                rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                spManager.addNotificationsSettings(rcSettings.toString());
-                            } else {
-                                // Keep the minutes selected but just suggest next time
-                                rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                spManager.addNotificationsSettings(rcSettings.toString());
+            final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+            final RCSettings rcSettings = spManager.getNotificationsSettings();
+            if (rcSettings.notificationsRemember) {
+                // Settings are stored. Use them
+                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()));
+                return true;
+            } else {
+                // Settings are not stored. Let's ask the user what to do.
+                AlertDialogHelper.displayNewNotificationDialog(
+                        this,
+                        getLayoutInflater(),
+                        rcSettings.getNotificationMinutesBefore(),
+                        new Handler(new Handler.Callback() {
+                            @Override
+                            public boolean handleMessage(Message msg) {
+                                int minutesBefore = ParsingHelper.stringToInt(msg.getData().getString("timeBefore", "0"));
+
+                                if (msg.what == 2) {
+                                    // User wants to remember the settings. Update the settings we have already
+                                    rcSettings.notificationsRemember = true;
+                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+                                    spManager.addNotificationsSettings(rcSettings.toString());
+                                } else {
+                                    // Keep the minutes selected but just suggest next time
+                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+                                    spManager.addNotificationsSettings(rcSettings.toString());
+                                }
+
+                                updateAlarm(race, minutesBefore);
+                                return true;
                             }
-
-                            updateAlarm(race, minutesBefore);
-                            return true;
-                        }
-                    }));
+                        }));
+            }
         }
 
         return true;

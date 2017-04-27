@@ -111,6 +111,10 @@ public class Race extends BaseObservable {
         mDate = date;
     }
 
+    public boolean hasDateOnly() {
+        return mDate == null || mDate.contains("T");
+    }
+
     @Bindable
     private String mSeriesName;
 
@@ -160,4 +164,6 @@ public class Race extends BaseObservable {
     public int hashCode() {
         return mId;
     }
+
+
 }
