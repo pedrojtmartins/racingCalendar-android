@@ -508,12 +508,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return null;
 
         ContentValues values = new ContentValues();
-        if(notification.id>0){
+        if (notification.id > 0) {
             values.put(KEY_NOTIFICATIONS_ID, notification.id);
         }
         values.put(KEY_NOTIFICATIONS_RACE_ID, notification.raceId);
         values.put(KEY_NOTIFICATIONS_SERIES_ID, notification.seriesId);
         values.put(KEY_NOTIFICATIONS_TIME, notification.time);
+
+        if (!notification.time.contains("T"))
+            notification.minutesBefore = 0;
+
         values.put(KEY_NOTIFICATIONS_MINUTES_BEFORE, notification.minutesBefore);
         return values;
     }

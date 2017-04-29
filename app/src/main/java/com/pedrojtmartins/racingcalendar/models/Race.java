@@ -112,7 +112,7 @@ public class Race extends BaseObservable {
     }
 
     public boolean hasDateOnly() {
-        return mDate == null || mDate.contains("T");
+        return mDate == null || !mDate.contains("T");
     }
 
     @SerializedName("w")
