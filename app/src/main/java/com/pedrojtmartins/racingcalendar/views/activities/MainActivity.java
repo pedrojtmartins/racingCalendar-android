@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         SettingsHelper.detectSystemSettings(this);
 
-        showAdMobBanner();
+        startAdmob();
         initViewModel();
         initToolBar();
         initViewPager();
@@ -82,24 +82,42 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         super.onStart();
         mViewModel.recheckUpdates();
 
-//        new ViewDialog().showDialogNotificationsMinutesBefore(this);
 
     }
 
-    private void showAdMobBanner() {
+    private void startAdmob() {
         mAdmobHelper = AdmobHelper.getInstance();
-        mAdmobHelper.showMainBanner(getApplicationContext(), getResources(), mBinding.adView);
+        mAdmobHelper.showBannerAd(getApplicationContext(), getResources(), mBinding.adView);
+        mAdmobHelper.readyInterstitialAd(getApplicationContext(), getResources());
     }
 
-    private void showAdMobInterstitial() {
+    private void showNotificationAd() {
         SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-        int count = spManager.getNotificationsSetCount();
-        spManager.addNotificationsSet();
+        int count = spManager.getNotificationAdsShownCount();
+        spManager.notificationAdShown();
 
         mAdmobHelper = AdmobHelper.getInstance();
-        mAdmobHelper.showNotificationInterstitial(getApplicationContext(), getResources(), count);
+        mAdmobHelper.showInterstitialAd(getApplicationContext(), getResources(), count, null);
     }
 
+    private boolean showUrlAd(final String url) {
+        SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+        int count = spManager.getUrlAdsShownCount();
+        spManager.urlAdShown();
+
+        mAdmobHelper = AdmobHelper.getInstance();
+        return mAdmobHelper.showInterstitialAd(
+                getApplicationContext(),
+                getResources(),
+                count,
+                new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+                        openUrl(url);
+                        return true;
+                    }
+                }));
+    }
 
     private void initViewModel() {
         DatabaseManager dbManager = DatabaseManager.getInstance(this);
@@ -363,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             race.setIsAlarmSet(true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
-            showAdMobInterstitial();
+            showNotificationAd();
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
@@ -372,13 +390,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     public void openUrl(Race race) {
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_URL);
-        openUrl(mViewModel.getFullUrl(race));
+
+        String url = mViewModel.getFullUrl(race);
+        if (!showUrlAd(url))
+            openUrl(url);
     }
 
     @Override
     public void openUrl(Series series) {
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES_URL);
-        openUrl(series.getUrl());
+        String url = series.getUrl();
+        if (!showUrlAd(url))
+            openUrl(url);
     }
 
     private void openUrl(String url) {

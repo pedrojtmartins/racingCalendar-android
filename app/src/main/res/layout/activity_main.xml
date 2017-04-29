@@ -16,7 +16,7 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/admob_main_ad_id">
+            ads:adUnitId="@string/admob_banner_ad_id">
         </com.google.android.gms.ads.AdView>
 
         <android.support.design.widget.CoordinatorLayout

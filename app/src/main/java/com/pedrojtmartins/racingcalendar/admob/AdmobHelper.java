@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.admob;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.view.View;
 
 import com.google.android.gms.ads.AdListener;
@@ -29,10 +30,11 @@ public class AdmobHelper {
         if (admobHelper == null)
             admobHelper = new AdmobHelper();
 
+
         return admobHelper;
     }
 
-    public void showMainBanner(final Context context, final Resources resources, final AdView adView) {
+    public void showBannerAd(final Context context, final Resources resources, final AdView adView) {
         if (!Settings.PRO_VERSION) {
             MobileAds.initialize(context, resources.getString(R.string.admob_app_id));
             AdRequest adRequest = getAdRequest();
@@ -57,29 +59,36 @@ public class AdmobHelper {
         }
     }
 
-    public void showNotificationInterstitial(Context context, Resources resources, int count) {
+    public void readyInterstitialAd(Context context, Resources resources) {
+        showInterstitialAd(context, resources, -1, null);
+    }
+
+    public boolean showInterstitialAd(Context context, Resources resources, int count, final Handler callback) {
         if (mInterstitialAd == null) {
             mInterstitialAd = new InterstitialAd(context);
-            mInterstitialAd.setAdUnitId(resources.getString(R.string.admob_notifications_ad_id));
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                    requestNewInterstitial();
-                }
-
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    if (mLoadNextInterstitial) {
-                        mLoadNextInterstitial = false;
-                        mInterstitialAd.show();
-                    }
-                }
-            });
-
+            mInterstitialAd.setAdUnitId(resources.getString(R.string.admob_interstitial_ad_id));
             requestNewInterstitial();
         }
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                requestNewInterstitial();
+
+                if (callback != null)
+                    callback.sendEmptyMessage(1);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                if (mLoadNextInterstitial) {
+                    mLoadNextInterstitial = false;
+                    mInterstitialAd.show();
+                }
+            }
+        });
 
         if (count > 0 && count % SHOW_NOTIF_AD_EVERY == 0) {
             if (mInterstitialAd.isLoaded()) {
@@ -87,7 +96,11 @@ public class AdmobHelper {
             } else {
                 mLoadNextInterstitial = true;
             }
+
+            return true;
         }
+
+        return false;
     }
 
     private void requestNewInterstitial() {
