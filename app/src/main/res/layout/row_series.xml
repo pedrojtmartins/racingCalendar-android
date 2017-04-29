@@ -16,9 +16,18 @@
 
         <LinearLayout style="@style/SeriesRow">
 
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/series_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/arrowsTint"
+                app:srcCompat="@drawable/link_black" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
@@ -76,8 +85,6 @@
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:tint="@color/arrowsTint"
                 app:srcCompat="@drawable/arrow_black" />
 

@@ -18,7 +18,7 @@ public interface IRaceList {
 
     boolean updateAlarm(Race race, boolean state);
 
-    void raceUrlClick(Race race);
+    void openUrl(Race race);
 
     void openNotifications(Race race);
 }

@@ -89,7 +89,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                                 break;
 
                             case R.id.three:
-                                mCallback.raceUrlClick(race);
+                                mCallback.openUrl(race);
                                 break;
 
 
@@ -110,7 +110,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             @Override
             public void onClick(View v) {
                 if (mCallback != null) {
-                    mCallback.raceUrlClick(race);
+                    mCallback.openUrl(race);
                 }
             }
         });

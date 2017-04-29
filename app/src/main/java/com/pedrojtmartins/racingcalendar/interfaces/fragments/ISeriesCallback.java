@@ -9,4 +9,6 @@ import com.pedrojtmartins.racingcalendar.models.Series;
 
 public interface ISeriesCallback {
     void displayRacesFromSeries(Series series);
+
+    void openUrl(Series currSeries);
 }

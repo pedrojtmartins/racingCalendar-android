@@ -42,17 +42,13 @@ public class AlertDialogHelper {
         return true;
     }
 
-    public static boolean displayOkDialog(Context context, int msg, final Handler handler) {
-        if (context == null || handler == null)
+    public static boolean displayOkDialog(Context context, int msg) {
+        if (context == null)
             return false;
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
                 .setMessage(msg)
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
+                .setPositiveButton("Ok", null)
                 .show();
 
         return true;

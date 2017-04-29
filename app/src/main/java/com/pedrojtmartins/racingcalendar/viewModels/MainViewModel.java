@@ -112,7 +112,6 @@ public class MainViewModel implements IDataUpdater {
             return;
 
         // TODO: 05/02/2017 - Do this in a separate thread?
-        // TODO: 05/02/2017 - Alert the user the download is complete and data was updated
         mSharedPreferencesManager.addDataVersion(data.version);
         mDbManager.addRaces(data.races);
         mDbManager.addSeries(data.series);
@@ -173,7 +172,6 @@ public class MainViewModel implements IDataUpdater {
     }
 
     public String getFullUrl(Race race) {
-        // TODO: 29/04/2017 refactor this code
         if (race == null || mSeriesList == null || mSeriesList.isEmpty())
             return null;
 
@@ -189,11 +187,6 @@ public class MainViewModel implements IDataUpdater {
         if (series == null)
             return null;
 
-        String url = series.getFullUrl() + race.getUrl();
-        if (!url.startsWith("http")) {
-            url = "http://" + url;
-        }
-
-        return url;
+        return series.getFullUrl() + race.getUrl();
     }
 }

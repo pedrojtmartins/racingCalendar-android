@@ -31,7 +31,12 @@ public class SeriesAdapter extends ObservableAdapter<Series> {
 
             if (viewHolder.mDataBinding instanceof RowSeriesBinding) {
                 RowSeriesBinding binding = (RowSeriesBinding) viewHolder.mDataBinding;
-
+                binding.seriesUrl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallback.openUrl(currSeries);
+                    }
+                });
 
             }
 

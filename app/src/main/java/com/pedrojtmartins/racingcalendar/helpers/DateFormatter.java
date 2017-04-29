@@ -37,6 +37,9 @@ public class DateFormatter {
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+            return "";
         }
     }
 

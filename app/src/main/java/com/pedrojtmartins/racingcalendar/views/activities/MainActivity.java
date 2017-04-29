@@ -370,10 +370,21 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     @Override
-    public void raceUrlClick(Race race) {
+    public void openUrl(Race race) {
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_URL);
+        openUrl(mViewModel.getFullUrl(race));
+    }
 
-        String url = mViewModel.getFullUrl(race);
+    @Override
+    public void openUrl(Series series) {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES_URL);
+        openUrl(series.getUrl());
+    }
+
+    private void openUrl(String url) {
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
 
         //Open in chrome
         Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
@@ -392,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         }
 
         //No web app found. Alert the user
-        AlertDialogHelper.displayOkDialog(this, R.string.noBrowser, null);
+        AlertDialogHelper.displayOkDialog(this, R.string.noBrowser);
     }
 
     @Override
