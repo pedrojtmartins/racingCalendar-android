@@ -41,6 +41,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_RACE_NAME = "race_name";
     private static final String KEY_RACE_LOCATION = "race_location";
     private static final String KEY_RACE_DATE = "race_date";
+    private static final String KEY_RACE_URL = "race_url";
     //endregion
 
     //region Create Statement
@@ -50,7 +51,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             KEY_RACE_NUMBER + " INTEGER," +
             KEY_RACE_NAME + " TEXT," +
             KEY_RACE_LOCATION + " TEXT," +
-            KEY_RACE_DATE + " INTEGER)";
+            KEY_RACE_DATE + " INTEGER," +
+            KEY_RACE_URL + " TEXT)";
     //endregion
     //endregion
 
@@ -62,6 +64,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_SERIES_NAME = "series_name";
     private static final String KEY_SERIES_YEAR = "series_year";
     private static final String KEY_SERIES_FAVOURITE = "series_favourite";
+    private static final String KEY_SERIES_URL = "series_url"; //f1.com
+    private static final String KEY_SERIES_PURL = "series_purl";///calendar/
     //endregion
 
     //region Create Statement
@@ -69,7 +73,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
             KEY_SERIES_ID + " INTEGER PRIMARY KEY," +
             KEY_SERIES_NAME + " TEXT," +
             KEY_SERIES_YEAR + " INTEGER," +
-            KEY_SERIES_FAVOURITE + " INTEGER)";
+            KEY_SERIES_FAVOURITE + " INTEGER," +
+            KEY_SERIES_URL + " TEXT," +
+            KEY_SERIES_PURL + " TEXT)";
     //endregion
     //endregion
 
@@ -120,15 +126,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RACES);
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SERIES);
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATIONS);
-
-//        onCreate(db);
-
-        if (DATABASE_VERSION == 2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion <= 1) {
             db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+        }
+
+        if (oldVersion <= 2) {
+            db.execSQL("ALTER TABLE " + TABLE_RACES + " ADD COLUMN " +
+                    KEY_RACE_URL + " TEXT");
+
+            db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
+                    KEY_SERIES_URL + " TEXT," +
+                    KEY_SERIES_PURL + " TEXT");
         }
     }
 
@@ -158,6 +167,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_RACE_NAME));
                 String location = cursor.getString(cursor.getColumnIndex(KEY_RACE_LOCATION));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_RACE_DATE));
+                String url = cursor.getString(cursor.getColumnIndex(KEY_RACE_URL));
 
                 String seriesName = "";
                 int seriesNameId = cursor.getColumnIndex(KEY_SERIES_NAME);
@@ -169,7 +179,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
                 boolean isAlarmSet = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_RACE_ID)) != 0;
 
-                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName, isAlarmSet));
+                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName, isAlarmSet, url));
             } while (cursor.moveToNext());
         }
 
@@ -184,6 +194,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_RACE_NAME, race.getName());
         values.put(KEY_RACE_LOCATION, race.getLocation());
         values.put(KEY_RACE_DATE, race.getFullDate());
+        values.put(KEY_RACE_URL, race.getUrl());
         return values;
     }
 
@@ -300,6 +311,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
                 int year = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_YEAR));
                 boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
+                String url = cursor.getString(cursor.getColumnIndex(KEY_SERIES_URL));
+                String purl = cursor.getString(cursor.getColumnIndex(KEY_SERIES_PURL));
+
 
                 int totalRaces = 0;
                 if (cursor.getColumnCount() > 4)
@@ -310,7 +324,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     currRace = cursor.getInt(5);
 
 
-                list.add(new Series(id, name, year, favourite, totalRaces, currRace));
+                list.add(new Series(id, name, year, favourite, totalRaces, currRace, url, purl));
             } while (cursor.moveToNext());
         }
 
@@ -323,6 +337,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_SERIES_NAME, series.getName());
         values.put(KEY_SERIES_YEAR, series.getYear());
         values.put(KEY_SERIES_FAVOURITE, series.isFavorite() ? 1 : 0);
+        values.put(KEY_SERIES_URL, series.getUrl());
+        values.put(KEY_SERIES_PURL, series.getUrlPrefix());
         return values;
     }
 
@@ -350,7 +366,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
      */
     public ArrayList<Series> getSeries() {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME + ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE + ",COUNT(DISTINCT r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
+        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME +
+                ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE +
+                ",COUNT(DISTINCT r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
+                ",s." + KEY_SERIES_URL + ",s." + KEY_SERIES_PURL +
                 " FROM " + TABLE_SERIES + " s " +
                 " LEFT JOIN " + TABLE_RACES + " r ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
                 " LEFT JOIN " + TABLE_RACES + " rr ON rr." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID + " AND rr." + KEY_RACE_DATE + "<('" + today + "')" +

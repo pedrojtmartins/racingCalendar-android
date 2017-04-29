@@ -26,6 +26,10 @@ public class RCNotification extends BaseObservable {
         return date + "  " + hour;
     }
 
+    public boolean hasDataOnly() {
+        return time == null || !time.contains("T");
+    }
+
     @Bindable
     private boolean mToDelete;
 

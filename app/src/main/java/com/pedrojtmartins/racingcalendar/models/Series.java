@@ -47,7 +47,28 @@ public class Series extends BaseObservable {
         mYear = year;
     }
 
-    @SerializedName("f")
+    @SerializedName("w")
+    private String mUrl;
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setmUrl(String url) {
+        this.mUrl = url;
+    }
+
+    @SerializedName("x")
+    private String mUrlPrefix;
+
+    public String getUrlPrefix() {
+        return mUrlPrefix;
+    }
+
+    public void setUrlPrefix(String mUrlPrefix) {
+        this.mUrlPrefix = mUrlPrefix;
+    }
+
     @Bindable
     private boolean mFavorite;
 
@@ -107,12 +128,14 @@ public class Series extends BaseObservable {
         return percentageCompleted;
     }
 
-    public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace) {
+    public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace, String url, String urlPrefix) {
         mId = id;
         mName = name;
         mYear = year;
         mFavorite = isFavorite;
         mTotalRaces = totalRaces;
         mCurrentRace = currRace;
+        mUrl = url;
+        mUrlPrefix = urlPrefix;
     }
 }

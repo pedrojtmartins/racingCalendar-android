@@ -115,6 +115,18 @@ public class Race extends BaseObservable {
         return mDate == null || mDate.contains("T");
     }
 
+    @SerializedName("w")
+    private String mUrl;
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String mUrl) {
+        this.mUrl = mUrl;
+    }
+
+
     @Bindable
     private String mSeriesName;
 
@@ -138,7 +150,7 @@ public class Race extends BaseObservable {
         notifyPropertyChanged(BR.isAlarmSet);
     }
 
-    public Race(int id, int seriesId, int raceNumber, String name, String location, String date, String seriesName, boolean isAlarmSet) {
+    public Race(int id, int seriesId, int raceNumber, String name, String location, String date, String seriesName, boolean isAlarmSet, String url) {
         mId = id;
         mSeriesId = seriesId;
         mRaceNumber = raceNumber;
@@ -147,6 +159,7 @@ public class Race extends BaseObservable {
         mDate = date;
         mSeriesName = seriesName;
         mIsAlarmSet = isAlarmSet;
+        mUrl = url;
     }
 
     @Override
