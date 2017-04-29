@@ -1,14 +1,23 @@
 package com.pedrojtmartins.racingcalendar.helpers;
 
+import com.pedrojtmartins.racingcalendar._settings.Settings;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 /**
  * Pedro Martins
  * 02/02/2017
  */
 public class DateFormatterTest {
+
+    @Before
+    public void setUp() throws Exception {
+        Settings.DAY_MONTH_FORMAT = "dd MMM";
+    }
 
     @Test
     public void getSimplifiedDate_ShouldReturnEmptyIfDateIsNull() throws Exception {

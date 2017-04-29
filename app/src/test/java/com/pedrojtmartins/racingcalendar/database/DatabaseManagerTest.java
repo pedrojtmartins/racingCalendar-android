@@ -116,9 +116,9 @@ public class DatabaseManagerTest {
     //region NotificationsActivity
     private int addNotifications() {
         ArrayList<RCNotification> list = new ArrayList<>();
-        list.add(new RCNotification(1, 1, "2017-01-12T00:00:00", 5));
-        list.add(new RCNotification(2, 2, "2017-10-17T22:30:00", 15));
-        list.add(new RCNotification(3, 3, "2017-01-12T13:00:00", 60));
+        list.add(new RCNotification(1, 1, "2099-01-12T00:00:00", 5));
+        list.add(new RCNotification(2, 2, "2099-10-17T22:30:00", 15));
+        list.add(new RCNotification(3, 3, "2099-01-12T13:00:00", 60));
 
         return db.addNotifications(list);
     }
