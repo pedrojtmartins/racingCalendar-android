@@ -8,5 +8,5 @@ import com.pedrojtmartins.racingcalendar.models.RCNotification;
  */
 
 public interface INotificationsCallback {
-    boolean deleteNotification(RCNotification notification);
+    boolean updateNotification(RCNotification notification, boolean delete);
 }

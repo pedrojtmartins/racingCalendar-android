@@ -1,5 +1,8 @@
 package com.pedrojtmartins.racingcalendar.views.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,10 +17,12 @@ import android.view.MenuItem;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.NotificationsAdapter;
+import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
 import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityNotificationsBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
+import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.INotificationsCallback;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.viewModels.NotificationsViewModel;
@@ -78,7 +83,7 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
     }
 
     private void initRecyclerView(long focusRace) {
-        NotificationsAdapter adapter = new NotificationsAdapter(R.layout.row_notification, mViewModel.getNotifications(), this,focusRace);
+        NotificationsAdapter adapter = new NotificationsAdapter(R.layout.row_notification, mViewModel.getNotifications(), this, focusRace);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(adapter);
     }
@@ -121,7 +126,23 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
     }
 
     @Override
-    public boolean deleteNotification(RCNotification notification) {
-        return mViewModel.deleteNotification(notification);
+    public boolean updateNotification(RCNotification notification, boolean delete) {
+        if (delete) {
+            return mViewModel.setToDelete(notification);
+        } else if (mViewModel.updateNotification(notification)) {
+            final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, notification);
+            boolean result = RCAlarmManager.setAlarm(am, notification, pendingIntent);
+            if (!result) {
+                SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotUpdated);
+                return false;
+            }
+
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_UPDATE_NOTIFICATION);
+            return true;
+        }
+
+        return false;
     }
+
 }

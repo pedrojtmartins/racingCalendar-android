@@ -371,6 +371,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     public void raceUrlClick(Race race) {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_URL);
+
         String url = mViewModel.getFullUrl(race);
 
         //Open in chrome

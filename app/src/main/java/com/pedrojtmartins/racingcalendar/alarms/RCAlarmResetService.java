@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class RCAlarmResetService extends Service {
             // Nothing to reset
             return START_NOT_STICKY;
         }
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_REBOOT, rcNotifications.size());
 
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         for (RCNotification rcNotification : rcNotifications) {

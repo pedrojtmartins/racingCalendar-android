@@ -16,6 +16,8 @@ public class RCNotification extends BaseObservable {
     public int raceId;
     public int seriesId;
     public String time;
+
+    @Bindable
     public int minutesBefore;
     public String seriesName;
 
@@ -42,10 +44,18 @@ public class RCNotification extends BaseObservable {
         notifyPropertyChanged(BR.toDelete);
     }
 
+    @Bindable
     public String getMinutesBeforeString() {
         if (minutesBefore > 0)
             return "(-" + minutesBefore + ")";
         else return "";
+    }
+
+    public void setTimeBefore(int timeBefore) {
+        if (minutesBefore != timeBefore) {
+            minutesBefore = timeBefore;
+            notifyPropertyChanged(BR.minutesBeforeString);
+        }
     }
 
     public RCNotification(int id, int raceId, int seriesId, String time, int minutesBefore, String seriesName) {

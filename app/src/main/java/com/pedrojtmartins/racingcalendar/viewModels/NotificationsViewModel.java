@@ -36,7 +36,7 @@ public class NotificationsViewModel {
         mNotifications.addAll(mDatabaseManager.getNotifications());
     }
 
-    public boolean deleteNotification(RCNotification notification) {
+    public boolean setToDelete(RCNotification notification) {
         if (notification == null) {
             return false;
         }
@@ -56,5 +56,9 @@ public class NotificationsViewModel {
 
     public boolean somethingToDelete() {
         return toDelete.size() > 0;
+    }
+
+    public boolean updateNotification(RCNotification notification) {
+        return mDatabaseManager.addNotification(notification) != -1;
     }
 }

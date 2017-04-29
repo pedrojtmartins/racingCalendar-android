@@ -61,7 +61,16 @@ public class AlertDialogHelper {
     public static void displayNewNotificationDialog(
             final Context context,
             final LayoutInflater inflater,
-            String notificationMinutesBefore,
+            final String notificationMinutesBefore,
+            final Handler handler) {
+        displayNewNotificationDialog(context, inflater, notificationMinutesBefore, true, handler);
+    }
+
+    public static void displayNewNotificationDialog(
+            final Context context,
+            final LayoutInflater inflater,
+            final String notificationMinutesBefore,
+            final boolean withRememberOption,
             final Handler handler) {
 
         final View v = inflater.inflate(R.layout.alert_dialog_notification, null);
@@ -78,13 +87,18 @@ public class AlertDialogHelper {
                 newNotificationsDialogResponse(et.getText().toString(), handler, 1);
             }
         });
-        builder.setNeutralButton(R.string.remember, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                newNotificationsDialogResponse(et.getText().toString(), handler, 2);
-            }
-        });
+
         builder.setNegativeButton(R.string.cancel, null);
+
+        if (withRememberOption) {
+            builder.setNeutralButton(R.string.remember, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    newNotificationsDialogResponse(et.getText().toString(), handler, 2);
+                }
+            });
+        }
+
         builder.create();
         builder.show();
     }

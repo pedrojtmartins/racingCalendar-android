@@ -13,6 +13,7 @@ import android.support.v7.app.NotificationCompat;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.views.activities.MainActivity;
 
@@ -63,6 +64,8 @@ public class RCNotificationService extends Service {
                 = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         RCNotificationManager.notify(pendingIntent, builder, notificationManager, title, msg, rcNotification.id, icon);
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_TRIGGERED);
 
         return START_NOT_STICKY;
     }
