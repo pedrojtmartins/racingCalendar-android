@@ -129,6 +129,9 @@ public class Race extends BaseObservable {
         this.mUrl = mUrl;
     }
 
+    public boolean hasUrl() {
+        return mUrl != null && !mUrl.isEmpty();
+    }
 
     @Bindable
     private String mSeriesName;

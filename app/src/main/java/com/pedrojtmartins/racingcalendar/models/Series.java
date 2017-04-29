@@ -83,6 +83,10 @@ public class Series extends BaseObservable {
         return url;
     }
 
+    public boolean hasUrl() {
+        return mUrl != null && !mUrl.isEmpty();
+    }
+
     @Bindable
     private boolean mFavorite;
 
