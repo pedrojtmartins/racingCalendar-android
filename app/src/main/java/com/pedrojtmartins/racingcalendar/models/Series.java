@@ -69,6 +69,20 @@ public class Series extends BaseObservable {
         this.mUrlPrefix = mUrlPrefix;
     }
 
+    public String getFullUrl() {
+        String url = "";
+
+        if (mUrl != null) {
+            url += mUrl;
+        }
+
+        if (mUrlPrefix != null) {
+            url += mUrlPrefix;
+        }
+
+        return url;
+    }
+
     @Bindable
     private boolean mFavorite;
 

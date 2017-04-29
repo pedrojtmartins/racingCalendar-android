@@ -171,4 +171,29 @@ public class MainViewModel implements IDataUpdater {
             mFavouriteRaces.get(iFav).setIsAlarmSet(newState);
         }
     }
+
+    public String getFullUrl(Race race) {
+        // TODO: 29/04/2017 refactor this code
+        if (race == null || mSeriesList == null || mSeriesList.isEmpty())
+            return null;
+
+        Series series = null;
+        for (int i = 0; i < mSeriesList.size(); i++) {
+            Series currSeries = mSeriesList.get(i);
+            if (currSeries.getId() == race.getSeriesId()) {
+                series = currSeries;
+                break;
+            }
+        }
+
+        if (series == null)
+            return null;
+
+        String url = series.getFullUrl() + race.getUrl();
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+
+        return url;
+    }
 }

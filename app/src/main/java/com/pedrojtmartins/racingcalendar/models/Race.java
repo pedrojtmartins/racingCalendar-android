@@ -119,6 +119,9 @@ public class Race extends BaseObservable {
     private String mUrl;
 
     public String getUrl() {
+        if (mUrl == null)
+            return "";
+
         return mUrl;
     }
 

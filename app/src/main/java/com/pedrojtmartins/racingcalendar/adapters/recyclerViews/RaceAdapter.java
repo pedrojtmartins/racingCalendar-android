@@ -88,6 +88,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                                 }
                                 break;
 
+                            case R.id.three:
+                                mCallback.raceUrlClick(race);
+                                break;
+
 
                         }
                         return true;
@@ -99,6 +103,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 menu.findItem(R.id.two).setVisible(race.getIsAlarmSet());
 
                 popup.show();
+            }
+        });
+
+        binding.raceRowUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.raceUrlClick(race);
             }
         });
     }

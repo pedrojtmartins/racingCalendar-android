@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.helpers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 /**
@@ -18,5 +19,9 @@ public class IntentHelper {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
         }
+    }
+
+    public static boolean canResolveIntent(Intent intent, PackageManager packageManager) {
+        return intent.resolveActivity(packageManager) != null;
     }
 }

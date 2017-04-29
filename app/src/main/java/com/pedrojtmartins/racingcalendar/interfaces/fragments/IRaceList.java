@@ -17,4 +17,6 @@ public interface IRaceList {
     boolean undoFragmentTransition();
 
     boolean updateAlarm(Race race, boolean state);
+
+    void raceUrlClick(Race race);
 }

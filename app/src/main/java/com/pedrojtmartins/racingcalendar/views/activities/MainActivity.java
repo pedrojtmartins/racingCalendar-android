@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,7 @@ import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
+import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
 import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
@@ -365,6 +367,27 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
+    }
+
+    @Override
+    public void raceUrlClick(Race race) {
+        String url = mViewModel.getFullUrl(race);
+
+        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
+        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
+        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
+            startActivity(chromeIntent);
+            return;
+        } else {
+            uri = Uri.parse(url);
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
+            if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
+                startActivity(webIntent);
+                return;
+            }
+        }
+
+        // TODO: 29/04/2017 no web app
     }
 
     @Override

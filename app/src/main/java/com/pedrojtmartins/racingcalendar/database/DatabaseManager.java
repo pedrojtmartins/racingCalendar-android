@@ -27,7 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     //endregion
 
     //region Tables
@@ -135,8 +135,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + TABLE_RACES + " ADD COLUMN " +
                     KEY_RACE_URL + " TEXT");
 
+
             db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
-                    KEY_SERIES_URL + " TEXT," +
+                    KEY_SERIES_URL + " TEXT");
+
+            db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
                     KEY_SERIES_PURL + " TEXT");
         }
     }
