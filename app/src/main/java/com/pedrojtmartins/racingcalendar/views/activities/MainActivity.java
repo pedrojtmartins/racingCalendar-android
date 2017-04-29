@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void openNotifications(Race race) {
         Intent intent = new Intent(this, NotificationsActivity.class);
         intent.putExtra("raceId", race.getId());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
