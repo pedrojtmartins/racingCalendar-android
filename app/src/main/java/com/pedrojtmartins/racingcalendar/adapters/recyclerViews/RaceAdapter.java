@@ -109,7 +109,16 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         binding.raceRowUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.raceUrlClick(race);
+                if (mCallback != null) {
+                    mCallback.raceUrlClick(race);
+                }
+            }
+        });
+
+        binding.raceRowNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.openNotifications(race);
             }
         });
     }

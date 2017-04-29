@@ -34,7 +34,9 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
 
         intiViewModel();
         initToolBar();
-        initRecyclerView();
+
+        long focusRace = getIntent().getIntExtra("raceId", 0);
+        initRecyclerView(focusRace);
 
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTIVITY_NOTIFICATIONS);
 
@@ -75,8 +77,8 @@ public class NotificationsActivity extends AppCompatActivity implements INotific
         }
     }
 
-    private void initRecyclerView() {
-        NotificationsAdapter adapter = new NotificationsAdapter(R.layout.row_notification, mViewModel.getNotifications(), this);
+    private void initRecyclerView(long focusRace) {
+        NotificationsAdapter adapter = new NotificationsAdapter(R.layout.row_notification, mViewModel.getNotifications(), this,focusRace);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(adapter);
     }

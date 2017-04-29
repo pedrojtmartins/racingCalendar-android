@@ -37,6 +37,10 @@ public class NotificationsViewModel {
     }
 
     public boolean deleteNotification(RCNotification notification) {
+        if (notification == null) {
+            return false;
+        }
+
         if (toDelete.contains(notification)) {
             toDelete.remove(notification);
             return false;

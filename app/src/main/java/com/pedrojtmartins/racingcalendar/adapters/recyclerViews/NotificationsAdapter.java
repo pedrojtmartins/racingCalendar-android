@@ -1,5 +1,6 @@
 package com.pedrojtmartins.racingcalendar.adapters.recyclerViews;
 
+import android.content.res.Resources;
 import android.databinding.ObservableArrayList;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +9,8 @@ import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar.databinding.RowNotificationBinding;
+import com.pedrojtmartins.racingcalendar.helpers.APIHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.INotificationsCallback;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
@@ -18,10 +21,18 @@ import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
 public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
     private final INotificationsCallback mCallback;
+    private final long mFocusRaceId;
 
     public NotificationsAdapter(int itemLayoutId, ObservableArrayList<RCNotification> items, INotificationsCallback callback) {
         super(itemLayoutId, items);
         mCallback = callback;
+        mFocusRaceId = 0;
+    }
+
+    public NotificationsAdapter(int itemLayoutId, ObservableArrayList<RCNotification> items, INotificationsCallback callback, long focusId) {
+        super(itemLayoutId, items);
+        mCallback = callback;
+        mFocusRaceId = focusId;
     }
 
 
@@ -31,7 +42,7 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
             final RCNotification currNotification = mValues.get(position);
             viewHolder.mDataBinding.setVariable(BR.data, currNotification);
 
-            setTintForOlderApis(viewHolder.mDataBinding.getRoot(), currNotification.isToDelete(), viewHolder);
+            setTintForOlderApis(currNotification.isToDelete(), viewHolder);
 
             viewHolder.mDataBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -40,25 +51,58 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
                         boolean res = mCallback.deleteNotification(currNotification);
                         updateStatus(currNotification, res);
 
-                        setTintForOlderApis(view, res, viewHolder);
+                        setTintForOlderApis(res, viewHolder);
                     }
                 }
             });
+
+            if (viewHolder.mDataBinding instanceof RowNotificationBinding) {
+                RowNotificationBinding binding = (RowNotificationBinding) viewHolder.mDataBinding;
+                binding.notificationEditTimeBefore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        if (mCallback != null) {
+//                            mCallback.openNotificationsActivity(currNotification);
+//                        }
+                        // TODO: 29/04/2017 implement
+                    }
+                });
+            }
+
+            if (currNotification.raceId == mFocusRaceId) {
+                Resources resources = viewHolder.mDataBinding.getRoot().getContext().getResources();
+                if (resources != null) {
+                    int color = APIHelper.getColor(resources, R.color.notificationFocus);
+                    if (color != 0 && viewHolder.mDataBinding instanceof RowNotificationBinding) {
+                        ((RowNotificationBinding) viewHolder.mDataBinding).notificationParent.setBackgroundColor(color);
+                    }
+                }
+            }
         }
     }
 
-    private void setTintForOlderApis(View view, boolean res, ViewHolder viewHolder) {
+    private void setTintForOlderApis(boolean res, ViewHolder viewHolder) {
         if (Build.VERSION.SDK_INT < 21) {
-            View v = viewHolder.mDataBinding.getRoot().findViewById(R.id.notification_imv);
+            View v1 = viewHolder.mDataBinding.getRoot().findViewById(R.id.notification_imv);
+            if (v1 != null) {
+                AppCompatImageView imv = (AppCompatImageView) v1;
+                setColorFilter(imv, res);
+            }
 
-            if (v == null)
-                return;
+            View v2 = viewHolder.mDataBinding.getRoot().findViewById(R.id.notification_edit_time_before);
+            if (v2 != null) {
+                AppCompatImageView imv = (AppCompatImageView) v2;
+                setColorFilter(imv, res);
+            }
+        }
+    }
 
-            AppCompatImageView imv = (AppCompatImageView) v;
+    private void setColorFilter(AppCompatImageView imv, boolean res) {
+        if (imv != null) {
             if (res) {
-                imv.setColorFilter(ContextCompat.getColor(view.getContext(), R.color.tintDisabled));
+                imv.setColorFilter(ContextCompat.getColor(imv.getContext(), R.color.tintDisabled));
             } else {
-                imv.setColorFilter(ContextCompat.getColor(view.getContext(), R.color.tintEnabled));
+                imv.setColorFilter(ContextCompat.getColor(imv.getContext(), R.color.tintEnabled));
             }
         }
     }

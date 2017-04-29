@@ -373,21 +373,31 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void raceUrlClick(Race race) {
         String url = mViewModel.getFullUrl(race);
 
+        //Open in chrome
         Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
         Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
         if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
             startActivity(chromeIntent);
             return;
-        } else {
-            uri = Uri.parse(url);
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
-            if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
-                startActivity(webIntent);
-                return;
-            }
         }
 
-        // TODO: 29/04/2017 no web app
+        //No chrome found. Open in any web app
+        uri = Uri.parse(url);
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
+        if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
+            startActivity(webIntent);
+            return;
+        }
+
+        //No web app found. Alert the user
+        AlertDialogHelper.displayOkDialog(this, R.string.noBrowser, null);
+    }
+
+    @Override
+    public void openNotifications(Race race) {
+        Intent intent = new Intent(this, NotificationsActivity.class);
+        intent.putExtra("raceId", race.getId());
+        startActivity(intent);
     }
 
     @Override
