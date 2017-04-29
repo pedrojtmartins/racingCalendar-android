@@ -28,6 +28,7 @@
     <string name="setAlarm">Set notification</string>
     <string name="alarmSet">Notification set</string>
     <string name="alarmNotSet">Error setting notification</string>
+    <string name="alarmNotUpdated">Error updating notification</string>
     <string name="raceToday">Start date is today</string>
     <string name="alarmInPast">Start date is in the past</string>
 
@@ -54,4 +55,7 @@
     <string name="remember">Remember</string>
     <string name="notify">Notify</string>
     <string name="ok">Ok</string>
+
+    <string name="openUrl">Open website</string>
+    <string name="noBrowser">No web browser found. You must install an app capable of opening web links.</string>
 </resources>

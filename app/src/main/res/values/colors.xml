@@ -16,10 +16,9 @@
 
     <color name="seriesProgressbarBackground">#9b9b9b</color>
 
-
-
     <color name="tintDisabled">#c6c6c6</color>
     <color name="tintEnabled">#000</color>
 
+    <color name="notificationFocus">#ebd3d0</color>
 
 </resources>

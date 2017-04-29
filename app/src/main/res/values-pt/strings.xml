@@ -29,6 +29,7 @@
     <string name="setAlarm">Definir notificações</string>
     <string name="alarmSet">Nova notificação definida</string>
     <string name="alarmNotSet">Não foi possível definir a notificação</string>
+    <string name="alarmNotUpdated">Não foi possível atualizar a notificação</string>
     <string name="raceToday">Data de início hoje</string>
     <string name="alarmInPast">Data de início passada</string>
 
@@ -53,4 +54,7 @@
     <string name="notification_enable_defaults">Não perguntar ao definir</string>
     <string name="remember">Relembrar</string>
     <string name="ok">Ok</string>
+
+    <string name="openUrl">Abrir website</string>
+    <string name="noBrowser">Nenhum browser encontrado. Deverá instalar uma aplicação capaz de abrir páginas web.</string>
 </resources>
