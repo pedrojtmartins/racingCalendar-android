@@ -18,8 +18,13 @@ public class SharedPreferencesManager {
     private final String SETTINGS_NOTIFICATIONS = "notifSettings";
     private final String RELEASE_NOTES1 = "notes1";
 
-    private final String ADS_NOTIFICATIONS = "notifsSet";
-    private final String ADS_URL = "notifsSet";
+    private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
+    private final String ADS_URL = "urlOpenCount";
+
+//    private final String SESSION_STARTS = "session_starts";
+//    private final String DIFFERENT_DAYS_STARTS = "days_starts";
+//    private final String LAST_DAY_START = "last_day_start";
+//    private final String RATED = "rated"; //0-no, 1-yes, 2-do not ask
 
     public SharedPreferencesManager(Context context) {
         mContext = context;
@@ -86,6 +91,43 @@ public class SharedPreferencesManager {
         editor.putString(SETTINGS_NOTIFICATIONS, settings);
         editor.apply();
     }
+    //endregion
+
+    //region RATING
+//    public boolean askForRate(String todayDate, int minStarts, int minDays) {
+//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+//
+//        int rated = sp.getInt(RATED, 0);
+//        int starts = sp.getInt(SESSION_STARTS, 0);
+//        int differentDaysStarts = sp.getInt(DIFFERENT_DAYS_STARTS, 0);
+//        String lastDayStart = sp.getString(LAST_DAY_START, "");
+//        updateRateData(starts, differentDaysStarts, todayDate);
+//
+//        if (rated > 0)
+//            return false;
+//
+//        if (starts < minStarts)
+//            return false;
+//
+//        if (differentDaysStarts < minDays)
+//            return false;
+//
+//        if (todayDate.equals(lastDayStart))
+//            return false;
+//
+//
+//        return true;
+//    }
+//
+//    private void updateRateData(int starts, int differentDaysStarts, String lastDate, String todayDate) {
+//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//
+//        editor.putInt(SESSION_STARTS, starts + 1);
+//        editor.putInt(DIFFERENT_DAYS_STARTS, starts + 1);
+//
+//        editor.apply();
+//    }
     //endregion
 
     //Not used yet
