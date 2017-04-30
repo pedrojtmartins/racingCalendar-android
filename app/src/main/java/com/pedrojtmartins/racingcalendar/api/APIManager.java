@@ -32,7 +32,7 @@ public class APIManager {
     public APIManager() {
     }
 
-    public void updateDataIfRequired(final IDataUpdater dataUpdater, final int currVersion) {
+    public void updateDataIfRequired(final IDataUpdater dataUpdater, final int currVersion, final boolean forceUpdate) {
         if (dataUpdater == null)
             return;
 
@@ -43,7 +43,7 @@ public class APIManager {
                     return;
 
                 int version = response.body();
-                if (version != currVersion) {
+                if (version != currVersion || forceUpdate) {
                     updateData(dataUpdater, version);
                 }
             }

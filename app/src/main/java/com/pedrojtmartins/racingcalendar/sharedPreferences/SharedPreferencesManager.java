@@ -17,6 +17,7 @@ public class SharedPreferencesManager {
     private final String DATA_VERSION = "dataVersion";
     private final String SETTINGS_NOTIFICATIONS = "notifSettings";
     private final String RELEASE_NOTES1 = "notes1";
+    private final String FORCE_DATA_UPDATE = "forceDataUpdate";
 
     private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
     private final String ADS_URL = "urlOpenCount";
@@ -92,6 +93,20 @@ public class SharedPreferencesManager {
         editor.apply();
     }
     //endregion
+
+    //region Force data update
+    public boolean getForceDataUpdate() {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        return sp.getBoolean(FORCE_DATA_UPDATE, true);
+    }
+
+    public void setForceDataUpdate() {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(FORCE_DATA_UPDATE, false);
+        editor.apply();
+    }
+    //region Force data update
 
     //region RATING
 //    public boolean askForRate(String todayDate, int minStarts, int minDays) {

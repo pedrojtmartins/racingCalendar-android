@@ -103,7 +103,9 @@ public class MainViewModel implements IDataUpdater {
 
     private void initDataUpdate() {
         // TODO: 05/02/2017 - Alert the user the download is starting
-        mApiManager.updateDataIfRequired(this, mSharedPreferencesManager.getDataVersion());
+        int dataVersion = mSharedPreferencesManager.getDataVersion();
+        boolean forceUpdate = mSharedPreferencesManager.getForceDataUpdate();
+        mApiManager.updateDataIfRequired(this, dataVersion, forceUpdate);
     }
 
     @Override
@@ -119,6 +121,10 @@ public class MainViewModel implements IDataUpdater {
         loadDataFromLocalDb();
 
         updatedFromServer.set(updatedFromServer.get() + 1);
+
+        boolean forceUpdate = mSharedPreferencesManager.getForceDataUpdate();
+        if (forceUpdate)
+            mSharedPreferencesManager.setForceDataUpdate();
     }
 
     private void checkAppVersion() {
