@@ -33,7 +33,11 @@ public class NotificationsViewModel {
 
     private void loadAllNotificationsFromDb() {
         mNotifications.clear();
-        mNotifications.addAll(mDatabaseManager.getNotifications());
+
+        ArrayList<RCNotification> notifications = mDatabaseManager.getNotifications();
+        if (notifications != null && !notifications.isEmpty()) {
+            mNotifications.addAll(notifications);
+        }
     }
 
     public boolean setToDelete(RCNotification notification) {

@@ -622,7 +622,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 " ORDER BY " + KEY_NOTIFICATIONS_TIME;
 
         return queryNotifications(query);
-
     }
 
     public RCNotification getNotificationForEvent(long eventId) {
