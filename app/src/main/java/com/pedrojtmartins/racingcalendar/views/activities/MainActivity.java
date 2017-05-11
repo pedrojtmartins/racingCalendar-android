@@ -409,16 +409,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             url = "http://" + url;
         }
 
-        //Open in chrome
-        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
-        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
-            startActivity(chromeIntent);
-            return;
-        }
+//        //Open in chrome
+//        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
+//        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
+//        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
+//            startActivity(chromeIntent);
+//            return;
+//        }
 
         //No chrome found. Open in any web app
-        uri = Uri.parse(url);
+        Uri uri = Uri.parse(url);
         Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
         if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
             startActivity(webIntent);
