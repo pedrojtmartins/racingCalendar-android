@@ -1,5 +1,6 @@
 package com.pedrojtmartins.racingcalendar.views.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,7 @@ import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityAboutBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
+import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
@@ -54,6 +56,11 @@ public class AboutActivity extends AppCompatActivity {
 
     public void onClick_sendEmail(View v) {
         IntentHelper.composeEmail(this, new String[]{getString(R.string.devEmail)}, "");
+    }
+
+    public void onClick_toStore(View v) {
+        Intent intent = AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager());
+        startActivity(intent);
     }
 
 }
