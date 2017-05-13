@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,7 @@ import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
+import com.pedrojtmartins.racingcalendar.helpers.APIHelper;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
 import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
@@ -257,8 +259,17 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
-        if (!undoFragmentTransition())
-            super.onBackPressed();
+        if (undoFragmentTransition())
+            return;
+
+        // In case the active scroll view is not on top, move it up and return
+        int currTab = mBinding.viewPager.getCurrentItem();
+        if (!mPageAdapter.isOnTop(currTab)) {
+            mPageAdapter.smoothScrollToTop(currTab);
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     //endregion
@@ -409,16 +420,27 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             url = "http://" + url;
         }
 
-//        //Open in chrome
-//        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-//        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
-//        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
-//            startActivity(chromeIntent);
+ //       Uri uri = Uri.parse(url);
+
+        //Open in chrome
+        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
+        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
+        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
+            startActivity(chromeIntent);
+            return;
+        }
+
+//        // TODO: 12/05/2017 add setting to disable chrome custom tab
+//        // Open chrome custom tab
+//        if (true) {
+//            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+//            builder.setToolbarColor(APIHelper.getColor(getResources(), R.color.primary));
+//            CustomTabsIntent customTabsIntent = builder.build();
+//            customTabsIntent.launchUrl(this, Uri.parse(url));
 //            return;
 //        }
-
+//
         //No chrome found. Open in any web app
-        Uri uri = Uri.parse(url);
         Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
         if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
             startActivity(webIntent);

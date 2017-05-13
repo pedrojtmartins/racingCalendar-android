@@ -13,4 +13,5 @@ public class Settings {
     public static boolean IS_12_HOURS_FORMAT;
     public static String DAY_MONTH_FORMAT;
 
+    public static int SCROLL_ON_TOP_THRESHOLD = 500;
 }

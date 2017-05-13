@@ -7,11 +7,13 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.SeriesAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
@@ -24,9 +26,22 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
     private ISeriesCallback mISeriesCallback;
     private FragmentListBinding mBinding;
 
+    private int scrollPos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
+
+        // This is needed to keep track of the scroll position. When the user presses back
+        // the app will scroll up if is not on the top.
+        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                scrollPos += dy;
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         return mBinding.getRoot();
     }
 
@@ -67,5 +82,10 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
     @Override
     public void smoothScrollToTop() {
         mBinding.recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public boolean isOnTop() {
+        return scrollPos < Settings.SCROLL_ON_TOP_THRESHOLD;
     }
 }
