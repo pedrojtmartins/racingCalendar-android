@@ -57,6 +57,6 @@
 
     <string name="openUrl">Abrir website</string>
     <string name="noBrowser">Nenhum browser encontrado. Deverá instalar uma aplicação capaz de abrir páginas web.</string>
-    <string name="settinns_links">Links web</string>
+    <string name="settinns_links">Endereços web</string>
     <string name="settings_open_link_in_app">Abrir no browser</string>
 </resources>
