@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         } else {
 
             final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-            final RCSettings rcSettings = spManager.getNotificationsSettings();
+            final RCSettings rcSettings = spManager.getSettings();
             if (rcSettings.notificationsRemember) {
                 // Settings are stored. Use them
                 updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()));
@@ -357,11 +357,11 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                                     // User wants to remember the settings. Update the settings we have already
                                     rcSettings.notificationsRemember = true;
                                     rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                    spManager.addNotificationsSettings(rcSettings.toString());
+                                    spManager.addSettings(rcSettings.toString());
                                 } else {
                                     // Keep the minutes selected but just suggest next time
                                     rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                    spManager.addNotificationsSettings(rcSettings.toString());
+                                    spManager.addSettings(rcSettings.toString());
                                 }
 
                                 updateAlarm(race, minutesBefore);
@@ -416,39 +416,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     private void openUrl(String url) {
-        if (!url.startsWith("http")) {
-            url = "http://" + url;
-        }
-
- //       Uri uri = Uri.parse(url);
-
-        //Open in chrome
-        Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-        Intent chromeIntent = new Intent(Intent.ACTION_VIEW, uri);
-        if (IntentHelper.canResolveIntent(chromeIntent, getPackageManager())) {
-            startActivity(chromeIntent);
+        if (url == null) {
             return;
         }
 
-//        // TODO: 12/05/2017 add setting to disable chrome custom tab
-//        // Open chrome custom tab
-//        if (true) {
-//            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-//            builder.setToolbarColor(APIHelper.getColor(getResources(), R.color.primary));
-//            CustomTabsIntent customTabsIntent = builder.build();
-//            customTabsIntent.launchUrl(this, Uri.parse(url));
-//            return;
-//        }
-//
-        //No chrome found. Open in any web app
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
-        if (IntentHelper.canResolveIntent(webIntent, getPackageManager())) {
-            startActivity(webIntent);
-            return;
+        if (!IntentHelper.openUrl(this, url, mViewModel.openLinksInBrowser())) {
+            //No web app found. Alert the user
+            AlertDialogHelper.displayOkDialog(this, R.string.noBrowser);
         }
-
-        //No web app found. Alert the user
-        AlertDialogHelper.displayOkDialog(this, R.string.noBrowser);
     }
 
     @Override

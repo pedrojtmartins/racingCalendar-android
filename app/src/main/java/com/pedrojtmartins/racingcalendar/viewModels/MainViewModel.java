@@ -9,6 +9,7 @@ import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.viewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.models.ServerData;
@@ -194,5 +195,10 @@ public class MainViewModel implements IDataUpdater {
             return null;
 
         return series.getFullUrl() + race.getUrl();
+    }
+
+    public boolean openLinksInBrowser() {
+        RCSettings settings = mSharedPreferencesManager.getSettings();
+        return settings != null && settings.openLinksInBrowser;
     }
 }

@@ -18,11 +18,11 @@ public class SettingsViewModel {
     }
 
     private void loadSettings() {
-        mSettings = mSharedPreferencesManager.getNotificationsSettings();
+        mSettings = mSharedPreferencesManager.getSettings();
     }
 
     public void saveChanges() {
         String settings = mSettings.toString();
-        mSharedPreferencesManager.addNotificationsSettings(settings);
+        mSharedPreferencesManager.addSettings(settings);
     }
 }

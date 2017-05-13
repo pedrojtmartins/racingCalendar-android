@@ -81,12 +81,12 @@ public class SharedPreferencesManager {
     //endregion
 
     //region Settings
-    public RCSettings getNotificationsSettings() {
+    public RCSettings getSettings() {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         return new RCSettings(sp.getString(SETTINGS_NOTIFICATIONS, ""));
     }
 
-    public void addNotificationsSettings(String settings) {
+    public void addSettings(String settings) {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SETTINGS_NOTIFICATIONS, settings);
@@ -145,16 +145,16 @@ public class SharedPreferencesManager {
 //    }
     //endregion
 
-    //Not used yet
-    public boolean getReleaseNotes1Shown() {
-        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        return sp.getBoolean(RELEASE_NOTES1, false);
-    }
-
-    public void setReleaseNotes1Seen() {
-        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(RELEASE_NOTES1, true);
-        editor.apply();
-    }
+//    //Not used yet
+//    public boolean getReleaseNotes1Shown() {
+//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+//        return sp.getBoolean(RELEASE_NOTES1, false);
+//    }
+//
+//    public void setReleaseNotes1Seen() {
+//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.putBoolean(RELEASE_NOTES1, true);
+//        editor.apply();
+//    }
 }

@@ -58,4 +58,6 @@
 
     <string name="openUrl">Open website</string>
     <string name="noBrowser">No web browser found. You must install an app capable of opening web links.</string>
+    <string name="settinns_links">Web links</string>
+    <string name="settings_open_link_in_app">Open in browser</string>
 </resources>
