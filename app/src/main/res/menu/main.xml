@@ -17,4 +17,10 @@
         android:orderInCategory="3"
         android:title="@string/action_about"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rate"
+        android:orderInCategory="4"
+        android:title="@string/action_rate"
+        app:showAsAction="never" />
 </menu>

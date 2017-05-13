@@ -256,6 +256,11 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
 
+            case R.id.action_rate:
+                Intent intent = AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager());
+                startActivity(intent);
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

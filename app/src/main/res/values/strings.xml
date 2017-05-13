@@ -62,4 +62,5 @@
     <string name="settings_open_link_in_app">Open in default browser</string>
 
     <string name="newSeries">New series\n</string>
+    <string name="action_rate">Rate</string>
 </resources>

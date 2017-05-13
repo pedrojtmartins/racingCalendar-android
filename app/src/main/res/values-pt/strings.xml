@@ -61,4 +61,5 @@
     <string name="settings_open_link_in_app">Abrir no browser</string>
 
     <string name="newSeries">Séries adicionadas\n</string>
+    <string name="action_rate">Avaliar</string>
 </resources>
