@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.alertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +49,19 @@ public class AlertDialogHelper {
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
                 .setMessage(msg)
+                .setPositiveButton("Ok", null)
+                .show();
+
+        return true;
+    }
+
+    public static boolean displayNewSeriesDialog(Context context, Resources resources, int msg, String series) {
+        if (context == null || resources == null)
+            return false;
+
+        String m = resources.getString(msg) + series;
+        new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
+                .setMessage(m)
                 .setPositiveButton("Ok", null)
                 .show();
 

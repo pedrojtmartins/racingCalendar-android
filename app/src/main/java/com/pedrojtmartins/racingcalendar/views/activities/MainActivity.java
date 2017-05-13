@@ -131,7 +131,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         mViewModel.updatedFromServer.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
-                SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
+                String seriesAdded = mViewModel.updatedFromServerNewSeries;
+                if (seriesAdded == null || seriesAdded.isEmpty()) {
+                    // Series were only updated
+                    SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
+                } else {
+                    // New series added
+                    AlertDialogHelper.displayNewSeriesDialog(
+                            mBinding.mainContent.getContext(),
+                            getResources(),
+                            R.string.newSeries,
+                            seriesAdded);
+                }
             }
         });
 

@@ -59,4 +59,6 @@
     <string name="noBrowser">Nenhum browser encontrado. Deverá instalar uma aplicação capaz de abrir páginas web.</string>
     <string name="settinns_links">Endereços web</string>
     <string name="settings_open_link_in_app">Abrir no browser</string>
+
+    <string name="newSeries">Séries adicionadas\n</string>
 </resources>

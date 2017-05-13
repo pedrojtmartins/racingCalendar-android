@@ -29,6 +29,8 @@ public class MainViewModel implements IDataUpdater {
 
     //This will be observed by the activity and will display a message when needed
     public ObservableInt updatedFromServer;
+    public String updatedFromServerNewSeries;
+
     public ObservableBoolean newAppUpdate;
 
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
@@ -119,13 +121,32 @@ public class MainViewModel implements IDataUpdater {
         mDbManager.addRaces(data.races);
         mDbManager.addSeries(data.series);
 
-        loadDataFromLocalDb();
-
+        // Find the names of the series added if any
+        // so we can inform the user
+        updatedFromServerNewSeries = findNewSeriesNamesAdded(data);
         updatedFromServer.set(updatedFromServer.get() + 1);
+
+        loadDataFromLocalDb();
 
         boolean forceUpdate = mSharedPreferencesManager.getForceDataUpdate();
         if (forceUpdate)
             mSharedPreferencesManager.setForceDataUpdate();
+    }
+
+    private String findNewSeriesNamesAdded(ServerData data) {
+        // Will only search in case we already have some series. i.e. it is a new update
+        if (mSeriesList == null || mSeriesList.isEmpty() || data == null || data.newSeries == null || data.newSeries.isEmpty())
+            return null;
+
+        StringBuilder sb = new StringBuilder();
+        for (int id : data.newSeries) {
+            Series series = Series.getSeries(data.series, id);
+            if (series != null) {
+                sb.append("\n-").append(series.getName());
+            }
+        }
+
+        return sb.toString();
     }
 
     private void checkAppVersion() {

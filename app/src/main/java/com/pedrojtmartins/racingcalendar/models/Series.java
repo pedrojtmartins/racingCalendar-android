@@ -6,6 +6,8 @@ import android.databinding.Bindable;
 import com.google.gson.annotations.SerializedName;
 import com.pedrojtmartins.racingcalendar.BR;
 
+import java.util.ArrayList;
+
 /**
  * Pedro Martins
  * 29/01/2017
@@ -155,5 +157,17 @@ public class Series extends BaseObservable {
         mCurrentRace = currRace;
         mUrl = url;
         mUrlPrefix = urlPrefix;
+    }
+
+    public static Series getSeries(ArrayList<Series> list, int id) {
+        if (list == null || list.isEmpty() || id < 0)
+            return null;
+
+        for (Series currSeries : list) {
+            if (currSeries.mId == id)
+                return currSeries;
+        }
+
+        return null;
     }
 }
