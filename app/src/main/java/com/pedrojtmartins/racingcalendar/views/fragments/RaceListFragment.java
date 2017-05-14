@@ -73,7 +73,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
 
                 // After we load the previous rows
                 // disable the swiping functionality
-                mBinding.swipeRefresh.setOnRefreshListener(null);
                 mBinding.swipeRefresh.setEnabled(false);
             }
         });
@@ -180,5 +179,12 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     public void itemsReloaded(int count) {
         mBinding.recyclerView.smoothScrollBy(0, -Settings.SCROLL_ON_TOP_THRESHOLD);
         mBinding.swipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void resetScrollPos() {
+        scrollPos = 0;
+        mBinding.recyclerView.scrollToPosition(0);
+        mBinding.swipeRefresh.setEnabled(true);
     }
 }

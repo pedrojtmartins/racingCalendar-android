@@ -9,4 +9,5 @@ public interface IRecyclerViewFragment {
     void smoothScrollToTop();
     boolean isOnTop();
     void itemsReloaded(int count);
+    void resetScrollPos();
 }
