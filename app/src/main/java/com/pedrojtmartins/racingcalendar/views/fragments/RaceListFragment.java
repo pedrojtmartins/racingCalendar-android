@@ -101,7 +101,8 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         // To achieve that the fragment will need to be aware of the selected layout.
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
-        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
+//        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
 
         // When transitioning between fragments the recyclerview could be
@@ -110,7 +111,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.recyclerView.post(new Runnable() {
             @Override
             public void run() {
-                mBinding.recyclerView.scrollToPosition(0);
+                mBinding.recyclerView.smoothScrollBy(0, -scrollPos);
             }
         });
     }
@@ -139,20 +140,17 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
 
     @Override
     public void smoothScrollToTop() {
-        mBinding.recyclerView.smoothScrollToPosition(0);
+        mBinding.recyclerView.smoothScrollBy(0, -scrollPos);
     }
 
     @Override
     public boolean isOnTop() {
-        return scrollPos < Settings.SCROLL_ON_TOP_THRESHOLD;
+        return Math.abs(scrollPos) < Settings.SCROLL_ON_TOP_THRESHOLD;
     }
 
     @Override
     public void itemsReloaded(int count) {
-        if (count > 0) {
-            mBinding.recyclerView.smoothScrollToPosition(count - 1);
-        }
-
+        mBinding.recyclerView.smoothScrollBy(0, -Settings.SCROLL_ON_TOP_THRESHOLD);
         mBinding.swipeRefresh.setRefreshing(false);
     }
 }

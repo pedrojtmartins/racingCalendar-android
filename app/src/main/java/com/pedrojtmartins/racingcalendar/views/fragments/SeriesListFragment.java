@@ -91,6 +91,6 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
 
     @Override
     public boolean isOnTop() {
-        return scrollPos < Settings.SCROLL_ON_TOP_THRESHOLD;
+        return Math.abs(scrollPos) < Settings.SCROLL_ON_TOP_THRESHOLD;
     }
 }
