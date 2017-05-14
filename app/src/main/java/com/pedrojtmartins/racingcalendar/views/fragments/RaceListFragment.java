@@ -20,7 +20,6 @@ import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
-import com.pedrojtmartins.racingcalendar.layoutManagers.SmoothScrollerLinearLayoutManager;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 
@@ -78,6 +77,35 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
                 mBinding.swipeRefresh.setEnabled(false);
             }
         });
+
+//        if (mSeries != null)
+//            mBinding.seriesHeaderMore.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    PopupMenu popup = new PopupMenu(mBinding.seriesHeaderMore.getContext(), mBinding.seriesHeaderMore);
+//                    popup.getMenuInflater().inflate(R.menu.header_series, popup.getMenu());
+//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            switch (item.getItemId()) {
+//                                case R.id.setNotifForAll:
+//                                    mIRaceList.updateAlarm(mSeries, true);
+//                                    break;
+//
+////                                case R.id.removeNotifForAll:
+////                                    mIRaceList.updateAlarm(mSeries, false);
+////                                break;
+//                            }
+//                            return true;
+//                        }
+//                    });
+//
+////                    Menu menu = popup.getMenu();
+////                    menu.findItem(R.id.setNotifForAll).setVisible(!race.getIsAlarmSet());
+////                    menu.findItem(R.id.removeNotifForAll).setVisible(race.getIsAlarmSet());
+//
+//                    popup.show();
+//                }
+//            });
 
         return mBinding.getRoot();
     }

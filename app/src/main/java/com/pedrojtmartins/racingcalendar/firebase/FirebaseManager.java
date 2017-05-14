@@ -52,5 +52,5 @@ public class FirebaseManager {
         return true;
     }
 
-    
+
 }

@@ -28,7 +28,7 @@ public class IntentHelper {
         return intent.resolveActivity(packageManager) != null;
     }
 
-    public static boolean openUrl(Context context, String url, boolean inApp){
+    public static boolean openUrl(Context context, String url, boolean inApp) {
         if (url == null) {
             return false;
         }

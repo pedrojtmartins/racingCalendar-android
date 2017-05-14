@@ -411,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         }
     }
 
+
     @Override
     public void openUrl(Race race) {
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_URL);

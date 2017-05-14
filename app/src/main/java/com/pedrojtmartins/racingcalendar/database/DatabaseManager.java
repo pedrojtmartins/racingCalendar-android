@@ -209,7 +209,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db = getReadableDatabase();
             cursor = db.rawQuery(query, null);
 
-            return buildRaces(cursor,upcoming);
+            return buildRaces(cursor, upcoming);
         } catch (SQLiteException e) {
             e.printStackTrace();
             return null;
