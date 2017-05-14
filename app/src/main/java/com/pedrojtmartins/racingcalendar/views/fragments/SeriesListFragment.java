@@ -83,6 +83,10 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
     public void itemsReloaded(int count) {
         // Series list won't use this.
     }
+    @Override
+    public void resetScrollPos() {
+        // Series list won't use this.
+    }
 
     @Override
     public void smoothScrollToTop() {

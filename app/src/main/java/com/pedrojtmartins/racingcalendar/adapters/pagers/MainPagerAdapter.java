@@ -150,4 +150,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
         return false;
     }
+
+    public void resetFavouritesScrollPos() {
+        if (mFragments == null || mFragments.length <= PAGE_FAVOURITES)
+            return;
+
+        Fragment fragment = mFragments[PAGE_FAVOURITES];
+        if (fragment instanceof IRecyclerViewFragment) {
+            ((IRecyclerViewFragment) fragment).resetScrollPos();
+        }
+    }
 }
