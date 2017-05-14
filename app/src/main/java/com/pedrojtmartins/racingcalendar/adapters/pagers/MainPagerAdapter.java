@@ -129,7 +129,17 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public boolean isOnTop(int tab){
+    public void previousItemsLoaded(int tab, int count) {
+        if (tab < 0 || tab > mFragments.length)
+            return;
+
+        Fragment fragment = mFragments[tab];
+        if (fragment instanceof IRecyclerViewFragment) {
+            ((IRecyclerViewFragment) fragment).itemsReloaded(count);
+        }
+    }
+
+    public boolean isOnTop(int tab) {
         if (tab < 0 || tab > mFragments.length)
             return false;
 

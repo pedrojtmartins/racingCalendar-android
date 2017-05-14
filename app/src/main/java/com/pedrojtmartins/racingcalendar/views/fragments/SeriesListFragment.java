@@ -80,6 +80,11 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
     }
 
     @Override
+    public void itemsReloaded(int count) {
+        // Series list won't use this.
+    }
+
+    @Override
     public void smoothScrollToTop() {
         mBinding.recyclerView.smoothScrollToPosition(0);
     }

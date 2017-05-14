@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
+import com.pedrojtmartins.racingcalendar.layoutManagers.SmoothScrollerLinearLayoutManager;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 
@@ -61,6 +63,22 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
             }
         });
 
+        mBinding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mSeries != null) {
+                    mIRaceList.loadPrevious(mSeries);
+                } else {
+                    mIRaceList.loadPrevious(mFavouritesOnly);
+                }
+
+                // After we load the previous rows
+                // disable the swiping functionality
+                mBinding.swipeRefresh.setOnRefreshListener(null);
+                mBinding.swipeRefresh.setEnabled(false);
+            }
+        });
+
         return mBinding.getRoot();
     }
 
@@ -83,7 +101,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         // To achieve that the fragment will need to be aware of the selected layout.
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
 
         // When transitioning between fragments the recyclerview could be
@@ -127,5 +145,14 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     @Override
     public boolean isOnTop() {
         return scrollPos < Settings.SCROLL_ON_TOP_THRESHOLD;
+    }
+
+    @Override
+    public void itemsReloaded(int count) {
+        if (count > 0) {
+            mBinding.recyclerView.smoothScrollToPosition(count - 1);
+        }
+
+        mBinding.swipeRefresh.setRefreshing(false);
     }
 }

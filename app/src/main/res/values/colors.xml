@@ -8,11 +8,14 @@
     <color name="secondary_text">#757575</color>
     <color name="icons">#F44336</color>
     <color name="divider">#BDBDBD</color>
+    <color name="transparent">#0000</color>
 
     <color name="listDividerTopRow">#585858</color>
     <color name="listDividerBottomRow">#c6c6c6</color>
 
     <color name="arrowsTint">#9b9b9b</color>
+    <color name="thisWeek">#3000cc00</color>
+    <color name="pastEventForeground">#30000000</color>
 
     <color name="seriesProgressbarBackground">#9b9b9b</color>
 

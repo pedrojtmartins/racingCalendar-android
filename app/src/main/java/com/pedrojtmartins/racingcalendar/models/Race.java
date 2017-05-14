@@ -156,7 +156,19 @@ public class Race extends BaseObservable {
         notifyPropertyChanged(BR.isAlarmSet);
     }
 
-    public Race(int id, int seriesId, int raceNumber, String name, String location, String date, String seriesName, boolean isAlarmSet, String url) {
+    @Bindable
+    public int eventDateStatus;
+
+    public Race(int id,
+                int seriesId,
+                int raceNumber,
+                String name,
+                String location,
+                String date,
+                String seriesName,
+                boolean isAlarmSet,
+                String url,
+                boolean upcoming) {
         mId = id;
         mSeriesId = seriesId;
         mRaceNumber = raceNumber;
@@ -166,6 +178,7 @@ public class Race extends BaseObservable {
         mSeriesName = seriesName;
         mIsAlarmSet = isAlarmSet;
         mUrl = url;
+        eventDateStatus = upcoming ? 1 : -1;
     }
 
     @Override

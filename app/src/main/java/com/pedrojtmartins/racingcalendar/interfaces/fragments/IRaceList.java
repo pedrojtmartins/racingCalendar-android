@@ -3,6 +3,7 @@ package com.pedrojtmartins.racingcalendar.interfaces.fragments;
 import android.databinding.ObservableArrayList;
 
 import com.pedrojtmartins.racingcalendar.models.Race;
+import com.pedrojtmartins.racingcalendar.models.Series;
 
 /**
  * Pedro Martins
@@ -21,4 +22,8 @@ public interface IRaceList {
     void openUrl(Race race);
 
     void openNotifications(Race race);
+
+
+    void loadPrevious(boolean mFavouritesOnly);
+    void loadPrevious(Series mSeries);
 }

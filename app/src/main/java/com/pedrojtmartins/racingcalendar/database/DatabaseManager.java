@@ -160,7 +160,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     //region Race
-    private ArrayList<Race> buildRaces(Cursor cursor) {
+    private ArrayList<Race> buildRaces(Cursor cursor, boolean upcoming) {
         ArrayList<Race> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -182,7 +182,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
                 boolean isAlarmSet = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_RACE_ID)) != 0;
 
-                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName, isAlarmSet, url));
+                list.add(new Race(id, seriesId, raceNo, name, location, date, seriesName, isAlarmSet, url, upcoming));
             } while (cursor.moveToNext());
         }
 
@@ -201,7 +201,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return values;
     }
 
-    private ArrayList<Race> queryRaces(String query) {
+    private ArrayList<Race> queryRaces(String query, boolean upcoming) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
 
@@ -209,7 +209,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db = getReadableDatabase();
             cursor = db.rawQuery(query, null);
 
-            return buildRaces(cursor);
+            return buildRaces(cursor,upcoming);
         } catch (SQLiteException e) {
             e.printStackTrace();
             return null;
@@ -235,34 +235,71 @@ public class DatabaseManager extends SQLiteOpenHelper {
      *
      * @return list of all races
      */
-    public ArrayList<Race> getUpcomingRaces(boolean favouritesOnly) {
+    public ArrayList<Race> getRaces(boolean favouritesOnly) {
+        return getRaces(favouritesOnly, true);
+    }
+
+
+    /**
+     * Retrieves all races in the database
+     *
+     * @param favouritesOnly
+     * @param upcoming
+     * @return
+     */
+    public ArrayList<Race> getRaces(boolean favouritesOnly, boolean upcoming) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_RACE_ID +
                 " FROM " + TABLE_RACES + " r" +
                 " LEFT OUTER JOIN " + TABLE_NOTIFICATIONS + " n ON r." + KEY_RACE_ID + "=n." + KEY_NOTIFICATIONS_RACE_ID +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " WHERE r." + KEY_RACE_DATE + ">=('").append(today).append("')");
+                " WHERE r." + KEY_RACE_DATE);
+
+        sBuilder.append(upcoming ? ">=" : "<");
+        sBuilder.append("('").append(today).append("')");
 
         if (favouritesOnly)
             sBuilder.append(" AND s." + KEY_SERIES_FAVOURITE + "=1");
 
         sBuilder.append(" ORDER BY r." + KEY_RACE_DATE + ",s." + KEY_SERIES_NAME);
 
-        return queryRaces(sBuilder.toString());
+        return queryRaces(sBuilder.toString(), upcoming);
     }
 
-    public ArrayList<Race> getUpcomingRaces(int seriesId) {
+    /**
+     * Retrieves all upcoming races from the series in the database
+     *
+     * @param seriesId
+     * @return
+     */
+    public ArrayList<Race> getRaces(int seriesId) {
+        return getRaces(seriesId, true);
+    }
+
+    /**
+     * Retrieves all races from the series in the database
+     *
+     * @param seriesId
+     * @param upcoming
+     * @return
+     */
+    public ArrayList<Race> getRaces(int seriesId, boolean upcoming) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = ("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_RACE_ID +
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_RACE_ID +
                 " FROM " + TABLE_RACES + " r" +
                 " LEFT OUTER JOIN " + TABLE_NOTIFICATIONS + " n ON r." + KEY_RACE_ID + "=n." + KEY_NOTIFICATIONS_RACE_ID +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " WHERE r." + KEY_RACE_DATE + ">=('" + today + "')" +
-                " AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
+                " WHERE r." + KEY_RACE_DATE);
+
+        sBuilder.append(upcoming ? ">=" : "<");
+        sBuilder.append("('").append(today).append("')");
+
+        sBuilder.append(" AND r." + KEY_RACE_SERIES_ID + "=" + seriesId +
                 " ORDER BY r." + KEY_RACE_DATE + ",s." + KEY_SERIES_NAME);
 
-        return queryRaces(query);
+        return queryRaces(sBuilder.toString(), upcoming);
     }
 
 

@@ -41,15 +41,16 @@ public class MainViewModel implements IDataUpdater {
     }
 
     public ObservableArrayList<Race> getRacesList(int seriesId) {
-        ArrayList<Race> aList = mDbManager.getUpcomingRaces(seriesId);
+        ArrayList<Race> aList = mDbManager.getRaces(seriesId);
         if (aList == null)
             return null;
 
-        ObservableArrayList<Race> list = new ObservableArrayList<>();
-        list.addAll(aList);
-        return list;
+        mSeriesRaces.clear();
+        mSeriesRaces.addAll(aList);
+        return mSeriesRaces;
     }
 
+    private ObservableArrayList<Race> mSeriesRaces;
     private ObservableArrayList<Race> mFavouriteRaces;
     private ObservableArrayList<Race> mAllRaces;
 
@@ -67,6 +68,7 @@ public class MainViewModel implements IDataUpdater {
         mFavouriteRaces = new ObservableArrayList<>();
         mAllRaces = new ObservableArrayList<>();
         mSeriesList = new ObservableArrayList<>();
+        mSeriesRaces = new ObservableArrayList<>();
 
         updatedFromServer = new ObservableInt(0);
         newAppUpdate = new ObservableBoolean(false);
@@ -90,12 +92,12 @@ public class MainViewModel implements IDataUpdater {
             mSeriesList.addAll(seriesList);
 
         mFavouriteRaces.clear();
-        ArrayList<Race> favsList = mDbManager.getUpcomingRaces(true);
+        ArrayList<Race> favsList = mDbManager.getRaces(true);
         if (favsList != null && favsList.size() > 0)
             mFavouriteRaces.addAll(favsList);
 
         mAllRaces.clear();
-        ArrayList<Race> raceList = mDbManager.getUpcomingRaces(false);
+        ArrayList<Race> raceList = mDbManager.getRaces(false);
         if (raceList != null && raceList.size() > 0)
             mAllRaces.addAll(raceList);
 
@@ -163,6 +165,33 @@ public class MainViewModel implements IDataUpdater {
         loadDataFromLocalDb();
     }
 
+    public int loadPrevious(boolean favouritesOnly) {
+        ArrayList<Race> previousRaces = mDbManager.getRaces(favouritesOnly, false);
+        if (previousRaces != null && previousRaces.size() > 0) {
+            if (favouritesOnly) {
+                mFavouriteRaces.addAll(0, previousRaces);
+            } else {
+                mAllRaces.addAll(0, previousRaces);
+            }
+
+            return previousRaces.size();
+        }
+        return 0;
+    }
+
+    public int loadPrevious(Series series) {
+        if (series == null)
+            return 0;
+
+        ArrayList<Race> previousRaces = mDbManager.getRaces(series.getId(), false);
+        if (previousRaces != null && previousRaces.size() > 0) {
+            mSeriesRaces.addAll(0, previousRaces);
+            return previousRaces.size();
+        }
+
+        return 0;
+    }
+
     public RCNotification addNotification(final Race race, final int minutesBefore) {
         RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
         if (rcNotification != null)
@@ -222,4 +251,5 @@ public class MainViewModel implements IDataUpdater {
         RCSettings settings = mSharedPreferencesManager.getSettings();
         return settings != null && settings.openLinksInBrowser;
     }
+
 }

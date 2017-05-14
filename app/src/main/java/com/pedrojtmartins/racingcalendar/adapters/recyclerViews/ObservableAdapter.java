@@ -36,7 +36,7 @@ abstract class ObservableAdapter<T> extends RecyclerView.Adapter<ObservableAdapt
 
             @Override
             public void onItemRangeInserted(ObservableList<T> ts, int i, int i1) {
-                notifyDataSetChanged();
+                notifyItemRangeInserted(i, i1);
             }
 
             @Override

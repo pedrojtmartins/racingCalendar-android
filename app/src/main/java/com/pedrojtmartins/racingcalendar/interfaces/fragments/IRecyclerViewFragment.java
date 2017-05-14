@@ -8,4 +8,5 @@ package com.pedrojtmartins.racingcalendar.interfaces.fragments;
 public interface IRecyclerViewFragment {
     void smoothScrollToTop();
     boolean isOnTop();
+    void itemsReloaded(int count);
 }

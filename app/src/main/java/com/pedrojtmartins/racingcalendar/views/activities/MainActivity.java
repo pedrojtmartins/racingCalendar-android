@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -29,7 +27,6 @@ import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
-import com.pedrojtmartins.racingcalendar.helpers.APIHelper;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
 import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
@@ -447,6 +444,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         Intent intent = new Intent(this, NotificationsActivity.class);
         intent.putExtra("raceId", race.getId());
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void loadPrevious(Series series) {
+        int count = mViewModel.loadPrevious(series);
+        mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
+    }
+
+    @Override
+    public void loadPrevious(boolean favouritesOnly) {
+        int count = mViewModel.loadPrevious(favouritesOnly);
+        mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
     }
 
     @Override
