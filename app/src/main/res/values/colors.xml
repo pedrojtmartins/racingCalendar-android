@@ -14,8 +14,11 @@
     <color name="listDividerBottomRow">#c6c6c6</color>
 
     <color name="arrowsTint">#9b9b9b</color>
-    <color name="thisWeek">#3000cc00</color>
-    <color name="pastEventForeground">#30000000</color>
+
+    <!--Race backgrounds-->
+    <color name="raceNormalBackground">#ffffff</color>
+    <color name="racePastBackground">#dcdcdc</color>
+    <color name="raceThisWeekBackground">#fffff0</color>
 
     <color name="seriesProgressbarBackground">#9b9b9b</color>
 

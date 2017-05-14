@@ -3,12 +3,9 @@ package com.pedrojtmartins.racingcalendar.adapters.recyclerViews;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
@@ -40,7 +37,12 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             viewHolder.mDataBinding.setVariable(BR.data, currRace);
 
             int raceWeekNo = DateFormatter.getWeekNumber(currRace.getDate());
+            int thisWeekNo = DateFormatter.getThisWeekNumber();
 
+            // This will be responsible for turning the foreground into the "thisWeek" color
+            if (raceWeekNo == thisWeekNo && currRace.eventDateStatus > 0) {
+                currRace.eventDateStatus = 0;
+            }
 
             boolean displayTitle = false;
             if (position > 0) {
@@ -51,7 +53,6 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
             RowRace2Binding binding = (RowRace2Binding) viewHolder.mDataBinding;
             if (position == 0 || displayTitle) {
-                int thisWeekNo = DateFormatter.getThisWeekNumber();
                 String dateLbl;
                 if (raceWeekNo == thisWeekNo) {
                     // TODO: 14/05/2017 we only need to change the color if there are previous races
@@ -136,15 +137,18 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     }
 
     public static class BindingAdapters {
-        @BindingAdapter({"bind:foreground"})
-        public static void setFont(FrameLayout layout, int dateState) {
-            Drawable drawable = null;
-            if (dateState < 0) {
-                int color = APIHelper.getColor(layout.getContext().getResources(), R.color.pastEventForeground);
-                drawable = new ColorDrawable(color);
+        @BindingAdapter({"bind:background"})
+        public static void setFont(LinearLayout layout, int dateState) {
+            int color = 0;
+            if (dateState == 0) {
+                color = APIHelper.getColor(layout.getContext().getResources(), R.color.raceThisWeekBackground);
+            } else if (dateState < 0) {
+                color = APIHelper.getColor(layout.getContext().getResources(), R.color.racePastBackground);
+            } else {
+                color = APIHelper.getColor(layout.getContext().getResources(), R.color.raceNormalBackground);
             }
 
-            layout.setForeground(drawable);
+            layout.setBackgroundColor(color);
         }
     }
 }
