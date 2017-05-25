@@ -9,74 +9,129 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
-import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.RowRace2Binding;
+import com.pedrojtmartins.racingcalendar.databinding.RowRaceDatesBinding;
 import com.pedrojtmartins.racingcalendar.helpers.APIHelper;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.models.Race;
 
 public class RaceAdapter extends ObservableAdapter<Race> {
-    private final String sThisWeek;
-    private final String sNextWeek;
     private final IRaceList mCallback;
+    private final String mThisWeek;
+    private final String mNextWeek;
+    private final String mRaceShort;
 
     public RaceAdapter(int itemLayoutId, ObservableArrayList<Race> items, IRaceList iCallback, Resources resources) {
         super(itemLayoutId, items);
 
         mCallback = iCallback;
-        sThisWeek = resources.getString(R.string.thisWeek);
-        sNextWeek = resources.getString(R.string.nextWeek);
+        mThisWeek = resources.getString(R.string.thisWeek);
+        mNextWeek = resources.getString(R.string.nextWeek);
+        mRaceShort = resources.getString(R.string.raceShort);
     }
 
     @Override
     public void onBindViewHolder(ObservableAdapter.ViewHolder viewHolder, int position) {
-        if (mValues != null && mValues.size() > position) {
-            Race currRace = mValues.get(position);
-            viewHolder.mDataBinding.setVariable(BR.data, currRace);
-
-            int raceWeekNo = DateFormatter.getWeekNumber(currRace.getDate());
-            int thisWeekNo = DateFormatter.getThisWeekNumber();
-
-            // This will be responsible for turning the foreground into the "thisWeek" color
-            if (raceWeekNo == thisWeekNo && currRace.eventDateStatus > 0) {
-                currRace.eventDateStatus = 0;
-            }
-
-            boolean displayTitle = false;
-            if (position > 0) {
-                int lastRaceWeekNo = DateFormatter.getWeekNumber(mValues.get(position - 1).getDate());
-                if (lastRaceWeekNo != raceWeekNo)
-                    displayTitle = true;
-            }
-
-            RowRace2Binding binding = (RowRace2Binding) viewHolder.mDataBinding;
-            if (position == 0 || displayTitle) {
-                String dateLbl;
-                if (raceWeekNo == thisWeekNo) {
-                    // TODO: 14/05/2017 we only need to change the color if there are previous races
-//                    int color = APIHelper.getColor(binding.getRoot().getContext().getResources(), R.color.thisWeek);
-                    binding.weekTitle.setText(sThisWeek);
-//                    binding.weekTitle.setBackgroundColor(color);
-                } else if (raceWeekNo == thisWeekNo + 1) {
-                    binding.weekTitle.setText(sNextWeek);
-//                    binding.weekTitle.setBackgroundColor(0);
-                } else {
-                    dateLbl = mValues.get(position).getFullDate();
-                    dateLbl = DateFormatter.getWeekInterval(dateLbl);
-                    binding.weekTitle.setText(dateLbl);
-//                    binding.weekTitle.setBackgroundColor(0);
-                }
-
-                binding.weekTitle.setVisibility(View.VISIBLE);
-
-            } else {
-                binding.weekTitle.setVisibility(View.GONE);
-            }
-
-            setClickListeners(binding, currRace);
+        if (mValues == null || mValues.size() <= position) {
+            return;
         }
+
+        RowRace2Binding binding = (RowRace2Binding) viewHolder.mDataBinding;
+        Race currRace = mValues.get(position);
+        binding.setData(currRace);
+
+        // Testing only
+//        currRace.setDate("2017-02-04T22:22:22_2017-02-05T23:22:22");
+
+        int thisWeekNo = DateFormatter.getThisWeekNumber();
+        int raceWeekNo = DateFormatter.getWeekNumber(currRace.getDate(0));
+        // For raceWeekNo we can ignore all the other dates (if they exist)
+        // since they will all be in the same week.
+        // E.g. Friday_Saturday_Sunday
+
+        showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
+        applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
+
+        // Let's set data and change the visibility of the layouts that contain the.
+        int datesCount = currRace.getDatesCount();
+        setDatesInfo(currRace, datesCount, 2, binding.datesContainer3);
+        setDatesInfo(currRace, datesCount, 1, binding.datesContainer2);
+        setDatesInfo(currRace, datesCount, 0, binding.datesContainer1);
+
+        setClickListeners(binding, currRace);
+    }
+
+    private void setDatesInfo(Race currRace, int datesCount, int index, RowRaceDatesBinding binding) {
+        if (datesCount > index) {
+
+            if (datesCount > 1) {
+                String raceIdentifier = mRaceShort + (index + 1);
+                binding.raceRowDateIdentifier.setText(raceIdentifier);
+                if (binding.raceRowDateIdentifier.getVisibility() != View.VISIBLE)
+                    binding.raceRowDateIdentifier.setVisibility(View.VISIBLE);
+            } else {
+                if (binding.raceRowDateIdentifier.getVisibility() != View.GONE)
+                    binding.raceRowDateIdentifier.setVisibility(View.GONE);
+            }
+
+            String hour = currRace.getHour(index);
+            if (hour != null && !hour.isEmpty()) {
+                binding.raceRowDateHour.setText(hour);
+                if (binding.raceRowDateHour.getVisibility() != View.VISIBLE)
+                    binding.raceRowDateHour.setVisibility(View.VISIBLE);
+            } else {
+                if (binding.raceRowDateHour.getVisibility() != View.GONE)
+                    binding.raceRowDateHour.setVisibility(View.GONE);
+            }
+
+            binding.raceRowDateDate.setText(currRace.getSimplifiedDate(index));
+            binding.raceRowDateWeekDay.setText(currRace.getDayOfWeekShort(index));
+
+            if (binding.raceRowDateParent.getVisibility() != View.VISIBLE)
+                binding.raceRowDateParent.setVisibility(View.VISIBLE);
+        } else {
+            if (binding.raceRowDateParent.getVisibility() != View.GONE)
+                binding.raceRowDateParent.setVisibility(View.GONE);
+        }
+    }
+
+    private void showWeekNumberHeaderIfNeeded(int position, RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {
+        if (position == 0 || displayTitle(position, raceWeekNo)) {
+            String dateLbl;
+            if (raceWeekNo == thisWeekNo) {
+                binding.weekTitle.setText(mThisWeek);
+            } else if (raceWeekNo == thisWeekNo + 1) {
+                binding.weekTitle.setText(mNextWeek);
+            } else {
+                dateLbl = mValues.get(position).getFullDate(0);
+                dateLbl = DateFormatter.getWeekInterval(dateLbl);
+                binding.weekTitle.setText(dateLbl);
+            }
+
+            binding.weekTitle.setVisibility(View.VISIBLE);
+
+        } else {
+            binding.weekTitle.setVisibility(View.GONE);
+        }
+    }
+
+    private void applyThisWeekVisualsIfNeeded(Race currRace, int raceWeekNo, int thisWeekNo) {
+        // This will be responsible for turning the foreground into the "thisWeek" color
+        if (raceWeekNo == thisWeekNo && currRace.eventDateStatus > 0) {
+            currRace.eventDateStatus = 0;
+        }
+    }
+
+    private boolean displayTitle(int position, int raceWeekNo) {
+        if (position > 0) {
+            int lastRaceWeekNo = DateFormatter.getWeekNumber(mValues.get(position - 1).getDate(0));
+            if (lastRaceWeekNo != raceWeekNo)
+                return true;
+        }
+
+        return false;
     }
 
     private void setClickListeners(final RowRace2Binding binding, final Race race) {
@@ -88,18 +143,36 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.one:
+                            case R.id.set1notif:
                                 mCallback.updateAlarm(race, true);
-//                                if (mCallback.updateAlarm(race, true)) {
-//                                    race.setIsAlarmSet(true);
-//                                }
                                 break;
 
-                            case R.id.two:
+                            case R.id.rem1notif:
                                 if (mCallback.updateAlarm(race, false)) {
                                     race.setIsAlarmSet(false);
                                 }
                                 break;
+
+//                            case R.id.set2notif:
+//                                mCallback.updateAlarm(race, true, 1);
+//                                break;
+//
+//                            case R.id.rem2notif:
+//                                if (mCallback.updateAlarm(race, false, 1)) {
+//                                    race.setIsAlarmSet(false);
+//                                }
+//                                break;
+//
+//                            case R.id.set3notif:
+//                                mCallback.updateAlarm(race, true, 2);
+//                                break;
+//
+//                            case R.id.rem3notif:
+//                                if (mCallback.updateAlarm(race, false, 2)) {
+//                                    race.setIsAlarmSet(false);
+//                                }
+//                                break;
+
 
                             case R.id.three:
                                 mCallback.openUrl(race);
@@ -112,8 +185,8 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 });
 
                 Menu menu = popup.getMenu();
-                menu.findItem(R.id.one).setVisible(!race.getIsAlarmSet());
-                menu.findItem(R.id.two).setVisible(race.getIsAlarmSet());
+                menu.findItem(R.id.set1notif).setVisible(!race.getIsAlarmSet());
+                menu.findItem(R.id.rem1notif).setVisible(race.getIsAlarmSet());
 
                 popup.show();
             }
@@ -128,12 +201,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             }
         });
 
-        binding.raceRowNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.openNotifications(race);
-            }
-        });
+        // TODO: 24/05/2017 fix me
+//        binding.raceRowNotification.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mCallback.openNotifications(race);
+//            }
+//        });
     }
 
     public static class BindingAdapters {

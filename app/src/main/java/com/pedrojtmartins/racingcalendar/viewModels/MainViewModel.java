@@ -197,7 +197,8 @@ public class MainViewModel implements IDataUpdater {
         if (rcNotification != null)
             return rcNotification;
 
-        rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(), minutesBefore);
+        // TODO: 26/05/2017  
+        rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(0), minutesBefore);
         long id = mDbManager.addNotification(rcNotification);
         if (id <= 0) {// TODO: 20/04/2017 Log error
             return null;

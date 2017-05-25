@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/race_row_date_parent"
+        style="@style/RaceRowDatesContainer">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/race_row_notification"
+            style="@style/RaceRowDateAlarm"
+            app:srcCompat="@drawable/alarm_on_black"/>
+        <!--android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"-->
+        <!--//FIX ME-->
+        <TextView
+            android:id="@+id/race_row_date_identifier"
+            style="@style/RaceRowDateBold"
+            tools:text="R1"/>
+
+        <TextView
+            android:id="@+id/race_row_date_date"
+            style="@style/RaceRowDateNormal"
+            tools:text="26 Mar"/>
+
+        <TextView
+            android:id="@+id/race_row_date_week_day"
+            style="@style/RaceRowDateBold"
+            tools:text="Sab"/>
+
+        <TextView
+            android:id="@+id/race_row_date_hour"
+            style="@style/RaceRowDateBold"
+            tools:text="2:00pm"/>
+
+    </LinearLayout>
+</layout>

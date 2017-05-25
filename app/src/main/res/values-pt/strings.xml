@@ -62,4 +62,6 @@
 
     <string name="newSeries">Séries adicionadas\n</string>
     <string name="action_rate">Avaliar</string>
+
+    <string name="raceShort">C</string>
 </resources>

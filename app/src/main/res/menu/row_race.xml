@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/one"
+        android:id="@+id/set1notif"
         android:orderInCategory="1"
         android:title="@string/setAlarm"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 
     <item
-        android:id="@+id/two"
+        android:id="@+id/rem1notif"
         android:orderInCategory="1"
         android:title="@string/removeAlarm"
-        app:showAsAction="never" />
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/set2notif"
+        android:orderInCategory="2"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/rem2notif"
+        android:orderInCategory="2"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/set3notif"
+        android:orderInCategory="3"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/rem3notif"
+        android:orderInCategory="3"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/three"
-        android:orderInCategory="1"
+        android:orderInCategory="4"
         android:title="@string/openUrl"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 
 </menu>

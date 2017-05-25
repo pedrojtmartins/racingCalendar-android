@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.pedrojtmartins.racingcalendar.views.fragments.RaceListFragment"
-                tools:listitem="@layout/row_race"/>
+                tools:listitem="@layout/row_race2"/>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

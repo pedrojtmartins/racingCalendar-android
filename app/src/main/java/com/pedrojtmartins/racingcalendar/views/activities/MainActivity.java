@@ -333,7 +333,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             return true;
         }
 
-        int valid = RCAlarmManager.isValid(race.getFullDate());
+        // TODO: 23/05/2017 this needs to take dates count into consideration
+        int valid = RCAlarmManager.isValid(race.getFullDate(0));
         switch (valid) {
             case -1:
                 SnackBarHelper.display(mBinding.mainContent, R.string.raceToday);
@@ -344,7 +345,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 return false;
         }
 
-        if (race.hasDateOnly()) {
+        // TODO: 23/05/2017 this needs to take dates count into consideration
+        if (race.hasDateOnly(0)) {
             updateAlarm(race, 0);
             return true;
         } else {

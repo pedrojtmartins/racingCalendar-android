@@ -17,8 +17,12 @@ public class Settings {
     public final static boolean TEST_STORAGE_SERVER = false;
     public final static boolean PRO_VERSION = false;
 
+    //region Device configurations
     public static boolean IS_12_HOURS_FORMAT;
     public static String DAY_MONTH_FORMAT;
 
     public static int SCROLL_ON_TOP_THRESHOLD = 500;
+    //endregion
+
+    public final static String RACE_DATES_DIVIDER = "_";
 }

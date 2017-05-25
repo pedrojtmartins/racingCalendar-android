@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
 import com.pedrojtmartins.racingcalendar.BR;
+import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 /**
@@ -77,42 +78,63 @@ public class Race extends BaseObservable {
 
     @SerializedName("d")
     @Bindable
-    private String mDate;
+    private String mDates;
+    // Dates var can have multiples dates. In case they do, they will be divided by a special character.
+    // This strategy was chosen for performance purposes. This way, there is no need to process all
+    // races when loading from the database, just when they are presented to the user, hence the extra
+    // processing implemented on the getters.
+    // E.g. Single date:   2017-02-23T08:00:00
+    //      Multiple date: 2017-02-23T08:00:00_2017-02-24T09:00:00
 
-    public String getFullDate() {
-        return mDate;
+    public int getDatesCount() {
+        if (mDates == null)
+            return 0;
+
+        return mDates.split(Settings.RACE_DATES_DIVIDER).length;
     }
 
-    public String getSimplifiedDate() {
-        return DateFormatter.getSimplifiedDate(mDate);
+    public String getUnformattedDate() {
+        return mDates;
     }
 
-    public String getDayOfWeekShort() {
-        return DateFormatter.getDayOfWeekShort(mDate);
+    public String getFullDate(int index) {
+        if (mDates == null)
+            return "";
+
+        String[] dates = mDates.split(Settings.RACE_DATES_DIVIDER);
+        if (index >= dates.length)
+            return "";
+
+        return dates[index];
     }
 
-    public String getDate() {
-        if (mDate != null) {
-            if (mDate.contains("T"))
-                return mDate.split("T")[0];
-
-            if (mDate.contains("-"))
-                return mDate;
-        }
-
-        return "";
+    public String getSimplifiedDate(int index) {
+        String date = getFullDate(index);
+        return DateFormatter.getSimplifiedDate(date);
     }
 
-    public String getHour() {
-        return DateFormatter.getHour(mDate);
+    public String getDayOfWeekShort(int index) {
+        String date = getFullDate(index);
+        return DateFormatter.getDayOfWeekShort(date);
+    }
+
+    public String getDate(int index) {
+        String date = getFullDate(index);
+        return DateFormatter.getDate(date);
+    }
+
+    public String getHour(int index) {
+        String date = getFullDate(index);
+        return DateFormatter.getHour(date);
     }
 
     public void setDate(String date) {
-        mDate = date;
+        mDates = date;
     }
 
-    public boolean hasDateOnly() {
-        return mDate == null || !mDate.contains("T");
+    public boolean hasDateOnly(int index) {
+        String date = getFullDate(index);
+        return date == null || !date.contains("T");
     }
 
     @SerializedName("w")
@@ -151,8 +173,8 @@ public class Race extends BaseObservable {
         return mIsAlarmSet;
     }
 
-    public void setIsAlarmSet(boolean mIsAlarmSet) {
-        this.mIsAlarmSet = mIsAlarmSet;
+    public void setIsAlarmSet(boolean alarmSet) {
+        mIsAlarmSet = alarmSet;
         notifyPropertyChanged(BR.isAlarmSet);
     }
 
@@ -174,7 +196,7 @@ public class Race extends BaseObservable {
         mRaceNumber = raceNumber;
         mName = name;
         mLocation = location;
-        mDate = date;
+        mDates = date;
         mSeriesName = seriesName;
         mIsAlarmSet = isAlarmSet;
         mUrl = url;

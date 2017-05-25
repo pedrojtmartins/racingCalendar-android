@@ -63,4 +63,6 @@
 
     <string name="newSeries">New series\n</string>
     <string name="action_rate">Rate</string>
+
+    <string name="raceShort">R</string>
 </resources>

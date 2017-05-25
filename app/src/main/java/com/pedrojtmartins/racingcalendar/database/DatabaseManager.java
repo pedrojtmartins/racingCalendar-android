@@ -27,7 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     //endregion
 
     //region Tables
@@ -89,6 +89,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_NOTIFICATIONS_SERIES_ID = "notif_series_id";
     private static final String KEY_NOTIFICATIONS_TIME = "notif_time";
     private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "notif_mins_before";
+    private static final String KEY_NOTIFICATIONS_DATE_INDEX = "notif_date_index";
 
     //endregion
 
@@ -98,7 +99,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             KEY_NOTIFICATIONS_RACE_ID + " INTEGER," +
             KEY_NOTIFICATIONS_SERIES_ID + " INTEGER," +
             KEY_NOTIFICATIONS_TIME + " TEXT," +
-            KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER)";
+            KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER" +
+            KEY_NOTIFICATIONS_DATE_INDEX + " TEXT)";
     //endregion
     //endregion
     //endregion
@@ -141,6 +143,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
             db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
                     KEY_SERIES_PURL + " TEXT");
+        }
+
+        if (oldVersion <= 3) {
+            db.execSQL("ALTER TABLE " + TABLE_NOTIFICATIONS + " ADD COLUMN " +
+                    KEY_NOTIFICATIONS_DATE_INDEX + " TEXT");
         }
     }
 
@@ -196,7 +203,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_RACE_NUMBER, race.getRaceNumber());
         values.put(KEY_RACE_NAME, race.getName());
         values.put(KEY_RACE_LOCATION, race.getLocation());
-        values.put(KEY_RACE_DATE, race.getFullDate());
+        values.put(KEY_RACE_DATE, race.getUnformattedDate());
         values.put(KEY_RACE_URL, race.getUrl());
         return values;
     }
@@ -528,6 +535,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 int seriesId = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_SERIES_ID));
                 String time = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_TIME));
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
+//                String timeIndex = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_DATE_INDEX));
 
                 String seriesName = "";
                 if (cursor.getColumnCount() > 5)
@@ -551,6 +559,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_NOTIFICATIONS_RACE_ID, notification.raceId);
         values.put(KEY_NOTIFICATIONS_SERIES_ID, notification.seriesId);
         values.put(KEY_NOTIFICATIONS_TIME, notification.time);
+//        values.put(KEY_NOTIFICATIONS_DATE_INDEX, notification.timeIndex);
 
         if (!notification.time.contains("T"))
             notification.minutesBefore = 0;

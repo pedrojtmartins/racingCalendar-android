@@ -108,6 +108,17 @@ public class DateFormatter {
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
+    public static String getDate(String date) {
+        if (date != null) {
+            if (date.contains("T"))
+                return date.split("T")[0];
+
+            if (date.contains("-"))
+                return date;
+        }
+
+        return "";
+    }
 
     @SuppressLint("SimpleDateFormat")
     private static String getHour(String date, String format) {
@@ -134,6 +145,9 @@ public class DateFormatter {
     }
 
     public static String getDayOfWeekShort(String date) {
+        if (date == null || date.isEmpty())
+            return "";
+
         try {
             DateFormat utcFormat = null;
             if (date.contains("T")) {
@@ -202,4 +216,6 @@ public class DateFormatter {
 
         return checking.after(now);
     }
+
+
 }

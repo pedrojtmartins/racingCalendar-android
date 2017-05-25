@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.pedrojtmartins.racingcalendar.BR;
+import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 /**
@@ -16,6 +17,7 @@ public class RCNotification extends BaseObservable {
     public int raceId;
     public int seriesId;
     public String time;
+//    public String timeIndex; //E.g. 1_0_0 first race has alarm, others don't
 
     @Bindable
     public int minutesBefore;

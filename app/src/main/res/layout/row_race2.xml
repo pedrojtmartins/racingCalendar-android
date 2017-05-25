@@ -147,50 +147,28 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/race_row_notification"
+                <LinearLayout
+                    android:id="@+id/datesContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tint="#A0A0A0"
-                    android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"
-                    app:srcCompat="@drawable/alarm_on_black"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@{data.simplifiedDate}"
-                    android:textColor="#333"
-                    tools:text="26 Mar"/>
+                    <include
+                        android:id="@+id/datesContainer1"
+                        layout="@layout/row_race_dates"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@{data.dayOfWeekShort}"
-                    android:textColor="#333"
-                    android:textStyle="bold"
-                    tools:text="Sab"/>
+                    <include
+                        android:id="@+id/datesContainer2"
+                        layout="@layout/row_race_dates"
+                        android:visibility="gone"/>
 
+                    <include
+                        android:id="@+id/datesContainer3"
+                        layout="@layout/row_race_dates"
+                        android:visibility="gone"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@{data.hour}"
-                    android:textColor="#333"
-                    android:textStyle="bold"
-                    android:visibility="@{data.hour.length() > 0 ? View.VISIBLE : View.GONE}"
-                    tools:text="2:00pm"/>
+                </LinearLayout>
 
-
-                <!--<android.support.v7.widget.AppCompatImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:clickable="true"-->
-                <!--android:rotation="90"-->
-                <!--android:tint="#555"-->
-                <!--app:srcCompat="@drawable/arrow_black" />-->
             </LinearLayout>
 
             <LinearLayout
