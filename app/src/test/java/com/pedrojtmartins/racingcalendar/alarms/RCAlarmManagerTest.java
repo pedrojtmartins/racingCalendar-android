@@ -12,13 +12,11 @@ import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import static junit.framework.Assert.assertEquals;
@@ -57,13 +55,13 @@ public class RCAlarmManagerTest {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         RCNotification rcNotification;
 
-        rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 5);
+        rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 0, 5);
         assertTrue(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
 
-        rcNotification = new RCNotification(1, 2, "2017-01-12", 5);
+        rcNotification = new RCNotification(1, 2, "2017-01-12", 0, 5);
         assertTrue(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
 
-        rcNotification = new RCNotification(1, 3, "2017-01", 5);
+        rcNotification = new RCNotification(1, 3, "2017-01", 0, 5);
         assertFalse(RCAlarmManager.setAlarm(alarmManager, rcNotification, pendingIntent));
     }
 

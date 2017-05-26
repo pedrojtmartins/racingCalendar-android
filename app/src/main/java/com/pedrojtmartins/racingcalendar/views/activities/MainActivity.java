@@ -326,10 +326,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //endregion
 
     //region Alarms
-    public boolean updateAlarm(final Race race, boolean active) {
+    public boolean updateAlarm(final Race race, boolean active, final int index) {
         if (!active) {
-            if (mViewModel.removeNotification(race)) {
-                race.setIsAlarmSet(false);
+            if (mViewModel.removeNotification(race, index)) {
+                race.setIsAlarmSet(index, false);
                 FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_REMOVE_NOTIFICATION);
             }
             return true;
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         // TODO: 23/05/2017 this needs to take dates count into consideration
         if (race.hasDateOnly(0)) {
-            updateAlarm(race, 0);
+            updateAlarm(race, 0, index);
             return true;
         } else {
 
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             final RCSettings rcSettings = spManager.getSettings();
             if (rcSettings.notificationsRemember) {
                 // Settings are stored. Use them
-                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()));
+                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()), index);
                 return true;
             } else {
                 // Settings are not stored. Let's ask the user what to do.
@@ -381,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                                     spManager.addSettings(rcSettings.toString());
                                 }
 
-                                updateAlarm(race, minutesBefore);
+                                updateAlarm(race, minutesBefore, index);
                                 return true;
                             }
                         }));
@@ -393,8 +393,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     //endregion
 
-    private void updateAlarm(Race race, int timeBefore) {
-        RCNotification rcNotification = mViewModel.addNotification(race, timeBefore);
+    private void updateAlarm(final Race race, final int timeBefore, final int index) {
+        RCNotification rcNotification = mViewModel.addNotification(race, timeBefore, index);
         if (rcNotification == null) {
             return;
         }
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         boolean result = RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
         if (result) {
-            race.setIsAlarmSet(true);
+            race.setIsAlarmSet(index, true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
             showNotificationAd();
@@ -445,11 +445,11 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     @Override
-    public void openNotifications(Race race) {
+    public void openNotifications(Race race, int index) {
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_NOTIFICATION);
-
         Intent intent = new Intent(this, NotificationsActivity.class);
         intent.putExtra("raceId", race.getId());
+        intent.putExtra("dateIndex", index);
         startActivityForResult(intent, 1);
     }
 

@@ -192,40 +192,40 @@ public class MainViewModel implements IDataUpdater {
         return 0;
     }
 
-    public RCNotification addNotification(final Race race, final int minutesBefore) {
-        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
+    public RCNotification addNotification(final Race race, final int minutesBefore, final int index) {
+        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId(), index);
         if (rcNotification != null)
             return rcNotification;
 
         // TODO: 26/05/2017  
-        rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(0), minutesBefore);
+        rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(index), index, minutesBefore);
         long id = mDbManager.addNotification(rcNotification);
         if (id <= 0) {// TODO: 20/04/2017 Log error
             return null;
         }
 
-        propagateRaceAlarmUpdate(race, true);
+        propagateRaceAlarmUpdate(race, true, index);
         return mDbManager.getNotification(id);
     }
 
-    public boolean removeNotification(final Race race) {
-        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId());
+    public boolean removeNotification(final Race race, final int index) {
+        RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId(), index);
         if (rcNotification != null && mDbManager.removeNotification(rcNotification) == 1) {
-            propagateRaceAlarmUpdate(race, false);
+            propagateRaceAlarmUpdate(race, false, index);
             return true;
         }
         return false;
     }
 
-    private void propagateRaceAlarmUpdate(Race race, boolean newState) {
+    private void propagateRaceAlarmUpdate(final Race race, final boolean newState, final int index) {
         // TODO: 23/04/2017 bad solution. probably there should be only 1 list?
         int iAll = mAllRaces.indexOf(race);
         if (iAll != -1) {
-            mAllRaces.get(iAll).setIsAlarmSet(newState);
+            mAllRaces.get(iAll).setIsAlarmSet(index, newState);
         }
         int iFav = mFavouriteRaces.indexOf(race);
         if (iFav != -1) {
-            mFavouriteRaces.get(iFav).setIsAlarmSet(newState);
+            mFavouriteRaces.get(iFav).setIsAlarmSet(index, newState);
         }
     }
 

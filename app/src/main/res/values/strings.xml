@@ -25,7 +25,11 @@
     <string name="notifRace" formatted="false">Green flag</string>
     <string name="notifRaceToday" formatted="false">Race is today</string>
 
-    <string name="setAlarm">Set notification</string>
+    <string name="setSingleAlarm">Set notification</string>
+    <string name="removeSingleAlarm">Remove notification</string>
+    <string name="setMultiAlarm" formatted="false">Set R%d notification</string>
+    <string name="removeMultiAlarm" formatted="false">Remove R%d notification</string>
+
     <string name="alarmSet">Notification set</string>
     <string name="alarmNotSet">Error setting notification</string>
     <string name="alarmNotUpdated">Error updating notification</string>
@@ -34,7 +38,6 @@
 
     <string name="maintab_notifications">Notifications</string>
     <string name="action_notifications">Notifications</string>
-    <string name="removeAlarm">Remove notification</string>
 
     <string name="noNotificationSet">You have no notification</string>
     <string name="noNotificationSetFix">To set your first notification select \"Set notification\" from the \"More options\" menu inside each race.</string>

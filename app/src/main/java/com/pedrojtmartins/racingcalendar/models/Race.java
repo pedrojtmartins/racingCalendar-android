@@ -167,15 +167,22 @@ public class Race extends BaseObservable {
     }
 
     @Bindable
-    private boolean mIsAlarmSet;
+    private boolean[] mIsAlarmSet;
 
-    public boolean getIsAlarmSet() {
-        return mIsAlarmSet;
+    public boolean getIsAlarmSet(int index) {
+        if (mIsAlarmSet == null || mIsAlarmSet.length <= index)
+            return false;
+
+        return mIsAlarmSet[index];
     }
 
-    public void setIsAlarmSet(boolean alarmSet) {
-        mIsAlarmSet = alarmSet;
+    public void setIsAlarmSet(int index, boolean alarmSet) {
+        if (mIsAlarmSet == null || mIsAlarmSet.length <= index)
+            return;
+
+        mIsAlarmSet[index] = alarmSet;
         notifyPropertyChanged(BR.isAlarmSet);
+        // TODO: 27/05/2017 it is not updating the layout because no databinding is being used now
     }
 
     @Bindable
@@ -188,7 +195,6 @@ public class Race extends BaseObservable {
                 String location,
                 String date,
                 String seriesName,
-                boolean isAlarmSet,
                 String url,
                 boolean upcoming) {
         mId = id;
@@ -198,9 +204,12 @@ public class Race extends BaseObservable {
         mLocation = location;
         mDates = date;
         mSeriesName = seriesName;
-        mIsAlarmSet = isAlarmSet;
         mUrl = url;
         eventDateStatus = upcoming ? 1 : -1;
+
+        int datesCount = getDatesCount();
+        if (datesCount > 0)
+            mIsAlarmSet = new boolean[datesCount];
     }
 
     @Override

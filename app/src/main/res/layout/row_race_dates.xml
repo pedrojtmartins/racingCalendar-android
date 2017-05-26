@@ -11,8 +11,7 @@
             android:id="@+id/race_row_notification"
             style="@style/RaceRowDateAlarm"
             app:srcCompat="@drawable/alarm_on_black"/>
-        <!--android:visibility="@{data.isAlarmSet ? View.VISIBLE : View.GONE}"-->
-        <!--//FIX ME-->
+
         <TextView
             android:id="@+id/race_row_date_identifier"
             style="@style/RaceRowDateBold"

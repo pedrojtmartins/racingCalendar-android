@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.database;
 
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
+import com.pedrojtmartins.racingcalendar.models.Series;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +34,12 @@ public class DatabaseManagerTest {
         db = DatabaseManager.getInstance(RuntimeEnvironment.application);
     }
 
-//    @Test
-//    public void instanceShouldNotBeNull() throws Exception {
-//        assertNotNull(DatabaseManager.getInstance(fakeContext));
-//    }
-//
+    @Test
+    public void instanceShouldNotBeNull() throws Exception {
+        assertNotNull(DatabaseManager.getInstance(RuntimeEnvironment.application));
+    }
+
+    //
 //    @Test
 //    public void racesShouldBeAdded() throws Exception {
 //        assertTrue(populateRaceSeriesDB(db) == 3);
@@ -54,12 +56,12 @@ public class DatabaseManagerTest {
 //        assertTrue(list.get(1).getFullDate().equals("2001-01-01T08:00:00"));
 //    }
 //
-//    @Test
-//    public void seriesShouldBeAdded() throws Exception {
-//        assertTrue(addFakeSeries(db) == 3);
-//        assertTrue(db.getSeries().size() == 3);
-//    }
-//
+    @Test
+    public void seriesShouldBeAdded() throws Exception {
+        assertTrue(addFakeSeries() == 3);
+        assertTrue(db.getSeries().size() == 3);
+    }
+    //
 //    @Test
 //    public void shouldReturnAllRaces() throws Exception {
 //        populateRaceSeriesDB(db);
@@ -102,29 +104,29 @@ public class DatabaseManagerTest {
 //        return db.addRaces(races);
 //    }
 //
-//    private int addFakeSeries(DatabaseManager db) {
-//
-//        ArrayList<Series> series = new ArrayList<>();
-//        series.add(new Series(1, "series1", 1, false, 1, 2));
-//        series.add(new Series(2, "series2", 2, false, 1, 2));
-//        series.add(new Series(3, "series3", 3, false, 1, 2));
-//
-//        return db.addSeries(series);
-//    }
+    private int addFakeSeries() {
+
+        ArrayList<Series> series = new ArrayList<>();
+        series.add(new Series(1, "series1", 2017, false, 10, 2, "", ""));
+        series.add(new Series(2, "series2", 2017, false, 10, 2, "", ""));
+        series.add(new Series(3, "series3", 2017, false, 10, 2, "", ""));
+
+        return db.addSeries(series);
+    }
 
 
     //region NotificationsActivity
     private int addNotifications() {
         ArrayList<RCNotification> list = new ArrayList<>();
-        list.add(new RCNotification(1, 1, "2099-01-12T00:00:00", 5));
-        list.add(new RCNotification(2, 2, "2099-10-17T22:30:00", 15));
-        list.add(new RCNotification(3, 3, "2099-01-12T13:00:00", 60));
+        list.add(new RCNotification(1, 1, "2099-01-12T00:00:00", 0, 5));
+        list.add(new RCNotification(2, 2, "2099-10-17T22:30:00", 0, 15));
+        list.add(new RCNotification(3, 3, "2099-01-12T13:00:00", 0, 60));
 
         return db.addNotifications(list);
     }
 
     private long addNotification() {
-        RCNotification rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 5);
+        RCNotification rcNotification = new RCNotification(1, 1, "2017-01-12T00:00:00", 0, 5);
         return db.addNotification(rcNotification);
     }
 
@@ -193,6 +195,7 @@ public class DatabaseManagerTest {
 
     @Test
     public void getNotificationsShouldReturnValues() throws Exception {
+        addFakeSeries();
         addNotifications();
 
         ArrayList<RCNotification> values = db.getNotifications();

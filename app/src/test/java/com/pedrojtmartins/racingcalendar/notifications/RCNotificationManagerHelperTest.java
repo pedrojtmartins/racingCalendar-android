@@ -13,7 +13,9 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
@@ -38,14 +40,14 @@ public class RCNotificationManagerHelperTest {
     //region getNotificationMessage
     @Test
     public void getNotificationTitle_shouldCheckNulls() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 10);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 0, 10);
         assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationMessage(null, mockedNotifications), "");
         assertEquals(RCNotificationManager.NotificationManagerHelper.getNotificationMessage(resources, null), "");
     }
 
     @Test
     public void getNotificationTitle_shouldReturnTimeBefore() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 10);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 0, 10);
         String res = RCNotificationManager.NotificationManagerHelper.getNotificationMessage(resources, mockedNotifications);
         assertNotNull(res);
         assertTrue(res.equals("Green flag in 10 minutes"));
@@ -53,7 +55,7 @@ public class RCNotificationManagerHelperTest {
 
     @Test
     public void getNotificationTitle_shouldReturnSetTime() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 0);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01T10:00:00", 0, 0);
         String res = RCNotificationManager.NotificationManagerHelper.getNotificationMessage(resources, mockedNotifications);
         assertNotNull(res);
         assertTrue(res.equals("Green flag"));
@@ -61,7 +63,7 @@ public class RCNotificationManagerHelperTest {
 
     @Test
     public void getNotificationTitle_shouldReturnToday() throws Exception {
-        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01", 20);
+        RCNotification mockedNotifications = new RCNotification(1, 1, "2017-10-01", 0, 20);
         mockedNotifications.seriesName = "f1";
         String res = RCNotificationManager.NotificationManagerHelper.getNotificationMessage(resources, mockedNotifications);
         assertNotNull(res);

@@ -23,6 +23,11 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     private final String mNextWeek;
     private final String mRaceShort;
 
+    private final String mSetSingleNotification;
+    private final String mRemSingleNotification;
+    private final String mSetMultiNotification;
+    private final String mRemMultiNotification;
+
     public RaceAdapter(int itemLayoutId, ObservableArrayList<Race> items, IRaceList iCallback, Resources resources) {
         super(itemLayoutId, items);
 
@@ -30,6 +35,11 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         mThisWeek = resources.getString(R.string.thisWeek);
         mNextWeek = resources.getString(R.string.nextWeek);
         mRaceShort = resources.getString(R.string.raceShort);
+
+        mSetSingleNotification = resources.getString(R.string.setSingleAlarm);
+        mRemSingleNotification = resources.getString(R.string.removeSingleAlarm);
+        mSetMultiNotification = resources.getString(R.string.setMultiAlarm);
+        mRemMultiNotification = resources.getString(R.string.removeMultiAlarm);
     }
 
     @Override
@@ -63,14 +73,14 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         setClickListeners(binding, currRace);
     }
 
-    private void setDatesInfo(Race currRace, int datesCount, int index, RowRaceDatesBinding binding) {
+    private void setDatesInfo(final Race currRace, int datesCount, final int index, RowRaceDatesBinding binding) {
         if (datesCount > index) {
-
             if (datesCount > 1) {
                 String raceIdentifier = mRaceShort + (index + 1);
                 binding.raceRowDateIdentifier.setText(raceIdentifier);
-                if (binding.raceRowDateIdentifier.getVisibility() != View.VISIBLE)
+                if (binding.raceRowDateIdentifier.getVisibility() != View.VISIBLE) {
                     binding.raceRowDateIdentifier.setVisibility(View.VISIBLE);
+                }
             } else {
                 if (binding.raceRowDateIdentifier.getVisibility() != View.GONE)
                     binding.raceRowDateIdentifier.setVisibility(View.GONE);
@@ -91,6 +101,23 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
             if (binding.raceRowDateParent.getVisibility() != View.VISIBLE)
                 binding.raceRowDateParent.setVisibility(View.VISIBLE);
+
+            if (currRace.getIsAlarmSet(index)) {
+                if (binding.raceRowNotification.getVisibility() != View.VISIBLE) {
+                    binding.raceRowNotification.setVisibility(View.VISIBLE);
+                }
+
+                binding.raceRowNotification.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCallback.openNotifications(currRace, index);
+                    }
+                });
+
+            } else {
+                if (binding.raceRowNotification.getVisibility() != View.GONE)
+                    binding.raceRowNotification.setVisibility(View.GONE);
+            }
         } else {
             if (binding.raceRowDateParent.getVisibility() != View.GONE)
                 binding.raceRowDateParent.setVisibility(View.GONE);
@@ -135,6 +162,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     }
 
     private void setClickListeners(final RowRace2Binding binding, final Race race) {
+        // This strategy is limiting the number of date notifications to 3.
+        // Even if it will be enough for our needs, it is not an elegant solution.
+        // TO IMPROVE
+
         binding.raceRowMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,34 +175,34 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.set1notif:
-                                mCallback.updateAlarm(race, true);
+                                mCallback.updateAlarm(race, true, 0);
                                 break;
 
                             case R.id.rem1notif:
-                                if (mCallback.updateAlarm(race, false)) {
-                                    race.setIsAlarmSet(false);
+                                if (mCallback.updateAlarm(race, false, 0)) {
+                                    race.setIsAlarmSet(0, false);
                                 }
                                 break;
 
-//                            case R.id.set2notif:
-//                                mCallback.updateAlarm(race, true, 1);
-//                                break;
+                            case R.id.set2notif:
+                                mCallback.updateAlarm(race, true, 1);
+                                break;
 //
-//                            case R.id.rem2notif:
-//                                if (mCallback.updateAlarm(race, false, 1)) {
-//                                    race.setIsAlarmSet(false);
-//                                }
-//                                break;
+                            case R.id.rem2notif:
+                                if (mCallback.updateAlarm(race, false, 1)) {
+                                    race.setIsAlarmSet(1, false);
+                                }
+                                break;
 //
-//                            case R.id.set3notif:
-//                                mCallback.updateAlarm(race, true, 2);
-//                                break;
+                            case R.id.set3notif:
+                                mCallback.updateAlarm(race, true, 2);
+                                break;
 //
-//                            case R.id.rem3notif:
-//                                if (mCallback.updateAlarm(race, false, 2)) {
-//                                    race.setIsAlarmSet(false);
-//                                }
-//                                break;
+                            case R.id.rem3notif:
+                                if (mCallback.updateAlarm(race, false, 2)) {
+                                    race.setIsAlarmSet(2, false);
+                                }
+                                break;
 
 
                             case R.id.three:
@@ -184,9 +215,11 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                     }
                 });
 
+                int datesCount = race.getDatesCount();
                 Menu menu = popup.getMenu();
-                menu.findItem(R.id.set1notif).setVisible(!race.getIsAlarmSet());
-                menu.findItem(R.id.rem1notif).setVisible(race.getIsAlarmSet());
+                showCorrectMenu(datesCount, menu.findItem(R.id.set1notif), menu.findItem(R.id.rem1notif), race, 0);
+                showCorrectMenu(datesCount, menu.findItem(R.id.set2notif), menu.findItem(R.id.rem2notif), race, 1);
+                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
 
                 popup.show();
             }
@@ -200,14 +233,33 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 }
             }
         });
+    }
+    private void showCorrectMenu(final int datesCount, final MenuItem itemSet, final MenuItem itemRem, final Race race, final int index) {
+        if (datesCount <= index) {
+            itemSet.setVisible(false);
+            itemRem.setVisible(false);
+        } else {
+            if (!race.getIsAlarmSet(index)) {
+                itemSet.setVisible(true);
+                itemRem.setVisible(false);
 
-        // TODO: 24/05/2017 fix me
-//        binding.raceRowNotification.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mCallback.openNotifications(race);
-//            }
-//        });
+                if (datesCount > 1) {
+                    itemSet.setTitle(String.format(mSetMultiNotification, index + 1));
+                } else {
+                    itemSet.setTitle(mSetSingleNotification);
+                }
+
+            } else {
+                itemSet.setVisible(false);
+                itemRem.setVisible(true);
+
+                if (datesCount > 1) {
+                    itemRem.setTitle(String.format(mRemMultiNotification, index + 1));
+                } else {
+                    itemRem.setTitle(mRemSingleNotification);
+                }
+            }
+        }
     }
 
     public static class BindingAdapters {

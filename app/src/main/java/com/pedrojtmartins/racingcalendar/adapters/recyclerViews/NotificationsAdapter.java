@@ -27,7 +27,9 @@ import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
 public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
     private final INotificationsCallback mCallback;
+
     private final long mFocusRaceId;
+    private int mDateIndex;
 
     public NotificationsAdapter(int itemLayoutId, ObservableArrayList<RCNotification> items, INotificationsCallback callback) {
         super(itemLayoutId, items);
@@ -35,10 +37,11 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
         mFocusRaceId = 0;
     }
 
-    public NotificationsAdapter(int itemLayoutId, ObservableArrayList<RCNotification> items, INotificationsCallback callback, long focusId) {
+    public NotificationsAdapter(int itemLayoutId, ObservableArrayList<RCNotification> items, INotificationsCallback callback, long focusId, int dateIndex) {
         super(itemLayoutId, items);
         mCallback = callback;
         mFocusRaceId = focusId;
+        mDateIndex = dateIndex;
     }
 
 
@@ -91,7 +94,7 @@ public class NotificationsAdapter extends ObservableAdapter<RCNotification> {
                 });
             }
 
-            if (currNotification.raceId == mFocusRaceId) {
+            if (currNotification.raceId == mFocusRaceId && currNotification.timeIndex == mDateIndex) {
                 Resources resources = viewHolder.mDataBinding.getRoot().getContext().getResources();
                 if (resources != null) {
                     int color = APIHelper.getColor(resources, R.color.notificationFocus);

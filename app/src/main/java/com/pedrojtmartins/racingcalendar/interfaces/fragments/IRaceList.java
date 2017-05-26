@@ -17,12 +17,12 @@ public interface IRaceList {
 
     boolean undoFragmentTransition();
 
-    boolean updateAlarm(Race race, boolean state);
+    boolean updateAlarm(Race race, boolean state, int index);
 //    boolean updateAlarm(Series series, boolean state);
 
     void openUrl(Race race);
 
-    void openNotifications(Race race);
+    void openNotifications(Race race, int index);
 
 
     void loadPrevious(boolean mFavouritesOnly);

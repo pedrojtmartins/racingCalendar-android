@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.pedrojtmartins.racingcalendar.BR;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 /**
@@ -17,7 +16,7 @@ public class RCNotification extends BaseObservable {
     public int raceId;
     public int seriesId;
     public String time;
-//    public String timeIndex; //E.g. 1_0_0 first race has alarm, others don't
+    public int timeIndex; // 0 - R1, 1 - R2...
 
     @Bindable
     public int minutesBefore;
@@ -60,19 +59,21 @@ public class RCNotification extends BaseObservable {
         }
     }
 
-    public RCNotification(int id, int raceId, int seriesId, String time, int minutesBefore, String seriesName) {
+    public RCNotification(int id, int raceId, int seriesId, String time, int index, int minutesBefore, String seriesName) {
         this.id = id;
         this.raceId = raceId;
         this.seriesId = seriesId;
         this.time = time;
+        this.timeIndex = index;
         this.minutesBefore = minutesBefore;
         this.seriesName = seriesName;
     }
 
-    public RCNotification(int eventId, int seriesId, String time, int minutesBefore) {
+    public RCNotification(int eventId, int seriesId, String time, int index, int minutesBefore) {
         this.raceId = eventId;
         this.seriesId = seriesId;
         this.time = time;
+        this.timeIndex = index;
         this.minutesBefore = minutesBefore;
         this.seriesName = "";
     }

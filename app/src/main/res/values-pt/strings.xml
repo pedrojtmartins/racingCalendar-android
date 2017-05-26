@@ -26,7 +26,11 @@
     <string name="notifRace" formatted="false">A corrida está a começar</string>
     <string name="notifRaceToday" formatted="false">Corrida hoje</string>
 
-    <string name="setAlarm">Definir notificações</string>
+    <string name="setSingleAlarm">Definir notificação</string>
+    <string name="removeSingleAlarm">Remover notificação</string>
+    <string name="setMultiAlarm" formatted="false">Definir notificação C%d</string>
+    <string name="removeMultiAlarm" formatted="false">Remover notificação C%d</string>
+
     <string name="alarmSet">Nova notificação definida</string>
     <string name="alarmNotSet">Não foi possível definir a notificação</string>
     <string name="alarmNotUpdated">Não foi possível atualizar a notificação</string>
@@ -35,7 +39,6 @@
 
     <string name="maintab_notifications">Notificações</string>
     <string name="action_notifications">Notificações</string>
-    <string name="removeAlarm">Remover notificação</string>
 
     <string name="noNotificationSet">Sem notificações definidas</string>
     <string name="noNotificationSetFix">Para definir a primeira notificação selecione \"Definir notificações\" no menu de \"Mais opções\" que se encontra em todas as corridas.</string>
