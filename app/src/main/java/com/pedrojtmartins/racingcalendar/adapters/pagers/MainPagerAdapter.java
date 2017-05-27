@@ -25,13 +25,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public static final int PAGE_SERIES = 2;
 
     private Fragment[] mFragments;
+    private Fragment mFragmentSeriesRace;
     private final Resources mResources;
 
     // This adapter will provide fragment transition capabilities
     // To control it we'll need a couple of temp variables.
     // NOTE: For now it will only have one fragment that can change
     //       If more than one is needed in the future we need to use an array of temps
-    private Fragment mTempFragment; //This will be used to store any fragment that must be replaced
+//    private Fragment mTempFragment; //This will be used to store any fragment that must be replaced
 
     //In case we have transitions on multiple fragments we'll need this variable
     //private int[] tempFragmentPosition; //This int will be used to check if we need to undo the transition
@@ -59,10 +60,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
                 return mFragments[PAGE_ALL];
 
             case PAGE_SERIES:
-                if (mFragments[PAGE_SERIES] == null) {
-                    mFragments[PAGE_SERIES] = new SeriesListFragment();
+                if (mFragmentSeriesRace == null) {
+                    if (mFragments[PAGE_SERIES] == null) {
+                        mFragments[PAGE_SERIES] = new SeriesListFragment();
+                    }
+                    return mFragments[PAGE_SERIES];
+                } else {
+                    return mFragmentSeriesRace;
                 }
-                return mFragments[PAGE_SERIES];
 
             case PAGE_FAVOURITES:
             default:
@@ -97,8 +102,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
      * @param series what series will be loaded
      */
     public void replaceSeriesWithRaces(Series series) {
-        mTempFragment = mFragments[PAGE_SERIES];
-        mFragments[PAGE_SERIES] = new RaceListFragment().newInstance(series);
+        mFragmentSeriesRace = new RaceListFragment().newInstance(series);
         notifyDataSetChanged();
     }
 
@@ -109,9 +113,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
      * @return true if an undo was completed. false otherwise
      */
     public boolean undoFragmentReplace(int currPos) {
-        if (mTempFragment != null && currPos == PAGE_SERIES) {
-            mFragments[PAGE_SERIES] = mTempFragment;
-            mTempFragment = null;
+        if (mFragmentSeriesRace != null && currPos == PAGE_SERIES) {
+            mFragmentSeriesRace = null;
             notifyDataSetChanged();
             return true;
         }

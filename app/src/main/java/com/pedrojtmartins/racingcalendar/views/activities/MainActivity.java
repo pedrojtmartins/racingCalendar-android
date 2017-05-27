@@ -321,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     public void displayRacesFromSeries(Series seriesId) {
         mPageAdapter.replaceSeriesWithRaces(seriesId);
-//        mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_SERIES);
     }
     //endregion
 

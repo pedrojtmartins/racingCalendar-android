@@ -42,6 +42,8 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
             }
         });
 
+        mBinding.swipeRefresh.setEnabled(false);
+
         return mBinding.getRoot();
     }
 
@@ -95,6 +97,9 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
 
     @Override
     public boolean isOnTop() {
+        if (scrollPos < 0)
+            scrollPos = 0;
+
         return Math.abs(scrollPos) < Settings.SCROLL_ON_TOP_THRESHOLD;
     }
 }
