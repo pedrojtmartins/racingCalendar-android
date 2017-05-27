@@ -552,7 +552,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String time = cursor.getString(cursor.getColumnIndex(KEY_NOTIFICATIONS_TIME));
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
                 int timeIndex = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_DATE_INDEX));
-                String seriesName = cursor.getString(cursor.getColumnIndex(KEY_SERIES_NAME));
+
+                String seriesName = "";
+                int seriesNamePos = cursor.getColumnIndex(KEY_SERIES_NAME);
+                if (seriesNamePos != -1)
+                    seriesName = cursor.getString(seriesNamePos);
 
                 list.add(new RCNotification(id, raceId, seriesId, time, timeIndex, minutesBefore, seriesName));
             } while (cursor.moveToNext());

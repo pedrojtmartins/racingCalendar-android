@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.adapters.recyclerViews;
 
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
+import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,13 +65,18 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
 
+        setDatesInfo(binding, currRace);
+        listenForAlarmStateChanges(binding, currRace);
+
+        setClickListeners(binding, currRace);
+    }
+
+    private void setDatesInfo(RowRace2Binding binding, Race currRace) {
         // Let's set data and change the visibility of the layouts that contain the.
         int datesCount = currRace.getDatesCount();
         setDatesInfo(currRace, datesCount, 2, binding.datesContainer3);
         setDatesInfo(currRace, datesCount, 1, binding.datesContainer2);
         setDatesInfo(currRace, datesCount, 0, binding.datesContainer1);
-
-        setClickListeners(binding, currRace);
     }
 
     private void setDatesInfo(final Race currRace, int datesCount, final int index, RowRaceDatesBinding binding) {
@@ -122,6 +128,15 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             if (binding.raceRowDateParent.getVisibility() != View.GONE)
                 binding.raceRowDateParent.setVisibility(View.GONE);
         }
+    }
+
+    private void listenForAlarmStateChanges(final RowRace2Binding binding, final Race currRace) {
+        currRace.alarmUpdated.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                setDatesInfo(binding, currRace);
+            }
+        });
     }
 
     private void showWeekNumberHeaderIfNeeded(int position, RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {

@@ -2,9 +2,10 @@ package com.pedrojtmartins.racingcalendar.models;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableInt;
 
 import com.google.gson.annotations.SerializedName;
-import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
@@ -167,23 +168,24 @@ public class Race extends BaseObservable {
     }
 
     @Bindable
-    private boolean[] mIsAlarmSet;
+    private ObservableArrayList<Boolean> mIsAlarmSet;
 
     public boolean getIsAlarmSet(int index) {
-        if (mIsAlarmSet == null || mIsAlarmSet.length <= index)
+        if (mIsAlarmSet == null || mIsAlarmSet.size() <= index)
             return false;
 
-        return mIsAlarmSet[index];
+        return mIsAlarmSet.get(index);
     }
 
     public void setIsAlarmSet(int index, boolean alarmSet) {
-        if (mIsAlarmSet == null || mIsAlarmSet.length <= index)
+        if (mIsAlarmSet == null || mIsAlarmSet.size() <= index)
             return;
 
-        mIsAlarmSet[index] = alarmSet;
-        notifyPropertyChanged(BR.isAlarmSet);
-        // TODO: 27/05/2017 it is not updating the layout because no databinding is being used now
+        mIsAlarmSet.set(index, alarmSet);
+        alarmUpdated.set(alarmUpdated.get() + 1);
     }
+
+    public ObservableInt alarmUpdated;
 
     @Bindable
     public int eventDateStatus;
@@ -208,8 +210,13 @@ public class Race extends BaseObservable {
         eventDateStatus = upcoming ? 1 : -1;
 
         int datesCount = getDatesCount();
-        if (datesCount > 0)
-            mIsAlarmSet = new boolean[datesCount];
+        if (datesCount > 0) {
+            mIsAlarmSet = new ObservableArrayList<>();
+            for (int i = 0; i < datesCount; i++)
+                mIsAlarmSet.add(false);
+        }
+
+        alarmUpdated = new ObservableInt(0);
     }
 
     @Override

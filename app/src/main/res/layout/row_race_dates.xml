@@ -5,7 +5,8 @@
 
     <LinearLayout
         android:id="@+id/race_row_date_parent"
-        style="@style/RaceRowDatesContainer">
+        style="@style/RaceRowDatesContainer"
+        tools:background="#fff">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/race_row_notification"
@@ -15,17 +16,21 @@
         <TextView
             android:id="@+id/race_row_date_identifier"
             style="@style/RaceRowDateBold"
+            android:minWidth="18dp"
             tools:text="R1"/>
 
         <TextView
             android:id="@+id/race_row_date_date"
             style="@style/RaceRowDateNormal"
-            tools:text="26 Mar"/>
+            android:minWidth="45dp"
+            tools:text="00 Dez"/>
 
         <TextView
             android:id="@+id/race_row_date_week_day"
             style="@style/RaceRowDateBold"
-            tools:text="Sab"/>
+            android:gravity="center"
+            android:minWidth="28dp"
+            tools:text="Dom"/>
 
         <TextView
             android:id="@+id/race_row_date_hour"
