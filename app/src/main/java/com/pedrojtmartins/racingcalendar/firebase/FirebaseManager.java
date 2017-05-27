@@ -17,13 +17,22 @@ public class FirebaseManager {
     public static final String EVENT_ACTIVITY_SETTINGS = "activity_settings";
 
     public static final String EVENT_ACTION_OPEN_SERIES = "action_open_series";
+
     public static final String EVENT_ACTION_SET_NOTIFICATION = "action_set_notification";
     public static final String EVENT_ACTION_SET_NOTIFICATION_REBOOT = "action_set_notification_reboot";
     public static final String EVENT_ACTION_SET_NOTIFICATION_TRIGGERED = "action_triggered_notification";
     public static final String EVENT_ACTION_REMOVE_NOTIFICATION = "action_remove_notification";
     public static final String EVENT_ACTION_UPDATE_NOTIFICATION = "action_update_notification";
+    public static final String EVENT_ACTION_OPEN_NOTIFICATION = "action_open_notification";
+
     public static final String EVENT_ACTION_OPEN_RACE_URL = "action_open_race_url";
     public static final String EVENT_ACTION_OPEN_SERIES_URL = "action_open_series_url";
+
+    public static final String EVENT_ACTION_LOAD_PREVIOUS_ALL = "action_load_previous_all";
+    public static final String EVENT_ACTION_LOAD_PREVIOUS_FAVOURITES = "action_load_previous_favourites";
+    public static final String EVENT_ACTION_LOAD_PREVIOUS_SERIES = "action_load_previous_series";
+
+    public static final String EVENT_ACTION_BACK_SCROLL = "action_back_scroll";
 
 
     public static boolean logEvent(Context context, String event) {

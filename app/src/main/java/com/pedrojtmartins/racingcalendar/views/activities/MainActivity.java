@@ -279,6 +279,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         int currTab = mBinding.viewPager.getCurrentItem();
         if (!mPageAdapter.isOnTop(currTab)) {
             mPageAdapter.smoothScrollToTop(currTab);
+
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_BACK_SCROLL);
             return;
         }
 
@@ -444,6 +446,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     public void openNotifications(Race race) {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_NOTIFICATION);
+
         Intent intent = new Intent(this, NotificationsActivity.class);
         intent.putExtra("raceId", race.getId());
         startActivityForResult(intent, 1);
@@ -453,12 +457,19 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void loadPrevious(Series series) {
         int count = mViewModel.loadPrevious(series);
         mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
+
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_LOAD_PREVIOUS_SERIES);
     }
 
     @Override
     public void loadPrevious(boolean favouritesOnly) {
         int count = mViewModel.loadPrevious(favouritesOnly);
         mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
+
+        if (favouritesOnly)
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_LOAD_PREVIOUS_FAVOURITES);
+        else
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_LOAD_PREVIOUS_ALL);
     }
 
     @Override
