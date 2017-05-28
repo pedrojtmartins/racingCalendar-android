@@ -64,7 +64,7 @@
         <receiver
             android:name=".alarms.RCAlarmBroadcastReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <service android:name=".notifications.RCNotificationService" />
 
