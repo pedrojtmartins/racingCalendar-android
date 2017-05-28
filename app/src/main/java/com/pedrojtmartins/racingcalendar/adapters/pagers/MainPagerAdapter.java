@@ -1,6 +1,7 @@
 package com.pedrojtmartins.racingcalendar.adapters.pagers;
 
 import android.content.res.Resources;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -162,5 +163,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         if (fragment instanceof IRecyclerViewFragment) {
             ((IRecyclerViewFragment) fragment).resetScrollPos();
         }
+    }
+
+
+    @Override
+    public Parcelable saveState() {
+        return null;
     }
 }
