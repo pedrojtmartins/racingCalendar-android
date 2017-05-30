@@ -13,6 +13,6 @@ public class RCAlarmResetBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startService(new Intent(context, RCAlarmResetService.class));
+        startWakefulService(context, new Intent(context, RCAlarmResetService.class));
     }
 }

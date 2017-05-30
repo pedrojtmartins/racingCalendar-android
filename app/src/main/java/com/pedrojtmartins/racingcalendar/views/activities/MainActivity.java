@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     protected void onStart() {
         super.onStart();
         mViewModel.recheckUpdates();
-
-
     }
 
     private void startAdmob() {

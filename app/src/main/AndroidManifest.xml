@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pedrojtmartins.racingcalendar">
+          package="com.pedrojtmartins.racingcalendar">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.Manifest.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!--Vibrate permission is required only in old versions
+        due to changes in notification vibration policies-->
+    <uses-permission
+        android:name="android.permission.VIBRATE"
+        android:maxSdkVersion="18"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
 
     <application
         android:allowBackup="true"
@@ -15,15 +22,15 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.1" />
+            android:value="2.1"/>
 
         <activity
             android:name=".views.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -32,7 +39,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.MainActivity" />
+                android:value=".views.activities.MainActivity"/>
         </activity>
         <activity
             android:name=".views.activities.SettingsActivity"
@@ -40,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.MainActivity" />
+                android:value=".views.activities.MainActivity"/>
         </activity>
         <activity
             android:name=".views.activities.NotificationsActivity"
@@ -48,7 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.MainActivity" />
+                android:value=".views.activities.MainActivity"/>
         </activity>
         <activity
             android:name=".views.activities.AboutActivity"
@@ -56,27 +63,21 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.MainActivity" />
+                android:value=".views.activities.MainActivity"/>
         </activity>
 
+        <!-- Notifications receiver and service -->
+        <receiver android:name=".alarms.RCAlarmBroadcastReceiver"/>
+        <service android:name=".notifications.RCNotificationService"/>
 
-        <!-- NotificationsActivity -->
-        <receiver
-            android:name=".alarms.RCAlarmBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
-        <service android:name=".notifications.RCNotificationService" />
-
-        <!-- This needs to happen to reset the alarms. When -->
-        <!-- the device is turned off all alarms are removed -->
+        <!--This needs to happen to reset the alarms. When -->
+        <!--the device is turned off all alarms are cleared -->
         <receiver android:name=".alarms.RCAlarmResetBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-        <service android:name=".alarms.RCAlarmResetService" />
+        <service android:name=".alarms.RCAlarmResetService"/>
     </application>
 
 </manifest>

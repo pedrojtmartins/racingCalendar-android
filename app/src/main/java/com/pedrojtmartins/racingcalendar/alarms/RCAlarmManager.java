@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
@@ -33,11 +34,25 @@ public class RCAlarmManager {
         if (calendar == null)
             return false;
 
-        if (notification.minutesBefore > 0 && notification.time.contains("T"))
+        if (notification.time.contains("T") && notification.minutesBefore > 0) {
             calendar.add(Calendar.MINUTE, -notification.minutesBefore);
+        }
 
-        long timeInMillis = calendar.getTimeInMillis();
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+        long triggerAtMillis = calendar.getTimeInMillis();
+//        long now = System.currentTimeMillis();
+//        long diff = triggerAtMillis - now;
+//
+//        Log.i("debug", "now (ms):   " + now);
+//        Log.i("debug", "alarm (ms): " + triggerAtMillis);
+//        Log.i("debug", "diff (s):   " + diff / 1000);
+
+        if (Build.VERSION.SDK_INT >= 23)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+        else if (Build.VERSION.SDK_INT >= 19)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+        else
+            alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+
         return true;
     }
 
@@ -76,9 +91,8 @@ public class RCAlarmManager {
 
     public static PendingIntent generatePendingIntent(Context context, RCNotification rcNotification) {
         Intent intent = new Intent(context, RCAlarmBroadcastReceiver.class);
-        intent.setAction(RCAlarmBroadcastReceiver.ACTION_NOTIFY);
         intent.putExtra("notifId", rcNotification.id);
 
-        return PendingIntent.getBroadcast(context, rcNotification.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 413865, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

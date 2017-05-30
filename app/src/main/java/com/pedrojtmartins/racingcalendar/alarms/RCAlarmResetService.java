@@ -32,7 +32,7 @@ public class RCAlarmResetService extends Service {
         ArrayList<RCNotification> rcNotifications = db.getNotifications();
         if (rcNotifications == null || rcNotifications.isEmpty()) {
             // Nothing to reset
-            return START_NOT_STICKY;
+            return finishCommand(intent);
         }
 
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_REBOOT, rcNotifications.size());
@@ -43,6 +43,11 @@ public class RCAlarmResetService extends Service {
             RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
         }
 
+        return finishCommand(intent);
+    }
+
+    private int finishCommand(Intent intent) {
+        RCAlarmResetBroadcastReceiver.completeWakefulIntent(intent);
         return START_NOT_STICKY;
     }
 }
