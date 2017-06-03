@@ -34,7 +34,7 @@ public class NotificationsViewModel {
     private void loadAllNotificationsFromDb() {
         mNotifications.clear();
 
-        ArrayList<RCNotification> notifications = mDatabaseManager.getNotifications();
+        ArrayList<RCNotification> notifications = mDatabaseManager.getUpcomingNotifications();
         if (notifications != null && !notifications.isEmpty()) {
             mNotifications.addAll(notifications);
         }

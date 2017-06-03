@@ -72,7 +72,9 @@
 
         <!--This needs to happen to reset the alarms. When -->
         <!--the device is turned off all alarms are cleared -->
-        <receiver android:name=".alarms.RCAlarmResetBroadcastReceiver">
+        <receiver
+            android:name=".alarms.RCAlarmResetBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

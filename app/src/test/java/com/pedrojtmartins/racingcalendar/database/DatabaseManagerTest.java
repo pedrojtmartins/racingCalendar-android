@@ -188,7 +188,7 @@ public class DatabaseManagerTest {
 
     @Test
     public void getNotificationsShouldReturnEmptyIfDBEmpty() throws Exception {
-        ArrayList<RCNotification> values = db.getNotifications();
+        ArrayList<RCNotification> values = db.getUpcomingNotifications();
         assertNotNull(values);
         assertTrue(values.size() == 0);
     }
@@ -198,7 +198,7 @@ public class DatabaseManagerTest {
         addFakeSeries();
         addNotifications();
 
-        ArrayList<RCNotification> values = db.getNotifications();
+        ArrayList<RCNotification> values = db.getUpcomingNotifications();
         assertNotNull(values);
         assertTrue(values.size() == 3);
     }
@@ -207,7 +207,7 @@ public class DatabaseManagerTest {
     public void getNotificationsShouldReturnDateOrderedValues() throws Exception {
         addNotifications();
 
-        ArrayList<RCNotification> values = db.getNotifications();
+        ArrayList<RCNotification> values = db.getUpcomingNotifications();
         assertTrue(values.get(0).id == 1);
         assertTrue(values.get(1).id == 3);
         assertTrue(values.get(2).id == 2);
@@ -233,7 +233,7 @@ public class DatabaseManagerTest {
     @Test
     public void removeNotificationsShouldRemove() throws Exception {
         addNotifications();
-        ArrayList<RCNotification> notifications = db.getNotifications();
+        ArrayList<RCNotification> notifications = db.getUpcomingNotifications();
         assertTrue(db.removeNotifications(notifications) == 3);
     }
 

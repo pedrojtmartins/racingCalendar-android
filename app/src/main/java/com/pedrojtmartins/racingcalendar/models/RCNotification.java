@@ -17,6 +17,7 @@ public class RCNotification extends BaseObservable {
     public int seriesId;
     public String time;
     public int timeIndex; // 0 - R1, 1 - R2...
+    public boolean complete;
 
     @Bindable
     public int minutesBefore;
@@ -59,13 +60,14 @@ public class RCNotification extends BaseObservable {
         }
     }
 
-    public RCNotification(int id, int raceId, int seriesId, String time, int index, int minutesBefore, String seriesName) {
+    public RCNotification(int id, int raceId, int seriesId, String time, int index, int minutesBefore, int complete, String seriesName) {
         this.id = id;
         this.raceId = raceId;
         this.seriesId = seriesId;
         this.time = time;
         this.timeIndex = index;
         this.minutesBefore = minutesBefore;
+        this.complete = complete == 1;
         this.seriesName = seriesName;
     }
 
@@ -76,5 +78,6 @@ public class RCNotification extends BaseObservable {
         this.timeIndex = index;
         this.minutesBefore = minutesBefore;
         this.seriesName = "";
+        this.complete = false;
     }
 }

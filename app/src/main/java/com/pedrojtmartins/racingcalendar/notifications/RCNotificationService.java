@@ -40,7 +40,8 @@ public class RCNotificationService extends Service {
 
         DatabaseManager db = DatabaseManager.getInstance(this);
         RCNotification rcNotification = db.getNotification(notifId);
-        if (rcNotification == null) {
+        if (rcNotification == null || rcNotification.complete) {
+            //It wasn't found or it was already triggered (user restarted phone?)
             // TODO: 20/04/2017 log error
             return finishCommand(intent);
         }
@@ -66,6 +67,7 @@ public class RCNotificationService extends Service {
 
         RCNotificationManager.notify(pendingIntent, builder, notificationManager, title, msg, rcNotification.id, icon);
 
+        db.setNotificationCompleted(rcNotification);
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_TRIGGERED);
 
         return finishCommand(intent);

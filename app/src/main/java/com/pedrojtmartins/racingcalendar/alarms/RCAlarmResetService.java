@@ -29,7 +29,7 @@ public class RCAlarmResetService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         DatabaseManager db = DatabaseManager.getInstance(this);
-        ArrayList<RCNotification> rcNotifications = db.getNotifications();
+        ArrayList<RCNotification> rcNotifications = db.getUpcomingNotifications();
         if (rcNotifications == null || rcNotifications.isEmpty()) {
             // Nothing to reset
             return finishCommand(intent);

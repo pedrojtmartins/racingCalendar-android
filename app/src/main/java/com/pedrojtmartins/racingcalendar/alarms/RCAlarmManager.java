@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
@@ -30,6 +31,8 @@ public class RCAlarmManager {
         if (alarmManager == null || notification == null || pendingIntent == null)
             return false;
 
+//        notification.time = "2017-06-03T15:00:00";
+
         Calendar calendar = DateFormatter.getCalendar(notification.time);
         if (calendar == null)
             return false;
@@ -39,12 +42,12 @@ public class RCAlarmManager {
         }
 
         long triggerAtMillis = calendar.getTimeInMillis();
-//        long now = System.currentTimeMillis();
-//        long diff = triggerAtMillis - now;
-//
-//        Log.i("debug", "now (ms):   " + now);
-//        Log.i("debug", "alarm (ms): " + triggerAtMillis);
-//        Log.i("debug", "diff (s):   " + diff / 1000);
+        long now = System.currentTimeMillis();
+        long diff = triggerAtMillis - now;
+
+        Log.i("debug", "now (ms):   " + now);
+        Log.i("debug", "alarm (ms): " + triggerAtMillis);
+        Log.i("debug", "diff (s):   " + diff / 1000);
 
         if (Build.VERSION.SDK_INT >= 23)
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
@@ -93,6 +96,7 @@ public class RCAlarmManager {
         Intent intent = new Intent(context, RCAlarmBroadcastReceiver.class);
         intent.putExtra("notifId", rcNotification.id);
 
-        return PendingIntent.getBroadcast(context, 413865, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, rcNotification.id, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 }
