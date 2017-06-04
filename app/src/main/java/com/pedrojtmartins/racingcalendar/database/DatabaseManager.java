@@ -27,7 +27,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 4;
     //endregion
 
     //region Tables
@@ -150,12 +150,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (oldVersion <= 3) {
             db.execSQL("ALTER TABLE " + TABLE_NOTIFICATIONS + " ADD COLUMN " +
                     KEY_NOTIFICATIONS_DATE_INDEX + " INTEGER DEFAULT 0");
-        }
 
-        if (oldVersion <= 4) {
             db.execSQL("ALTER TABLE " + TABLE_NOTIFICATIONS + " ADD COLUMN " +
                     KEY_NOTIFICATIONS_COMPLETED + " INTEGER DEFAULT 0");
-
         }
     }
 

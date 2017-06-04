@@ -39,6 +39,9 @@ public class RCAlarmResetService extends Service {
 
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         for (RCNotification rcNotification : rcNotifications) {
+            if (rcNotification.complete)
+                continue;
+
             final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
             RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
         }
