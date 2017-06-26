@@ -11,4 +11,5 @@ public interface ISeriesCallback {
     void displayRacesFromSeries(Series series);
 
     void openUrl(Series currSeries);
+    void openResults(Series currSeries);
 }

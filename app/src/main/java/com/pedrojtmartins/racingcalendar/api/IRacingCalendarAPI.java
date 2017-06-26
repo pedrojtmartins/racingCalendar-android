@@ -2,8 +2,10 @@ package com.pedrojtmartins.racingcalendar.api;
 
 import com.pedrojtmartins.racingcalendar.models.ServerData;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Url;
 
 /**
  * Pedro Martins
@@ -26,4 +28,7 @@ public interface IRacingCalendarAPI {
 
     @GET(ApiAddresses.URL_APP_VERSION)
     Call<Integer> getAppVersion();
+
+    @GET
+    Call<ResponseBody> getHtmlFrom(@Url String url);
 }

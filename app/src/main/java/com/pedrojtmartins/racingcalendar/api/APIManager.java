@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class APIManager {
     private static IRacingCalendarAPI mApi;
 
-    private static IRacingCalendarAPI getApi() {
+    public static IRacingCalendarAPI getApi() {
         if (mApi == null) {
             mApi = new Retrofit.Builder()
                     .baseUrl(ApiAddresses.BASE_URL)

@@ -62,15 +62,12 @@ public class Series extends BaseObservable {
 
     @SerializedName("x")
     private String mUrlPrefix;
-
     public String getUrlPrefix() {
         return mUrlPrefix;
     }
-
     public void setUrlPrefix(String mUrlPrefix) {
         this.mUrlPrefix = mUrlPrefix;
     }
-
     public String getFullUrl() {
         String url = "";
 
@@ -84,10 +81,10 @@ public class Series extends BaseObservable {
 
         return url;
     }
-
     public boolean hasUrl() {
         return mUrl != null && !mUrl.isEmpty();
     }
+
 
     @Bindable
     private boolean mFavorite;

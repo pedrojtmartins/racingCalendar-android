@@ -2,17 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.pedrojtmartins.racingcalendar">
 
-    <!--Vibrate permission is required only in old versions
-        due to changes in notification vibration policies-->
+    <!--
+        Vibrate permission is required only in old versions
+        due to changes in notification vibration policies
+    -->
     <uses-permission
         android:name="android.permission.VIBRATE"
         android:maxSdkVersion="18"/>
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
 
     <application
         android:allowBackup="true"
@@ -65,13 +65,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.MainActivity"/>
         </activity>
+        <activity
+            android:name=".views.activities.ResultsActivity"
+            android:theme="@style/AppTheme.NoActionBar">>
+        </activity>
 
         <!-- Notifications receiver and service -->
         <receiver android:name=".alarms.RCAlarmBroadcastReceiver"/>
+
         <service android:name=".notifications.RCNotificationService"/>
 
-        <!--This needs to happen to reset the alarms. When -->
-        <!--the device is turned off all alarms are cleared -->
+        <!-- This needs to happen to reset the alarms. When -->
+        <!-- the device is turned off all alarms are cleared -->
         <receiver
             android:name=".alarms.RCAlarmResetBroadcastReceiver"
             android:exported="true">
@@ -79,7 +84,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
         <service android:name=".alarms.RCAlarmResetService"/>
+
+
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ public interface IRaceList {
 //    boolean updateAlarm(Series series, boolean state);
 
     void openUrl(Race race);
+    void openResults(Race race);
 
     void openNotifications(Race race, int index);
 

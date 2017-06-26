@@ -430,6 +430,26 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             openUrl(url);
     }
 
+    @Override
+    public void openResults(Race race) {
+        if (race == null)
+            return;
+
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.putExtra("raceId", race.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void openResults(Series series) {
+        if (series == null)
+            return;
+
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.putExtra("seriesId", series.getId());
+        startActivity(intent);
+    }
+
     private void openUrl(String url) {
         if (url == null) {
             return;
