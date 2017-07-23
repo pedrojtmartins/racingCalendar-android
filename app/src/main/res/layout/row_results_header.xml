@@ -19,7 +19,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{result.position}"
+            android:text="@string/number"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="19"/>
 
         <TextView
@@ -27,7 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:text="@{result.name}"
+            android:text="@string/name"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="19"/>
 
         <TextView
@@ -35,7 +39,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{result.points}"
+            android:text="@string/points"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="19"/>
     </LinearLayout>
 </layout>

@@ -437,6 +437,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("raceId", race.getId());
+        intent.putExtra("seriesName", race.getSeriesName());
         startActivity(intent);
     }
 
@@ -447,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("seriesId", series.getId());
+        intent.putExtra("seriesName", series.getName());
         startActivity(intent);
     }
 

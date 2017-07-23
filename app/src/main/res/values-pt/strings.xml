@@ -67,4 +67,9 @@
     <string name="action_rate">Avaliar</string>
 
     <string name="raceShort">C</string>
+
+    <string name="standings">Classificação</string>
+    <string name="number">#</string>
+    <string name="name">Nome</string>
+    <string name="points">Pts</string>
 </resources>

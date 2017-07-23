@@ -43,16 +43,16 @@ dependencies {
     compile 'com.android.support:customtabs:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     compile 'com.google.firebase:firebase-crash:10.2.4'
     compile 'com.google.firebase:firebase-ads:10.2.4'
     compile 'com.google.firebase:firebase-messaging:10.2.4'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.2.2'
-    testCompile 'org.mockito:mockito-core:2.6.9'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    testCompile 'org.mockito:mockito-core:2.8.47'
 }
 
 apply plugin: 'com.google.gms.google-services'

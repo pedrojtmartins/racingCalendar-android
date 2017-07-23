@@ -3,7 +3,6 @@ package com.pedrojtmartins.racingcalendar.viewModels;
 import android.databinding.ObservableArrayList;
 
 import com.pedrojtmartins.racingcalendar.api.APIManager;
-import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.eventResults.EventResultsParser;
 import com.pedrojtmartins.racingcalendar.models.EventResultUnit;
 
@@ -21,23 +20,30 @@ import retrofit2.Response;
  */
 
 public class ResultsViewModel {
-    private final DatabaseManager databaseManager;
     private final int seriesId;
     private final int raceId;
+    private final String seriesName;
 
     public ObservableArrayList<EventResultUnit> results;
 
-    public ResultsViewModel(DatabaseManager databaseManager, int seriesId, int raceId) {
-        this.databaseManager = databaseManager;
+    public ResultsViewModel(int seriesId, int raceId, String seriesName) {
         this.seriesId = seriesId;
         this.raceId = raceId;
+        this.seriesName = seriesName;
 
         results = new ObservableArrayList<>();
-
-        downloadStatus(seriesId);
     }
 
-    private void downloadStatus(final int seriesId) {
+    public boolean loadResults() {
+        if (seriesId != -1 && raceId == -1) {
+            loadStandings();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void loadStandings() {
         String url = EventResultsParser.getUrl(seriesId);
         if (url == null || url.isEmpty())
             return;
@@ -64,8 +70,10 @@ public class ResultsViewModel {
             String html = responseBody.string();
             ArrayList<EventResultUnit> htmlResults = EventResultsParser.getStandings(html, seriesId);
 
-            if (htmlResults == null || htmlResults.isEmpty())
+            if (htmlResults == null || htmlResults.isEmpty()) {
+                // TODO: 23/07/2017 raise firebase exception to warn me
                 return;
+            }
 
             results.clear();
             results.addAll(htmlResults);

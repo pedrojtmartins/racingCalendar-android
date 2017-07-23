@@ -68,4 +68,8 @@
     <string name="action_rate">Rate</string>
 
     <string name="raceShort">R</string>
+    <string name="standings">Standings</string>
+    <string name="number">#</string>
+    <string name="name">Name</string>
+    <string name="points">Pts</string>
 </resources>
