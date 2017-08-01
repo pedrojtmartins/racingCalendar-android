@@ -18,7 +18,7 @@
     <string name="title_activity_settings">Definições</string>
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
-    <string name="firstTimeDataDownload">A descarregar dados…</string>
+    <string name="firstTimeDataDownload">Ocorreu um erro ao carregar as classificações. Por favor, tente novamente mais tarde.</string>
     <string name="of">de</string>
     <string name="next">Próxima corrida:</string>
     <string name="seriesIsOver">Completa</string>
@@ -69,7 +69,8 @@
     <string name="raceShort">C</string>
 
     <string name="standings">Classificação</string>
-    <string name="number">#</string>
+    <string name="position">Pos</string>
     <string name="name">Nome</string>
     <string name="points">Pts</string>
+    <string name="errorLoadingStandings">Ocorreu um erro a carregar as classificações. Tente novamente mais tarde.</string>
 </resources>

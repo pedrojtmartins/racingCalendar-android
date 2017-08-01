@@ -44,12 +44,23 @@ public class AlertDialogHelper {
     }
 
     public static boolean displayOkDialog(Context context, int msg) {
+        return displayOkDialog(context, msg, null);
+    }
+
+    public static boolean displayOkDialog(Context context, int msg, final Handler handler) {
         if (context == null)
             return false;
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
                 .setMessage(msg)
                 .setPositiveButton("Ok", null)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (handler != null)
+                            handler.sendEmptyMessage(0);
+                    }
+                })
                 .show();
 
         return true;

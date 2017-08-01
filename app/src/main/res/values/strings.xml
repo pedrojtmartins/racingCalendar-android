@@ -69,7 +69,9 @@
 
     <string name="raceShort">R</string>
     <string name="standings">Standings</string>
-    <string name="number">#</string>
+    <string name="position">Pos</string>
     <string name="name">Name</string>
     <string name="points">Pts</string>
+    <string name="poweredby" translatable="false">Powered by</string>
+    <string name="errorLoadingStandings" >An error has occurred loading the standings. Please try again later.</string>
 </resources>

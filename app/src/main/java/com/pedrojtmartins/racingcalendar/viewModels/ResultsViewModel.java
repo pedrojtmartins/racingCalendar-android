@@ -1,10 +1,12 @@
 package com.pedrojtmartins.racingcalendar.viewModels;
 
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableInt;
 
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.eventResults.EventResultsParser;
 import com.pedrojtmartins.racingcalendar.models.EventResultUnit;
+import com.pedrojtmartins.racingcalendar.models.ResultsViewModelStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ import retrofit2.Response;
  */
 
 public class ResultsViewModel {
+    public final ResultsViewModelStatus status;
+    public final ObservableInt connectionResult;
+
     private final int seriesId;
     private final int raceId;
     private final String seriesName;
@@ -30,6 +35,9 @@ public class ResultsViewModel {
         this.seriesId = seriesId;
         this.raceId = raceId;
         this.seriesName = seriesName;
+
+        status = new ResultsViewModelStatus();
+        connectionResult = new ObservableInt(0);
 
         results = new ObservableArrayList<>();
     }
@@ -51,13 +59,17 @@ public class ResultsViewModel {
         APIManager.getApi().getHtmlFrom(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                status.setLoadComplete(true);
                 if (response.isSuccessful()) {
                     decodeHtml(response.body(), seriesId);
+                } else {
+                    connectionResult.set(response.code());
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                status.setLoadComplete(true);
+                connectionResult.set(-1);
             }
         });
     }
