@@ -437,7 +437,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("raceId", race.getId());
+        intent.putExtra("seriesId", race.getSeriesId());
         intent.putExtra("seriesName", race.getSeriesName());
+        intent.putExtra("raceNum", race.getRaceNumber());
         startActivity(intent);
     }
 

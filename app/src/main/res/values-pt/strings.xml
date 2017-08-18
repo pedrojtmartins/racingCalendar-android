@@ -59,6 +59,7 @@
     <string name="ok">Ok</string>
 
     <string name="openUrl">Abrir website</string>
+    <string name="openResults">Abrir classificação</string>
     <string name="noBrowser">Nenhum browser encontrado. Deverá instalar uma aplicação capaz de abrir páginas web.</string>
     <string name="settinns_links">Endereços web</string>
     <string name="settings_open_link_in_app">Abrir no browser</string>
@@ -69,8 +70,10 @@
     <string name="raceShort">C</string>
 
     <string name="standings">Classificação</string>
+    <string name="results">Classificação</string>
     <string name="position">Pos</string>
     <string name="name">Nome</string>
     <string name="points">Pts</string>
     <string name="errorLoadingStandings">Ocorreu um erro a carregar as classificações. Tente novamente mais tarde.</string>
+
 </resources>

@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:id="@+id/list_header"
-            style="@style/SeriesRow"
+            style="@style/SeriesHeader"
             android:clickable="true"
             android:orientation="horizontal"
             android:visibility="gone">
@@ -34,20 +34,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@{data.name}"/>
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<android.support.v7.widget.AppCompatImageView-->
-            <!--android:id="@+id/series_header_more"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="3dp"-->
-            <!--android:clickable="true"-->
-            <!--app:srcCompat="@drawable/more_vertical_black"/>-->
-            <!--</LinearLayout>-->
 
         </LinearLayout>
 

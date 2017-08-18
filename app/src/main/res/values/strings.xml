@@ -74,4 +74,6 @@
     <string name="points">Pts</string>
     <string name="poweredby" translatable="false">Powered by</string>
     <string name="errorLoadingStandings" >An error has occurred loading the standings. Please try again later.</string>
+    <string name="results">Results</string>
+    <string name="openResults">Open results</string>
 </resources>

@@ -33,7 +33,8 @@ public class ResultsActivity extends AppCompatActivity {
         viewModel = new ResultsViewModel(
                 getIntent().getIntExtra("seriesId", -1),
                 getIntent().getIntExtra("raceId", -1),
-                getIntent().getStringExtra("seriesName"));
+                getIntent().getStringExtra("seriesName"),
+                getIntent().getIntExtra("raceNum", -1));
 
         binding.setData(viewModel.status);
 
@@ -74,7 +75,12 @@ public class ResultsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.standings);
+
+            if (getIntent().getIntExtra("raceId", -1) == -1) {
+                actionBar.setTitle(getResources().getString(R.string.standings));
+            } else {
+                actionBar.setTitle(getResources().getString(R.string.results));
+            }
         }
     }
 

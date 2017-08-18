@@ -4,12 +4,17 @@ import com.pedrojtmartins.racingcalendar.models.EventResultUnit;
 
 import java.util.ArrayList;
 
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.cleanAfter;
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.cleanBefore;
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.getString;
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.getStringUntil;
+
 /**
  * Pedro Martins
  * 26/06/2017
  */
 
-public class EventResultsParser {
+public class SeriesResultsManager {
     public static String getUrl(int id) {
         switch (id) {
             case 1:
@@ -101,6 +106,11 @@ public class EventResultsParser {
         return null;
     }
 
+    public boolean areResultsAvailable(int id) {
+        String url = getUrl(id);
+        return url != null && !url.isEmpty();
+    }
+
     //transam
     // https://www.driverdb.com/championships/standings/scca-trans-am/2017/
     // https://www.driverdb.com/championships/standings/trans-am---ta2/2017/
@@ -135,7 +145,7 @@ public class EventResultsParser {
 
             case 4:
             case 21:
-                return getAutosprtStandings(data);
+                return getAutosportStandings(data);
 
             case 6:
                 return getWRXstandings(data);
@@ -156,7 +166,6 @@ public class EventResultsParser {
     }
 
 
-
 //            case 1:
 //                return getF1Standings(data);
 //            case 2:
@@ -167,54 +176,7 @@ public class EventResultsParser {
 //                return getNASCARstandings(data);
 
     //region HTML helpers
-    private static String[] cleanBefore(String source, String cleanFilter) {
-        String[] clean = source.split(cleanFilter);
-        if (clean.length <= 1)
-            return null;
 
-        String[] cleaner = new String[clean.length - 1];
-        System.arraycopy(clean, 1, cleaner, 0, clean.length - 1);
-
-        return cleaner;
-    }
-
-    private static String cleanAfter(String source, String cleanFilter) {
-        String[] clean = source.split(cleanFilter);
-        if (clean.length == 0)
-            return null;
-
-
-        return clean[0];
-    }
-
-    private static String getString(String source, String startLimiter, String endLimiter) {
-        try {
-            String[] arr = source.split(startLimiter);
-            if (arr.length >= 2) {
-                return arr[1].substring(0, arr[1].indexOf(endLimiter));
-            }
-        } catch (IndexOutOfBoundsException ignored) {
-
-        }
-
-        return "";
-    }
-
-    private static String getString(String source, String startLimiter) {
-        String[] arr = source.split(startLimiter);
-        if (arr.length > 1) {
-            return arr[1];
-        }
-        return "";
-    }
-
-    private static String getStringUntil(String source, String endLimiter) {
-        String[] arr = source.split(endLimiter);
-        if (arr.length >= 1) {
-            return arr[0];
-        }
-        return "";
-    }
     //endregion
 
     //region WRC
@@ -253,7 +215,7 @@ public class EventResultsParser {
     // https://www.autosport.com/wrc/standings
     // https://www.autosport.com/f2/standings
     // https://www.autosport.com/nascar/standings
-    public static ArrayList<EventResultUnit> getAutosprtStandings(String data) {
+    public static ArrayList<EventResultUnit> getAutosportStandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
@@ -288,12 +250,12 @@ public class EventResultsParser {
             return null;
 
         data = cleanAfter(data, "</table>");
-        String[] clean = cleanBefore(data, "<small>Points</small>");
+        String clean = cleanBefore(data, "<small>Points</small>");
 
-        if (clean == null || clean.length == 0)
+        if (clean == null)
             return null;
 
-        String[] splitted = clean[0].split("</small></td></tr>\n</tr>");
+        String[] splitted = clean.split("</small></td></tr>\n</tr>");
         if (splitted.length <= 1)
             return null;
 
@@ -323,12 +285,12 @@ public class EventResultsParser {
             return null;
 
         data = cleanAfter(data, "</tbody>");
-        String[] clean = cleanBefore(data, "<tbody>");
+        String clean = cleanBefore(data, "<tbody>");
 
-        if (clean == null || clean.length == 0)
+        if (clean == null)
             return null;
 
-        String[] arrHtmlPage = clean[0].split("</tr>\n" + " {36}<tr>");
+        String[] arrHtmlPage = clean.split("</tr>\n" + " {36}<tr>");
         if (arrHtmlPage.length <= 1)
             return null;
 
@@ -358,12 +320,12 @@ public class EventResultsParser {
             return null;
 
         data = cleanAfter(data, "</tbody>");
-        String[] clean = cleanBefore(data, "<tbody>");
+        String clean = cleanBefore(data, "<tbody>");
 
-        if (clean == null || clean.length == 0)
+        if (clean == null)
             return null;
 
-        String[] splitted = clean[0].split("<span class=\"driver\"");
+        String[] splitted = clean.split("<span class=\"driver\"");
         if (splitted.length <= 1)
             return null;
 
@@ -400,12 +362,12 @@ public class EventResultsParser {
             return null;
 
         data = cleanAfter(data, "</tbody>");
-        String[] clean = cleanBefore(data, "<tbody>");
+        String clean = cleanBefore(data, "<tbody>");
 
-        if (clean == null || clean.length == 0)
+        if (clean == null)
             return null;
 
-        String[] splitted = clean[0].split("&nbsp;</td>");
+        String[] splitted = clean.split("&nbsp;</td>");
         if (splitted.length <= 1)
             return null;
 
@@ -467,195 +429,5 @@ public class EventResultsParser {
 
         return results;
     }
-    //endregion
-
-//    //region FÃ“RMULA TRUCK BR
-//    // http://www.formulatruck.com.br/classificacao-tabela.asp?temporada=8&campeonato=3
-//    public static ArrayList<EventResultUnit> getFormulaTruckBRtandings(String data) {
-//        if (data == null || data.length() == 0)
-//            return null;
-//
-//        String[] arrHtmlPage = cleanBefore(data, "<td align=\"left\" valign=\"middle\">");
-//        if (arrHtmlPage == null || arrHtmlPage.length == 0)
-//            return null;
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (String html : arrHtmlPage) {
-//            String position = (results.size() + 1) + "";
-//
-//            String name = getStringUntil(html, "</td>");
-//            String team = "";
-//            String points = getString(html, "<strong>", "</strong>");
-//
-//            results.add(new EventResultUnit(position, name, team, points));
-//        }
-//
-//        return results;
-//    }
-//    //endregion
-
-//    //region StockCar BR
-//    // http://www.stockcar.com.br/Classificacao/
-//    public static ArrayList<EventResultUnit> getStockCarBRtandings(String data) {
-//        if (data == null || data.length() == 0)
-//            return null;
-//
-//        data = cleanAfter(data, "conteudo_tabela_temporada_equipes");
-//        String[] clean = cleanBefore(data, "tabela_temporadaPilotos_ul");
-//
-//        if (clean == null || clean.length == 0)
-//            return null;
-//
-//        String[] splitted = clean[0].split("<a href='/Pilotos/");
-//        if (splitted.length <= 1)
-//            return null;
-//
-//        String[] arrHtmlPage = new String[splitted.length - 1];
-//        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (String html : arrHtmlPage) {
-//            String position = (results.size() + 1) + "";
-//
-//            String name = getString(html, "<h3>", "</h3>");
-//            String team = "";
-//            String points = getString(html, "<span class='col pontos'>", "</span>");
-//
-//            results.add(new EventResultUnit(position, name, team, points));
-//        }
-//
-//        return results;
-//    }
-//    //endregion
-
-
-//    //region NASCAR
-//    // http://www.foxsports.com/nascar/standings?circuit=3&season=2017 - XFINITY
-//    // http://www.foxsports.com/nascar/standings?circuit=2&season=2017 - Monster Energy
-//    // http://www.foxsports.com/nascar/standings?circuit=4&season=2017 - Camping
-//    public static ArrayList<EventResultUnit> getNASCARstandings(String data) {
-//        if (data == null || data.length() == 0)
-//            return null;
-//
-//        data = cleanAfter(data, "</tbody>");
-//        String[] clean = cleanBefore(data, "<tbody>");
-//
-//        if (clean == null || clean.length == 0)
-//            return null;
-//
-//        String[] splitted = clean[0].split("<div class=\"wisbb_fullPlayer\">");
-//        if (splitted.length <= 1)
-//            return null;
-//
-//        String[] arrHtmlPage = new String[splitted.length - 1];
-//        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (String html : arrHtmlPage) {
-//            String position = (results.size() + 1) + "";
-//
-//            String name = getString(html, "<span>", "</span>");
-//            String team = "";
-//            String points = getString(html, "<td class=\"wisbb_priorityColumn\">", "</td>");
-//
-//            results.add(new EventResultUnit(position, name, team, points));
-//        }
-//
-//        return results;
-//    }
-//    //endregion
-
-
-//    //region Fe  -  http://forix-proxy-prod.formulae.corebine.com/fe_server.php?championship=2022016&page=drivers-standings
-//    public static ArrayList<EventResultUnit> getFEStandings(FESerialization serialized) {
-//        if (serialized == null
-//                || serialized.serieData == null
-//                || serialized.serieData.championshipStanding == null
-//                || serialized.serieData.championshipStanding.championshipData == null
-//                || serialized.serieData.championshipStanding.championshipData.standings == null)
-//            return null;
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (FESerialization.Standing standing : serialized.serieData.championshipStanding.championshipData.standings) {
-//            results.add(new EventResultUnit(standing.pos, standing.driverName, standing.teamName, standing.totalPoints));
-//        }
-//        return results;
-//    }
-//    //endregion
-
-//    //region Indycar
-//    public static ArrayList<EventResultUnit> getIndycarStandings(IndyCarSerialization serialized) {
-//        if (serialized == null || serialized.driverList == null || serialized.driverList.isEmpty())
-//            return null;
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (IndyCarSerialization.DriverList standing : serialized.driverList) {
-//            results.add(new EventResultUnit(standing.overallPosition, standing.driverName, standing.totalPoints));
-//        }
-//        return results;
-//    }
-//    //endregion
-
-//    //region F1  -  https://www.formula1.com/en/results.html/2017/drivers.html
-//    public static ArrayList<EventResultUnit> getF1Standings(String data) {
-//        if (data == null || data.length() == 0)
-//            return null;
-//
-//        String[] arrHtmlPage = cleanBefore(data, "\"hide-for-tablet\">");
-//        if (arrHtmlPage == null)
-//            return null;
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (String html : arrHtmlPage) {
-//            String position = (results.size() + 1) + "";
-//            String name = getF1NamesString(html, "</span>\n {20}<span class=\"hide-for-mobile\">", "</span>");
-//            String team = getString(html, "class=\"grey semi-bold uppercase ArchiveLink\">", "</a>");
-//            String points = getString(html, "class=\"dark bold\">", "</td>");
-//
-//            results.add(new EventResultUnit(position, name, team, points));
-//        }
-//
-//        return results;
-//    }
-
-//    private static ArrayList<EventResultUnit> getFEStandings(String data) {
-//        if (data == null || data.length() == 0)
-//            return null;
-//
-//        String[] splitted = data.split("<tr style=\"border-bottom:solid #999999; padding: 10px; color: rgb");
-//        if (splitted.length <= 1)
-//            return null;
-//
-//        String[] arrHtmlPage = new String[splitted.length - 1];
-//        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
-//
-//        ArrayList<EventResultUnit> results = new ArrayList<>();
-//        for (String html : arrHtmlPage) {
-//            String position = (results.size() + 1) + "";
-//
-//            String[] sArr = html.split("<td style=\"vertical-align: middle;\">");
-//            if (sArr.length != 4)
-//                continue;
-//
-//            String name = getString(sArr[1], "<center>", "</center>");
-//            String team = getString(sArr[2], "<center>", "</center>");
-//            String points = getString(sArr[3], "<center>", "</center>");
-//
-//            results.add(new EventResultUnit(position, name, team, points));
-//
-//            if (data.contains("\\tbody"))
-//                break;
-//        }
-//
-//        return results;
-//    }
-
-//    private static String getF1NamesString(String source, String startLimiter, String endLimiter) {
-//        String[] arrNames = source.split(startLimiter);
-//        if (arrNames.length >= 2) {
-//            return arrNames[0] + " " + arrNames[1].substring(0, arrNames[1].indexOf(endLimiter));
-//        }
-//        return "";
-//    }
-    //endregion
+//endregion
 }

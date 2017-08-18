@@ -36,6 +36,20 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
+        <TextView
+            android:id="@+id/results_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="F1 - Formula 1"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

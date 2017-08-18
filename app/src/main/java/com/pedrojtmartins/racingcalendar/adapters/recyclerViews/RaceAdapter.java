@@ -13,6 +13,7 @@ import android.widget.PopupMenu;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.databinding.RowRace2Binding;
 import com.pedrojtmartins.racingcalendar.databinding.RowRaceDatesBinding;
+import com.pedrojtmartins.racingcalendar.eventResults.RaceResultsManager;
 import com.pedrojtmartins.racingcalendar.helpers.APIHelper;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
@@ -181,6 +182,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // Even if it will be enough for our needs, it is not an elegant solution.
         // TO IMPROVE
 
+        final boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
+        if (resultsAvailable) {
+            binding.raceRowResults.setVisibility(View.VISIBLE);
+        } else {
+            binding.raceRowResults.setVisibility(View.GONE);
+        }
+
         binding.raceRowMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,12 +227,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                                 }
                                 break;
 
-
                             case R.id.three:
                                 mCallback.openUrl(race);
                                 break;
 
-
+                            case R.id.openResults:
+                                mCallback.openResults(race);
+                                break;
                         }
                         return true;
                     }
@@ -235,16 +244,29 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 showCorrectMenu(datesCount, menu.findItem(R.id.set1notif), menu.findItem(R.id.rem1notif), race, 0);
                 showCorrectMenu(datesCount, menu.findItem(R.id.set2notif), menu.findItem(R.id.rem2notif), race, 1);
                 showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
+                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
+
+                menu.findItem(R.id.openResults).setVisible(resultsAvailable);
 
                 popup.show();
             }
         });
+
 
         binding.raceRowUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCallback != null) {
                     mCallback.openUrl(race);
+                }
+            }
+        });
+
+        binding.raceRowResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCallback != null) {
+                    mCallback.openResults(race);
                 }
             }
         });
