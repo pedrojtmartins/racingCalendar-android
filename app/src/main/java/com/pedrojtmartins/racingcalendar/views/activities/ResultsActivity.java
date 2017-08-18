@@ -10,11 +10,13 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.ResultsAdapter;
 import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityResultsBinding;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.viewModels.ResultsViewModel;
 
 import java.lang.ref.WeakReference;
@@ -33,8 +35,9 @@ public class ResultsActivity extends AppCompatActivity {
         viewModel = new ResultsViewModel(
                 getIntent().getIntExtra("seriesId", -1),
                 getIntent().getIntExtra("raceId", -1),
+                getIntent().getIntExtra("raceNum", -1),
                 getIntent().getStringExtra("seriesName"),
-                getIntent().getIntExtra("raceNum", -1));
+                getIntent().getStringExtra("raceName"));
 
         binding.setData(viewModel.status);
 
@@ -44,8 +47,18 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         registerForErrors();
-        initToolBar();
+        initToolBars();
         initRecyclerView();
+
+        logFirebase();
+    }
+
+    private void logFirebase() {
+        if (viewModel.raceName == null || viewModel.raceName.isEmpty()) {
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES_RESULTS);
+        } else {
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_RESULTS);
+        }
     }
 
     private void registerForErrors() {
@@ -69,19 +82,23 @@ public class ResultsActivity extends AppCompatActivity {
         });
     }
 
-    private void initToolBar() {
+    private void initToolBars() {
         setSupportActionBar(binding.toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-            if (getIntent().getIntExtra("raceId", -1) == -1) {
-                actionBar.setTitle(getResources().getString(R.string.standings));
-            } else {
-                actionBar.setTitle(getResources().getString(R.string.results));
-            }
+            actionBar.setTitle(viewModel.seriesName);
         }
+
+        if (viewModel.raceName == null || viewModel.raceName.isEmpty()) {
+            binding.resultsSubtitle.setText(getString(R.string.standings));
+            binding.resultsTableHeader.points.setVisibility(View.VISIBLE);
+        } else {
+            binding.resultsSubtitle.setText(viewModel.raceName);
+            binding.resultsTableHeader.points.setVisibility(View.GONE);
+        }
+
     }
 
     private void initRecyclerView() {

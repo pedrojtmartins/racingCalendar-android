@@ -106,7 +106,7 @@ public class SeriesResultsManager {
         return null;
     }
 
-    public boolean areResultsAvailable(int id) {
+    public static boolean areResultsAvailable(int id) {
         String url = getUrl(id);
         return url != null && !url.isEmpty();
     }

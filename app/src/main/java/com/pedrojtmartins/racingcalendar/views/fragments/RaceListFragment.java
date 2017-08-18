@@ -1,6 +1,7 @@
 package com.pedrojtmartins.racingcalendar.views.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
@@ -149,7 +150,15 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.listHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIRaceList.undoFragmentTransition();
+                ((Activity)view.getContext()).onBackPressed();
+//                mIRaceList.undoFragmentTransition();
+            }
+        });
+
+        mBinding.seriesHeaderResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIRaceList.openResults(mSeries);
             }
         });
     }

@@ -22,6 +22,7 @@ public interface IRaceList {
 
     void openUrl(Race race);
     void openResults(Race race);
+    void openResults(Series race);
 
     void openNotifications(Race race, int index);
 

@@ -8,6 +8,8 @@
         <variable
             name="data"
             type="com.pedrojtmartins.racingcalendar.models.Series"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -33,7 +35,24 @@
                 style="@style/SeriesTitle"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:text="@{data.name}"/>
+                android:text="@{data.name}"
+                tools:text="F1 - Formula 1"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/series_header_results"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:scaleX="-1"
+                android:tint="#A0A0A0"
+                android:visibility="@{data.hasResultsUrl() ? View.VISIBLE : View.GONE}"
+                app:srcCompat="@drawable/podium"/>
 
         </LinearLayout>
 

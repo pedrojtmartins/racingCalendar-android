@@ -150,6 +150,7 @@
                     android:layout_marginStart="8dp"
                     android:scaleX="-1"
                     android:tint="#A0A0A0"
+                    android:visibility="@{data.hasResultsUrl ? View.VISIBLE : View.GONE}"
                     app:srcCompat="@drawable/podium"/>
 
                 <View

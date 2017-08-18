@@ -7,6 +7,7 @@ import android.databinding.ObservableInt;
 
 import com.google.gson.annotations.SerializedName;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
+import com.pedrojtmartins.racingcalendar.eventResults.RaceResultsManager;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 /**
@@ -154,6 +155,10 @@ public class Race extends BaseObservable {
 
     public boolean hasUrl() {
         return mUrl != null && !mUrl.isEmpty();
+    }
+
+    public boolean hasResultsUrl() {
+        return RaceResultsManager.areResultsAvailable(mSeriesId);
     }
 
     @Bindable

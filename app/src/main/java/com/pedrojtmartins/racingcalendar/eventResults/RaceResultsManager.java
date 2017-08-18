@@ -39,7 +39,7 @@ public class RaceResultsManager {
         return null;
     }
 
-    public static int getRacePerEvent(int id) {
+    private static int getRacesPerEvent(int id) {
         switch (id) {
             case 5:
                 return 2;
@@ -65,20 +65,6 @@ public class RaceResultsManager {
             sNum = "0" + sNum;
 
         return sNum;
-    }
-
-    private static int getRacesPerEvent(int id) {
-        switch (id) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                return 1;
-
-            default:
-                return -1;
-        }
     }
 
     // f1
@@ -138,7 +124,7 @@ public class RaceResultsManager {
 
         // TODO: 18/08/2017 chekc multiple races per event
         String url = getUrl(seriesId);
-        int racePerEvent = getRacePerEvent(seriesId);
+        int racePerEvent = getRacesPerEvent(seriesId);
         ArrayList<String> urls = new ArrayList<>();
 
         String raceIdentifier = getRaceIdentifier(seriesId, raceNum);

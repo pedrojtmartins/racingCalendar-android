@@ -27,6 +27,8 @@ public class FirebaseManager {
 
     public static final String EVENT_ACTION_OPEN_RACE_URL = "action_open_race_url";
     public static final String EVENT_ACTION_OPEN_SERIES_URL = "action_open_series_url";
+    public static final String EVENT_ACTION_OPEN_SERIES_RESULTS = "action_open_series_results";
+    public static final String EVENT_ACTION_OPEN_RACE_RESULTS = "action_open_race_results";
 
     public static final String EVENT_ACTION_LOAD_PREVIOUS_ALL = "action_load_previous_all";
     public static final String EVENT_ACTION_LOAD_PREVIOUS_FAVOURITES = "action_load_previous_favourites";

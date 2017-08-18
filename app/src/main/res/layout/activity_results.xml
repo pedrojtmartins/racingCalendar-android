@@ -41,14 +41,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primary"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="F1 - Formula 1"
+            android:padding="16dp"
             android:textColor="#fff"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="F1 - Formula 1"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,6 +64,7 @@
                 android:visibility="@{data.loadComplete ? View.VISIBLE : View.GONE}">
 
                 <include
+                    android:id="@+id/results_table_header"
                     layout="@layout/row_results_header"/>
 
 

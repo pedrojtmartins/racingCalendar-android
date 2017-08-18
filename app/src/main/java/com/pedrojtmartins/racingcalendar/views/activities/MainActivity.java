@@ -88,13 +88,17 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         mAdmobHelper.readyInterstitialAd(getApplicationContext(), getResources());
     }
 
-    private void showNotificationAd() {
+    private boolean showInterstitialAd(Handler callback) {
         SharedPreferencesManager spManager = new SharedPreferencesManager(this);
         int count = spManager.getNotificationAdsShownCount();
         spManager.notificationAdShown();
 
         mAdmobHelper = AdmobHelper.getInstance();
-        mAdmobHelper.showInterstitialAd(getApplicationContext(), getResources(), count, null);
+        return mAdmobHelper.showInterstitialAd(getApplicationContext(), getResources(), count, callback);
+    }
+
+    private boolean showInterstitialAd() {
+        return showInterstitialAd(null);
     }
 
     private boolean showUrlAd(final String url) {
@@ -406,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             race.setIsAlarmSet(index, true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
-            showNotificationAd();
+            showInterstitialAd();
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
@@ -435,11 +439,15 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (race == null)
             return;
 
+        //// TODO: 19/08/2017 improve ads
+//        showInterstitialAd();
+
         Intent intent = new Intent(this, ResultsActivity.class);
-        intent.putExtra("raceId", race.getId());
         intent.putExtra("seriesId", race.getSeriesId());
-        intent.putExtra("seriesName", race.getSeriesName());
+        intent.putExtra("raceId", race.getId());
         intent.putExtra("raceNum", race.getRaceNumber());
+        intent.putExtra("seriesName", race.getSeriesName());
+        intent.putExtra("raceName", race.getRaceNumberString() + " - " + race.getName());
         startActivity(intent);
     }
 
@@ -447,6 +455,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void openResults(Series series) {
         if (series == null)
             return;
+
+        //// TODO: 19/08/2017 improve ads
+        //showInterstitialAd();
 
         Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("seriesId", series.getId());

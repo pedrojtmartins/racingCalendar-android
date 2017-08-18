@@ -38,7 +38,7 @@ public class SeriesAdapter extends ObservableAdapter<Series> {
                     }
                 });
 
-                binding.results.setOnClickListener(new View.OnClickListener() {
+                binding.seriesResults.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mCallback.openResults(currSeries);

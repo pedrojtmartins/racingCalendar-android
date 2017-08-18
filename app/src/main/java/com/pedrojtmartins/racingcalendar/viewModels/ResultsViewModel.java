@@ -28,16 +28,18 @@ public class ResultsViewModel {
 
     private final int seriesId;
     private final int raceId;
-    private final String seriesName;
     private final int raceNum;
+    public final String seriesName;
+    public final String raceName;
 
     public ObservableArrayList<EventResultUnit> results;
 
-    public ResultsViewModel(int seriesId, int raceId, String seriesName, int raceNum) {
+    public ResultsViewModel(int seriesId, int raceId, int raceNum, String seriesName, String raceName) {
         this.seriesId = seriesId;
         this.raceId = raceId;
-        this.seriesName = seriesName;
         this.raceNum = raceNum;
+        this.seriesName = seriesName;
+        this.raceName = raceName;
 
         status = new ResultsViewModelStatus();
         connectionResult = new ObservableInt(0);

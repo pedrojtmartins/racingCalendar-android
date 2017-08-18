@@ -182,13 +182,6 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // Even if it will be enough for our needs, it is not an elegant solution.
         // TO IMPROVE
 
-        final boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
-        if (resultsAvailable) {
-            binding.raceRowResults.setVisibility(View.VISIBLE);
-        } else {
-            binding.raceRowResults.setVisibility(View.GONE);
-        }
-
         binding.raceRowMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,6 +239,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
                 showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
 
+                boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
                 menu.findItem(R.id.openResults).setVisible(resultsAvailable);
 
                 popup.show();
