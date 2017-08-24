@@ -34,9 +34,63 @@ public class RaceResultsManager {
 
             case 5:
                 return "http://classic.autosport.com/results.php?s=70&y=2017&r=201770" + placeHolder + "&c=2";
+
+            case 7:
+                return "http://classic.autosport.com/results.php?s=11&y=2017&r=201711" + placeHolder + "&c=2";
+
+            case 11:
+                return "http://classic.autosport.com/results.php?s=80&y=2017&r=201780" + placeHolder + "&c=2";
+
+            case 12:
+                return "http://classic.autosport.com/results.php?s=82&y=2017&r=201780" + placeHolder + "&c=2";
+
+            case 13:
+                return "http://classic.autosport.com/results.php?s=83&y=2017&r=201780" + placeHolder + "&c=2";
+
+            case 14:
+                return "http://classic.autosport.com/results.php?s=710&y=2017&r=201771" + placeHolder + "&c=2";
+
+            case 22:
+                return "http://classic.autosport.com/results.php?s=623&y=2017&r=201761" + placeHolder + "&c=2";
         }
 
         return null;
+    }
+
+    // wtcc (double)
+    // http://classic.autosport.com/results.php?s=70&y=2017&r=20177001&c=2
+    // http://classic.autosport.com/results.php?s=70&y=2017&r=20177002&c=2
+
+    // indy lights (double)
+    // http://classic.autosport.com/results.php?s=110&y=2017&r=20171131&c=2
+
+    // f2 (double)
+    // http://classic.autosport.com/results.php?s=205&y=2017&r=20172001&c=2
+
+    // dtm (double)
+    // http://classic.autosport.com/results.php?s=72&y=2017&r=20177201&c=2
+
+    // btcc (triple)
+    // http://classic.autosport.com/results.php?s=701&y=2017&r=20177031&c=2
+
+    // blancpain endurance
+    // http://classic.autosport.com/results.php?s=6020&y=2017&r=20176081&c=2
+
+
+    private static int getPlaceholderOffset(int id) {
+        switch (id) {
+            case 12:
+                return 30;
+
+            case 13:
+                return 60;
+
+            case 22:
+                return 30;
+
+            default:
+                return 0;
+        }
     }
 
     private static int getRacesPerEvent(int id) {
@@ -60,6 +114,8 @@ public class RaceResultsManager {
 //            offset = (raceNum - 1) * racesPerEvent;
 //        }
 
+        raceNum += getPlaceholderOffset(id);
+
         String sNum = String.valueOf(raceNum);
         if (sNum.length() == 1)
             sNum = "0" + sNum;
@@ -67,56 +123,6 @@ public class RaceResultsManager {
         return sNum;
     }
 
-    // f1
-    // http://classic.autosport.com/results.php?s=0&y=2017&r=20170001&c=2
-    // ...
-    // http://classic.autosport.com/results.php?s=0&y=2017&r=20170010&c=2
-
-    // fe
-    // http://classic.autosport.com/results.php?s=202&y=2016&r=20160201&c=2
-
-    // wtcc (double)
-    // http://classic.autosport.com/results.php?s=70&y=2017&r=20177001&c=2
-    // http://classic.autosport.com/results.php?s=70&y=2017&r=20177002&c=2
-
-    // wrc
-    // http://classic.autosport.com/results.php?s=901&y=2017&r=20170901&c=2
-
-    // wec
-    // http://classic.autosport.com/results.php?s=630&y=2017&r=20176091&c=2
-
-    // nascar
-    // http://classic.autosport.com/results.php?s=710&y=2017&r=20177101&c=2
-
-    // motogp
-    // http://classic.autosport.com/results.php?s=80&y=2017&r=20178001&c=2
-
-    // moto2
-    // http://classic.autosport.com/results.php?s=82&y=2017&r=20178031&c=2
-
-    // moto3
-    // http://classic.autosport.com/results.php?s=83&y=2017&r=20178061&c=2
-
-    // indycar
-    // http://classic.autosport.com/results.php?s=11&y=2017&r=20171101&c=2
-
-    // indy lights (double)
-    // http://classic.autosport.com/results.php?s=110&y=2017&r=20171131&c=2
-
-    // imsa sportscar
-    // http://classic.autosport.com/results.php?s=623&y=2017&r=20176131&c=2
-
-    // f2 (double)
-    // http://classic.autosport.com/results.php?s=205&y=2017&r=20172001&c=2
-
-    // dtm (double)
-    // http://classic.autosport.com/results.php?s=72&y=2017&r=20177201&c=2
-
-    // btcc (triple)
-    // http://classic.autosport.com/results.php?s=701&y=2017&r=20177031&c=2
-
-    // blancpain endurance
-    // http://classic.autosport.com/results.php?s=6020&y=2017&r=20176081&c=2
 
     public static String getUrl(int seriesId, int raceNum) {
         if (!areResultsAvailable(seriesId))
@@ -134,7 +140,6 @@ public class RaceResultsManager {
         urls.add(url.replace(placeHolder, raceIdentifier));
         return urls.get(0);
     }
-
 
     public static ArrayList<EventResultUnit> getAutoSportResult(String data) {
         if (data == null || data.length() == 0)
@@ -156,8 +161,7 @@ public class RaceResultsManager {
             name = getString(name, "\">", "<");
 
             String team = getStringAfterValue(html, name, "<td align=\"left\">", "</td>");
-            String points = "";
-//            String points = getString(html, "<td align=\"right\">", "</td>");
+            String points = getString(html, "<td align=\"right\">", "</td></tr>",1);
 
             results.add(new EventResultUnit(position, name, team, points));
         }

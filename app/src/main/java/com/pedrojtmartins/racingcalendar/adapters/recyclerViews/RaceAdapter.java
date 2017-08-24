@@ -65,12 +65,14 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
         showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
+        hideUpcomingRacesResultsIconIfNeeded(binding, raceWeekNo, thisWeekNo);
 
         setDatesInfo(binding, currRace);
         listenForAlarmStateChanges(binding, currRace);
 
         setClickListeners(binding, currRace);
     }
+
 
     private void setDatesInfo(RowRace2Binding binding, Race currRace) {
         // Let's set data and change the visibility of the layouts that contain the.
@@ -158,6 +160,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         } else {
             binding.weekTitle.setVisibility(View.GONE);
         }
+    }
+
+    private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {
+        binding.raceRowResultsParent.setVisibility(raceWeekNo > thisWeekNo ? View.GONE : View.VISIBLE);
     }
 
     private void applyThisWeekVisualsIfNeeded(Race currRace, int raceWeekNo, int thisWeekNo) {

@@ -27,4 +27,10 @@
 
     <color name="notificationFocus">#ebd3d0</color>
 
+
+    <color name="firstPosition">#FFD700</color>
+    <color name="secondPosition">#C0C0C0</color>
+    <color name="thirdPosition">#CD7F32</color>
+
+
 </resources>

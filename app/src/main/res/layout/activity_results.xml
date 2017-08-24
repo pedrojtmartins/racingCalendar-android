@@ -61,12 +61,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:padding="8dp"
                 android:visibility="@{data.loadComplete ? View.VISIBLE : View.GONE}">
 
-                <include
-                    android:id="@+id/results_table_header"
-                    layout="@layout/row_results_header"/>
-
+                <FrameLayout
+                    android:id="@+id/results_table_header_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -74,25 +75,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
 
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="right"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:padding="8dp">-->
-
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="8dp"-->
-                <!--android:text="@string/poweredby"-->
-                <!--android:textStyle="bold"/>-->
-
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="driverDB.com"/>-->
-                <!--</LinearLayout>-->
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

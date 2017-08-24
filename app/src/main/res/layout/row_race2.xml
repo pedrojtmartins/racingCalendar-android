@@ -142,16 +142,22 @@
                     android:tint="#A0A0A0"
                     app:srcCompat="@drawable/link_black"/>
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/race_row_results"
+                <FrameLayout
+                    android:id="@+id/race_row_results_parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:scaleX="-1"
-                    android:tint="#A0A0A0"
-                    android:visibility="@{data.hasResultsUrl ? View.VISIBLE : View.GONE}"
-                    app:srcCompat="@drawable/podium"/>
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/race_row_results"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:scaleX="-1"
+                        android:tint="#A0A0A0"
+                        android:visibility="@{data.hasResultsUrl ? View.VISIBLE : View.GONE}"
+                        app:srcCompat="@drawable/podium"/>
+                </FrameLayout>
 
                 <View
                     android:layout_width="0dp"

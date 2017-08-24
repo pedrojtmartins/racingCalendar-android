@@ -74,6 +74,7 @@
     <string name="position">Pos</string>
     <string name="name">Nome</string>
     <string name="points">Pts</string>
+    <string name="times">Tempo/Delta</string>
     <string name="errorLoadingStandings">Ocorreu um erro a carregar as classificações. Tente novamente mais tarde.</string>
 
 </resources>

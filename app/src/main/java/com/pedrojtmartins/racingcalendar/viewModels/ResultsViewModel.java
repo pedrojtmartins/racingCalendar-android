@@ -151,4 +151,7 @@ public class ResultsViewModel {
         }
     }
 
+    public boolean isRace() {
+        return raceName != null && !raceName.isEmpty();
+    }
 }

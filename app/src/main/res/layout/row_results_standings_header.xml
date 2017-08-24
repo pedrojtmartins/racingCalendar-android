@@ -16,32 +16,19 @@
 
         <TextView
             android:id="@+id/pos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/ResultsStandingsHeaderPositionsCol"
             android:text="@string/position"
-            android:textSize="16sp"
-            android:textStyle="bold"
             tools:text="19"/>
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
+            style="@style/ResultsStandingsHeaderNamesCol"
             android:text="@string/name"
-            android:textSize="16sp"
-            android:textStyle="bold"
             tools:text="19"/>
 
         <TextView
             android:id="@+id/points"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/points"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="19"/>
+            style="@style/ResultsStandingsHeaderPointsCol" tools:text="19"/>
     </LinearLayout>
 </layout>

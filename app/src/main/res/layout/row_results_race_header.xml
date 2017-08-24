@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="result"
+            type="com.pedrojtmartins.racingcalendar.models.EventResultUnit"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:padding="8dp">
+
+        <TextView
+            android:id="@+id/pos"
+            style="@style/ResultsRaceHeaderPositionCol"
+            android:text="@string/position"/>
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/ResultsRaceHeaderNamesCol"
+            android:text="@string/name"/>
+
+        <TextView
+            android:id="@+id/points"
+            style="@style/ResultsRaceHeaderDeltaCol"
+            android:text="@string/times"/>
+    </LinearLayout>
+</layout>

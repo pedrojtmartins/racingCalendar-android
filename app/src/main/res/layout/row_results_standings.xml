@@ -16,25 +16,19 @@
 
         <TextView
             android:id="@+id/pos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/ResultsStandingsPositionsCol"
             android:text="@{result.position}"
             tools:text="19"/>
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
+            style="@style/ResultsStandingsNamesCol"
             android:text="@{result.name}"
             tools:text="19"/>
 
         <TextView
             android:id="@+id/points"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/ResultsStandingsPointsCol"
             android:text="@{result.points}"
             tools:text="19"/>
     </LinearLayout>

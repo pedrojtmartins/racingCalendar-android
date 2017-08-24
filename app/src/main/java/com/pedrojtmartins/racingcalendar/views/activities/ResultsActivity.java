@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.R;
@@ -49,15 +50,29 @@ public class ResultsActivity extends AppCompatActivity {
         registerForErrors();
         initToolBars();
         initRecyclerView();
+        initHeader();
 
         logFirebase();
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void logFirebase() {
-        if (viewModel.raceName == null || viewModel.raceName.isEmpty()) {
-            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES_RESULTS);
-        } else {
+        if (viewModel.isRace()) {
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_RACE_RESULTS);
+        } else {
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_OPEN_SERIES_RESULTS);
         }
     }
 
@@ -91,18 +106,32 @@ public class ResultsActivity extends AppCompatActivity {
             actionBar.setTitle(viewModel.seriesName);
         }
 
-        if (viewModel.raceName == null || viewModel.raceName.isEmpty()) {
-            binding.resultsSubtitle.setText(getString(R.string.standings));
-            binding.resultsTableHeader.points.setVisibility(View.VISIBLE);
-        } else {
+        if (viewModel.isRace()) {
             binding.resultsSubtitle.setText(viewModel.raceName);
-            binding.resultsTableHeader.points.setVisibility(View.GONE);
+        } else {
+            binding.resultsSubtitle.setText(getString(R.string.standings));
         }
-
     }
 
     private void initRecyclerView() {
+        int layout = viewModel.isRace() ? R.layout.row_results_race : R.layout.row_results_standings;
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(new ResultsAdapter(R.layout.row_results, viewModel.results));
+        binding.recyclerView.setAdapter(new ResultsAdapter(layout, viewModel.results));
+    }
+
+    private void initHeader() {
+        View header;
+        if (viewModel.isRace()) {
+            header = getLayoutInflater().inflate(R.layout.row_results_race_header,
+                    binding.resultsTableHeaderParent,
+                    false);
+        } else {
+            header = getLayoutInflater().inflate(R.layout.row_results_standings_header,
+                    binding.resultsTableHeaderParent,
+                    false);
+        }
+
+        binding.resultsTableHeaderParent.addView(header);
     }
 }

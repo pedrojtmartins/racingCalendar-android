@@ -70,6 +70,19 @@ public class ResultsHtmlHelper {
         return "";
     }
 
+    public static String getString(String source, String startLimiter, String endLimiter, int ignoreCount) {
+        try {
+            String[] arr = source.split(startLimiter);
+            if (arr.length > ignoreCount) {
+                return arr[ignoreCount + 1].substring(0, arr[ignoreCount + 1].indexOf(endLimiter));
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+
+        return "";
+    }
+
     public static String getString(String source, String startLimiter) {
         String[] arr = source.split(startLimiter);
         if (arr.length > 1) {
