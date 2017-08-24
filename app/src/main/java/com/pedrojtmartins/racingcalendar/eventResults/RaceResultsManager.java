@@ -80,13 +80,11 @@ public class RaceResultsManager {
     private static int getPlaceholderOffset(int id) {
         switch (id) {
             case 12:
+            case 22:
                 return 30;
 
             case 13:
                 return 60;
-
-            case 22:
-                return 30;
 
             default:
                 return 0;

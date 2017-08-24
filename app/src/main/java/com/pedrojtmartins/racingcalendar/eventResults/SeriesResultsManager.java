@@ -4,10 +4,12 @@ import com.pedrojtmartins.racingcalendar.models.EventResultUnit;
 
 import java.util.ArrayList;
 
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.capitalizeFirstLetterEachWord;
 import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.cleanAfter;
 import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.cleanBefore;
 import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.getString;
 import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.getStringUntil;
+import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.splitAndIgnoreFirstPosition;
 
 /**
  * Pedro Martins
@@ -100,6 +102,8 @@ public class SeriesResultsManager {
             case 29:
                 return "http://www.worldsbk.com/en/results%20statistics/riders%20manufacturers";
 
+            case 30:
+                return "https://www.driverdb.com/championships/standings/scca-trans-am/2017/";
 
         }
 
@@ -138,6 +142,7 @@ public class SeriesResultsManager {
             case 25:
             case 26:
             case 28:
+            case 30:
                 return getDriverDBStandings(data);
 
             case 3:
@@ -164,20 +169,6 @@ public class SeriesResultsManager {
 
         return null;
     }
-
-
-//            case 1:
-//                return getF1Standings(data);
-//            case 2:
-//                return getFEStandings(data);
-//            case 14:
-//            case 15:
-//            case 16:
-//                return getNASCARstandings(data);
-
-    //region HTML helpers
-
-    //endregion
 
     //region WRC
     // http://www.wrc.com/en/wrc/results/championship-standings/page/4176----.html
@@ -290,7 +281,8 @@ public class SeriesResultsManager {
         if (clean == null)
             return null;
 
-        String[] arrHtmlPage = clean.split("</tr>\n" + " {36}<tr>");
+        String[] arrHtmlPage = splitAndIgnoreFirstPosition(clean, "</tr>\n" +
+                "<tr>");
         if (arrHtmlPage.length <= 1)
             return null;
 
@@ -325,12 +317,9 @@ public class SeriesResultsManager {
         if (clean == null)
             return null;
 
-        String[] splitted = clean.split("<span class=\"driver\"");
-        if (splitted.length <= 1)
+        String[] arrHtmlPage = splitAndIgnoreFirstPosition(clean, "<span class=\"driver\"");
+        if (arrHtmlPage.length <= 1)
             return null;
-
-        String[] arrHtmlPage = new String[splitted.length - 1];
-        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
 
         ArrayList<EventResultUnit> results = new ArrayList<>();
         for (String html : arrHtmlPage) {
@@ -340,10 +329,10 @@ public class SeriesResultsManager {
 
             String position = (results.size() + 1) + "";
 
-            String startLimiter = html.startsWith("\">") ? "\">" : ">";
+            String startLimiter = html.startsWith("><") ? "\">" : ">";
             String endLimiter = html.startsWith("\">") ? "</span>" : "</span";
             String name = getString(html, startLimiter, endLimiter);
-            name = name.trim();
+            name = capitalizeFirstLetterEachWord(name.trim());
 
             String team = "";
             String points = getString(html, "<td class=\"points\">", "</td>");
@@ -378,7 +367,7 @@ public class SeriesResultsManager {
         for (String html : arrHtmlPage) {
             String position = (results.size() + 1) + "";
 
-            String name = getString(html, "\">", "</a>");
+            String name = capitalizeFirstLetterEachWord(getString(html, "\">", "</a>"));
             String team = "";
 
             String[] arrPoints = html.split("<td>&nbsp;");
