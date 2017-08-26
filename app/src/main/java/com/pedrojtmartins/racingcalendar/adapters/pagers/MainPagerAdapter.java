@@ -138,6 +138,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             return;
 
         Fragment fragment = mFragments[tab];
+
+        // Are we displaying the races from series fragment.
+        if (tab == PAGE_SERIES && mFragmentSeriesRace != null) {
+            // If so update correct fragment holder
+            fragment = mFragmentSeriesRace;
+        }
+
         if (fragment instanceof IRecyclerViewFragment) {
             ((IRecyclerViewFragment) fragment).itemsReloaded(count);
         }
