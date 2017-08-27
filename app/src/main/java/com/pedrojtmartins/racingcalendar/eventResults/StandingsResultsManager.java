@@ -16,7 +16,7 @@ import static com.pedrojtmartins.racingcalendar.eventResults.ResultsHtmlHelper.s
  * 26/06/2017
  */
 
-public class SeriesResultsManager {
+public class StandingsResultsManager {
     public static String getUrl(int id) {
         switch (id) {
             case 1:
@@ -105,6 +105,8 @@ public class SeriesResultsManager {
             case 30:
                 return "https://www.driverdb.com/championships/standings/scca-trans-am/2017/";
 
+            case 34:
+                return "https://www.driverdb.com/championships/standings/tcr-international-series/2017/";
         }
 
         return null;
@@ -420,3 +422,4 @@ public class SeriesResultsManager {
     }
 //endregion
 }
+

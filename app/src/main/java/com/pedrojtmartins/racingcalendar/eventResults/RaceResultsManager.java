@@ -32,8 +32,8 @@ public class RaceResultsManager {
             case 4:
                 return "http://classic.autosport.com/results.php?s=630&y=2017&r=201760" + placeHolder + "&c=2";
 
-            case 5:
-                return "http://classic.autosport.com/results.php?s=70&y=2017&r=201770" + placeHolder + "&c=2";
+//            case 5:
+//                return "http://classic.autosport.com/results.php?s=70&y=2017&r=201770" + placeHolder + "&c=2";
 
             case 7:
                 return "http://classic.autosport.com/results.php?s=11&y=2017&r=201711" + placeHolder + "&c=2";
@@ -159,7 +159,7 @@ public class RaceResultsManager {
             name = getString(name, "\">", "<");
 
             String team = getStringAfterValue(html, name, "<td align=\"left\">", "</td>");
-            String points = getString(html, "<td align=\"right\">", "</td></tr>",1);
+            String points = getString(html, "<td align=\"right\">", "</td></tr>", 1);
 
             results.add(new EventResultUnit(position, name, team, points));
         }

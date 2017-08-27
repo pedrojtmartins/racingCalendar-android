@@ -78,35 +78,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
             }
         });
 
-//        if (mSeries != null)
-//            mBinding.seriesHeaderMore.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    PopupMenu popup = new PopupMenu(mBinding.seriesHeaderMore.getContext(), mBinding.seriesHeaderMore);
-//                    popup.getMenuInflater().inflate(R.menu.header_series, popup.getMenu());
-//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                        public boolean onMenuItemClick(MenuItem item) {
-//                            switch (item.getItemId()) {
-//                                case R.id.setNotifForAll:
-//                                    mIRaceList.updateAlarm(mSeries, true);
-//                                    break;
-//
-////                                case R.id.removeNotifForAll:
-////                                    mIRaceList.updateAlarm(mSeries, false);
-////                                break;
-//                            }
-//                            return true;
-//                        }
-//                    });
-//
-////                    Menu menu = popup.getMenu();
-////                    menu.findItem(R.id.setNotifForAll).setVisible(!race.getIsAlarmSet());
-////                    menu.findItem(R.id.removeNotifForAll).setVisible(race.getIsAlarmSet());
-//
-//                    popup.show();
-//                }
-//            });
-
         return mBinding.getRoot();
     }
 
@@ -133,15 +104,17 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
 
-        // When transitioning between fragments the recyclerview could be
-        // initialized not on the top because of fragment recycling.
-        // This forces it to the top every time.
-        mBinding.recyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mBinding.recyclerView.smoothScrollBy(0, -scrollPos);
-            }
-        });
+//        // When transitioning between fragments the recyclerview could be
+//        // initialized not on the top because of fragment recycling.
+//        // This forces it to the top every time.
+//        mBinding.recyclerView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mBinding.recyclerView.smoothScrollBy(0, -Integer.MAX_VALUE);
+//                scrollPos = 0;
+//                Log.i("debug", "post");
+//            }
+//        });
     }
 
     private void setupHeader() {
@@ -150,7 +123,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.listHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Activity)view.getContext()).onBackPressed();
+                ((Activity) view.getContext()).onBackPressed();
 //                mIRaceList.undoFragmentTransition();
             }
         });
@@ -195,5 +168,13 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         scrollPos = 0;
         mBinding.recyclerView.scrollToPosition(0);
         mBinding.swipeRefresh.setEnabled(true);
+    }
+
+    @Override
+    public int getScrollPosition() {
+        return 0;
+    }
+    @Override
+    public void setScrollPos(int scrollPos) {
     }
 }

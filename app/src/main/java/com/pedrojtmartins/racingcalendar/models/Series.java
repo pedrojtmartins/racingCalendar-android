@@ -5,7 +5,7 @@ import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
 import com.pedrojtmartins.racingcalendar.BR;
-import com.pedrojtmartins.racingcalendar.eventResults.SeriesResultsManager;
+import com.pedrojtmartins.racingcalendar.eventResults.StandingsResultsManager;
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class Series extends BaseObservable {
         return mUrl != null && !mUrl.isEmpty();
     }
     public boolean hasResultsUrl() {
-        return SeriesResultsManager.areResultsAvailable(mId);
+        return StandingsResultsManager.areResultsAvailable(mId);
     }
 
 

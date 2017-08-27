@@ -163,6 +163,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     }
 
     private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {
+
         binding.raceRowResultsParent.setVisibility(raceWeekNo > thisWeekNo ? View.GONE : View.VISIBLE);
     }
 

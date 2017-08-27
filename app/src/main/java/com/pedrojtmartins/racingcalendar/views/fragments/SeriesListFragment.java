@@ -91,6 +91,21 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
     }
 
     @Override
+    public int getScrollPosition() {
+        return scrollPos;
+    }
+    @Override
+    public void setScrollPos(final int scrollPos) {
+        this.scrollPos = scrollPos;
+        mBinding.recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.recyclerView.scrollTo(0, scrollPos);
+            }
+        });
+    }
+
+    @Override
     public void smoothScrollToTop() {
         mBinding.recyclerView.smoothScrollToPosition(0);
     }

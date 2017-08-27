@@ -18,6 +18,7 @@ public class SharedPreferencesManager {
     private final String SETTINGS_NOTIFICATIONS = "notifSettings";
     private final String RELEASE_NOTES1 = "notes1";
     private final String FORCE_DATA_UPDATE = "forceDataUpdate_v7";
+    // TODO: 27/08/2017 increment force data update
 
     private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
     private final String ADS_URL = "urlOpenCount";

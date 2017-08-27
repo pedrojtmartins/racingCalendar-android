@@ -84,14 +84,15 @@ public class ResultsActivity extends AppCompatActivity {
             public void onPropertyChanged(Observable sender, int propertyId) {
                 final Object ctx = ref.get();
                 if (ctx != null) {
-                    Handler handler = new Handler(new Handler.Callback() {
-                        @Override
-                        public boolean handleMessage(Message msg) {
-                            ((Activity) ctx).onBackPressed();
-                            return true;
-                        }
-                    });
-                    AlertDialogHelper.displayOkDialog((Context) ctx, R.string.errorLoadingStandings, handler);
+                    AlertDialogHelper.displayOkDialog((Context) ctx,
+                            R.string.errorLoadingStandings,
+                            new Handler(new Handler.Callback() {
+                                @Override
+                                public boolean handleMessage(Message msg) {
+                                    ((Activity) ctx).onBackPressed();
+                                    return true;
+                                }
+                            }));
                 }
             }
         });

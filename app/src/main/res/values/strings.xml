@@ -60,6 +60,7 @@
     <string name="ok">Ok</string>
 
     <string name="openUrl">Open website</string>
+    <string name="openResults">Open results</string>
     <string name="noBrowser">No web browser found. You must install an app capable of opening web links.</string>
     <string name="settinns_links">Web links</string>
     <string name="settings_open_link_in_app">Open in default browser</string>
@@ -72,9 +73,9 @@
     <string name="position">Pos</string>
     <string name="name">Name</string>
     <string name="points">Pts</string>
-    <string name="poweredby" translatable="false">Powered by</string>
-    <string name="errorLoadingStandings" >An error has occurred loading the standings. Please try again later.</string>
-    <string name="results">Results</string>
-    <string name="openResults">Open results</string>
     <string name="times">Time/Delay</string>
+    <string name="poweredby" translatable="false">Powered by</string>
+    <string name="errorLoadingStandings">The requested results could not be loaded. Please try again later.</string>
+
+    <string name="results">Results</string>
 </resources>

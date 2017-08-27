@@ -149,14 +149,6 @@ public class Race extends BaseObservable {
         return mUrl;
     }
 
-    public void setUrl(String mUrl) {
-        this.mUrl = mUrl;
-    }
-
-    public boolean hasUrl() {
-        return mUrl != null && !mUrl.isEmpty();
-    }
-
     public boolean hasResultsUrl() {
         return RaceResultsManager.areResultsAvailable(mSeriesId);
     }

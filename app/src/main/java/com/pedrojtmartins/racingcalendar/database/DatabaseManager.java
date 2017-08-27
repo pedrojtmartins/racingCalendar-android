@@ -349,6 +349,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 if (race == null)
                     continue;
 
+                if (race.getUnformattedDate() == null) {
+                    // This race is no longer active. Just remove it from the DB
+                    db.delete(TABLE_RACES, KEY_RACE_ID + "=" + race.getId(), null);
+                    continue;
+                }
+
                 ContentValues cValues = createRaceContentValue(race);
                 long rowId = db.insert(TABLE_RACES, null, cValues);
                 if (rowId == -1) {

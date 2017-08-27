@@ -29,6 +29,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment mFragmentSeriesRace;
     private final Resources mResources;
 
+    private int seriesScrollPosition;
+
     // This adapter will provide fragment transition capabilities
     // To control it we'll need a couple of temp variables.
     // NOTE: For now it will only have one fragment that can change
@@ -47,6 +49,28 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
+        // This is called when the notifyDataSetChanged is called
+        // which is called only to "replace" the series for the races fragment.
+        // We need to store the scrollview position before replacing with the series
+        // and restore it after replacing back. To improve...
+
+//        if (mFragmentSeriesRace != null) {
+//            // Replacing races for series fragment
+//            // Save scroll position
+//            Fragment fragment = mFragments[PAGE_SERIES];
+//            if (fragment instanceof IRecyclerViewFragment) {
+//                seriesScrollPosition = ((IRecyclerViewFragment) fragment).getScrollPosition();
+//            }
+//        } else {
+//            // Replacing series for races fragment
+//            // Restore scroll position
+//            Fragment fragment = mFragments[PAGE_SERIES];
+//            if (fragment instanceof IRecyclerViewFragment) {
+//                ((IRecyclerViewFragment) fragment).setScrollPos(seriesScrollPosition);
+//                Log.i("debug", seriesScrollPosition+"");
+//            }
+//        }
+
         return PagerAdapter.POSITION_NONE;
     }
 

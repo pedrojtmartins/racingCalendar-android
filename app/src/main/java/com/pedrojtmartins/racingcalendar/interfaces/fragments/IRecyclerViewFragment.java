@@ -10,4 +10,7 @@ public interface IRecyclerViewFragment {
     boolean isOnTop();
     void itemsReloaded(int count);
     void resetScrollPos();
+
+    int getScrollPosition();
+    void setScrollPos(int seriesScrollPosition);
 }

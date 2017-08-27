@@ -5,7 +5,7 @@ import android.databinding.ObservableInt;
 
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.eventResults.RaceResultsManager;
-import com.pedrojtmartins.racingcalendar.eventResults.SeriesResultsManager;
+import com.pedrojtmartins.racingcalendar.eventResults.StandingsResultsManager;
 import com.pedrojtmartins.racingcalendar.models.EventResultUnit;
 import com.pedrojtmartins.racingcalendar.models.ResultsViewModelStatus;
 
@@ -86,7 +86,7 @@ public class ResultsViewModel {
     }
 
     private void loadStandings() {
-        String url = SeriesResultsManager.getUrl(seriesId);
+        String url = StandingsResultsManager.getUrl(seriesId);
         if (url == null || url.isEmpty())
             return;
 
@@ -114,7 +114,7 @@ public class ResultsViewModel {
 
         try {
             String html = responseBody.string();
-            ArrayList<EventResultUnit> htmlResults = SeriesResultsManager.getStandings(html, seriesId);
+            ArrayList<EventResultUnit> htmlResults = StandingsResultsManager.getStandings(html, seriesId);
 
             if (htmlResults == null || htmlResults.isEmpty()) {
                 // TODO: 23/07/2017 raise firebase exception to warn me
