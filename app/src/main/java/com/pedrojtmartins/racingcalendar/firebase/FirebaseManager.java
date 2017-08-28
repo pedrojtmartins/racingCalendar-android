@@ -36,8 +36,8 @@ public class FirebaseManager {
 
     public static final String EVENT_ACTION_BACK_SCROLL = "action_back_scroll";
 
-    public static final String ERROR_RESULTS_EMPTY= "error_results_";
-    public static final String ERROR_STANDINGS_EMPTY= "error_standings_";
+    public static final String ERROR_RESULTS_EMPTY = "error_results_";
+    public static final String ERROR_STANDINGS_EMPTY = "error_standings_";
 
 
     public static boolean logEvent(Context context, String event) {

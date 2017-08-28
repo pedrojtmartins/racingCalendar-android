@@ -75,7 +75,7 @@
     <string name="points">Pts</string>
     <string name="times">Time/Delay</string>
     <string name="poweredby" translatable="false">Powered by</string>
-    <string name="errorLoadingStandings">The requested results could not be loaded. Please try again later.</string>
+    <string name="errorLoadingStandings">The requested results are not available yet. Please try again later.</string>
 
     <string name="releaseNotesMsg">
         .Added series standings.\n.Added race results.\n\nNote: Standings and results coverage will be further increased on future updates.</string>
