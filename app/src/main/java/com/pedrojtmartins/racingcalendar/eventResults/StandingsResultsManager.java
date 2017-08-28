@@ -105,6 +105,11 @@ public class StandingsResultsManager {
             case 30:
                 return "https://www.driverdb.com/championships/standings/scca-trans-am/2017/";
 
+            case 31:
+            case 32:
+            case 33:
+                return null;
+
             case 34:
                 return "https://www.driverdb.com/championships/standings/tcr-international-series/2017/";
         }
@@ -145,6 +150,7 @@ public class StandingsResultsManager {
             case 26:
             case 28:
             case 30:
+            case 34:
                 return getDriverDBStandings(data);
 
             case 3:
@@ -200,14 +206,6 @@ public class StandingsResultsManager {
     }
     //endregion
 
-    //region Misc
-    // https://www.autosport.com/wec/standings
-    // https://www.autosport.com/dtm/standings
-    // https://www.autosport.com/btcc/standings
-    // https://www.autosport.com/wtcc/standings
-    // https://www.autosport.com/wrc/standings
-    // https://www.autosport.com/f2/standings
-    // https://www.autosport.com/nascar/standings
     public static ArrayList<EventResultUnit> getAutosportStandings(String data) {
         if (data == null || data.length() == 0)
             return null;

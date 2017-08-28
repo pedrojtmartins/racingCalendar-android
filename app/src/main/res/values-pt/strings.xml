@@ -73,11 +73,11 @@
     <string name="name">Nome</string>
     <string name="points">Pts</string>
     <string name="times">Tempo/Delta</string>
-    <string name="errorLoadingStandings">As classificações ainda não estão disponíveis. Tente novamente mais tarde.</string>
+    <string name="errorLoadingStandings">As classificações ainda não estão disponíveis. Por favor, tente novamente mais tarde.</string>
 
     <string name="releaseNotesMsg">
         .Adicionadas classificações gerais.\n.Adicionados resultados por corrida.\n\nNota: A cobertura das classificações será aumentada em futuras atualizações.</string>
 
-    <string name="noInternetConnection">Sem ligação à internet. Por favor verifique a ligação e tente novamente.</string>
-    <string name="notInternetFirstInit">Sem ligação à internet. Na primeira inicialização é necessária uma ligação ativa. Por favor verifique a ligação e tente novamente.</string>
+    <string name="noInternetConnection">Sem ligação à internet. Por favor, verifique a ligação e tente novamente.</string>
+    <string name="notInternetFirstInit">Sem ligação à internet. Na primeira inicialização é necessária uma ligação ativa. Por favor, verifique a ligação e tente novamente.</string>
 </resources>

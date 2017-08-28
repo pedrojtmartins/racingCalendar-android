@@ -1,6 +1,5 @@
 package com.pedrojtmartins.racingcalendar.views.activities;
 
-import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableInt;
@@ -18,10 +17,8 @@ import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.ResultsAdapter;
 import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityResultsBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
-import com.pedrojtmartins.racingcalendar.helpers.NetworkStateHelper;
+import com.pedrojtmartins.racingcalendar.helpers.InternetConnectionTest;
 import com.pedrojtmartins.racingcalendar.viewModels.ResultsViewModel;
-
-import java.lang.ref.WeakReference;
 
 
 public class ResultsActivity extends AppCompatActivity {
@@ -43,33 +40,40 @@ public class ResultsActivity extends AppCompatActivity {
 
         binding.setData(viewModel.status);
 
-        if (isInternetAvailable())
-            viewModel.loadResults();
-
         registerForErrors();
         initToolBars();
         initRecyclerView();
         initHeader();
 
+        isInternetAvailable();
+
         logFirebase();
     }
 
-    private boolean isInternetAvailable() {
-        final WeakReference ref = new WeakReference<>(this);
-        return NetworkStateHelper.isInternetAvailable(this,
-                R.string.noInternetConnection,
-                new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message msg) {
-                        final Object context = ref.get();
-                        if (context != null) {
-                            ((Activity) context).onBackPressed();
-                        }
-                        return true;
-                    }
-                }));
+    private void isInternetAvailable() {
+        new InternetConnectionTest(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == 1) {
+                    viewModel.loadResults();
+                } else {
+                    noInternetConnection();
+                }
+
+                return false;
+            }
+        }).execute();
     }
 
+    private void noInternetConnection() {
+        AlertDialogHelper.displayOkDialog(this, R.string.noInternetConnection, new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                onBackPressed();
+                return false;
+            }
+        }));
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

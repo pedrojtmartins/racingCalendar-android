@@ -30,7 +30,7 @@ import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
-import com.pedrojtmartins.racingcalendar.helpers.NetworkStateHelper;
+import com.pedrojtmartins.racingcalendar.helpers.InternetConnectionTest;
 import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
@@ -179,13 +179,26 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         mViewModel.initialize();
     }
+
     private void checkInternetConnection() {
         // This will only happen on the first initialization
-        NetworkStateHelper.isInternetAvailable(this, R.string.notInternetFirstInit, new Handler(new Handler.Callback() {
+        new InternetConnectionTest(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == 0)
+                    noInternetConnection();
+
+                return false;
+            }
+        }).execute();
+    }
+
+    private void noInternetConnection() {
+        AlertDialogHelper.displayOkDialog(this, R.string.notInternetFirstInit, new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 onBackPressed();
-                return true;
+                return false;
             }
         }));
     }
