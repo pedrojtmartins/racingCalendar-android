@@ -23,10 +23,14 @@ import retrofit2.Response;
  */
 
 public class ResultsViewModel {
+    public static final int CONNECTION_FAILURE = -1;
+    public static final int CONNECTION_RESULTS_EMPTY = -2;
+    public static final int CONNECTION_STANDINGS_EMPTY = -3;
+
     public final ResultsViewModelStatus status;
     public final ObservableInt connectionResult;
 
-    private final int seriesId;
+    public final int seriesId;
     private final int raceId;
     private final int raceNum;
     public final String seriesName;
@@ -71,7 +75,10 @@ public class ResultsViewModel {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 status.setLoadComplete(true);
                 if (response.isSuccessful()) {
-                    decodeHtmlRace(response.body(), seriesId);
+                    int count = decodeHtmlRace(response.body(), seriesId);
+                    if (count == 0) {
+                        connectionResult.set(CONNECTION_RESULTS_EMPTY);
+                    }
                 } else {
                     connectionResult.set(response.code());
                 }
@@ -79,7 +86,7 @@ public class ResultsViewModel {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 status.setLoadComplete(true);
-                connectionResult.set(-1);
+                connectionResult.set(CONNECTION_FAILURE);
             }
         });
 
@@ -95,7 +102,10 @@ public class ResultsViewModel {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 status.setLoadComplete(true);
                 if (response.isSuccessful()) {
-                    decodeHtml(response.body(), seriesId);
+                    int count = decodeHtml(response.body(), seriesId);
+                    if (count == 0) {
+                        connectionResult.set(CONNECTION_STANDINGS_EMPTY);
+                    }
                 } else {
                     connectionResult.set(response.code());
                 }
@@ -103,36 +113,38 @@ public class ResultsViewModel {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 status.setLoadComplete(true);
-                connectionResult.set(-1);
+                connectionResult.set(CONNECTION_FAILURE);
             }
         });
     }
 
-    private void decodeHtml(ResponseBody responseBody, int seriesId) {
+    private int decodeHtml(ResponseBody responseBody, int seriesId) {
         if (responseBody == null)
-            return;
+            return 0;
 
         try {
             String html = responseBody.string();
             ArrayList<EventResultUnit> htmlResults = StandingsResultsManager.getStandings(html, seriesId);
 
             if (htmlResults == null || htmlResults.isEmpty()) {
-                // TODO: 23/07/2017 raise firebase exception to warn me
-                return;
+                return 0;
             }
 
             results.clear();
             results.addAll(htmlResults);
+            return results.size();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     //// TODO: 18/08/2017 improve
-    private void decodeHtmlRace(ResponseBody responseBody, int seriesId) {
+    private int decodeHtmlRace(ResponseBody responseBody, int seriesId) {
         if (responseBody == null)
-            return;
+            return 0;
 
         try {
             String html = responseBody.string();
@@ -140,15 +152,18 @@ public class ResultsViewModel {
 
             if (htmlResults == null || htmlResults.isEmpty()) {
                 // TODO: 23/07/2017 raise firebase exception to warn me
-                return;
+                return 0;
             }
 
             results.clear();
             results.addAll(htmlResults);
+            return results.size();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     public boolean isRace() {

@@ -104,17 +104,16 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
 
-//        // When transitioning between fragments the recyclerview could be
-//        // initialized not on the top because of fragment recycling.
-//        // This forces it to the top every time.
-//        mBinding.recyclerView.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mBinding.recyclerView.smoothScrollBy(0, -Integer.MAX_VALUE);
-//                scrollPos = 0;
-//                Log.i("debug", "post");
-//            }
-//        });
+        // When transitioning between fragments the recyclerview could be
+        // initialized not on the top because of fragment recycling.
+        // This forces it to the top every time.
+        mBinding.recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.recyclerView.smoothScrollBy(0, -Integer.MAX_VALUE);
+                scrollPos = 0;
+            }
+        });
     }
 
     private void setupHeader() {

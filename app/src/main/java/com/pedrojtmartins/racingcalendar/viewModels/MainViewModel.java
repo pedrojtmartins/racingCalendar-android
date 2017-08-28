@@ -32,6 +32,7 @@ public class MainViewModel implements IDataUpdater {
     public String updatedFromServerNewSeries;
 
     public ObservableBoolean newAppUpdate;
+    public ObservableBoolean firstInitialization;
 
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
         if (favouritesOnly)
@@ -72,12 +73,11 @@ public class MainViewModel implements IDataUpdater {
 
         updatedFromServer = new ObservableInt(0);
         newAppUpdate = new ObservableBoolean(false);
+        firstInitialization = new ObservableBoolean(false);
+    }
 
+    public void initialize() {
         loadDataFromLocalDb();
-
-        // recheckUpdates will be called from the onStart method on the activity instead
-        //initDataUpdate();
-        //checkAppVersion();
     }
 
     public boolean displayReleaseNotes() {
@@ -111,6 +111,10 @@ public class MainViewModel implements IDataUpdater {
 
         if (mAllRaces == null || mAllRaces.isEmpty() || mSeriesList == null || mSeriesList.isEmpty()) {
             mSharedPreferencesManager.addDataVersion(-1);
+        }
+
+        if (mSeriesList.isEmpty() && mAllRaces.isEmpty()) {
+            firstInitialization.set(true);
         }
     }
 

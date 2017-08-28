@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
 import com.pedrojtmartins.racingcalendar.helpers.IntentHelper;
+import com.pedrojtmartins.racingcalendar.helpers.NetworkStateHelper;
 import com.pedrojtmartins.racingcalendar.helpers.ParsingHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SettingsHelper;
 import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
@@ -166,6 +168,26 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                         Snackbar.LENGTH_INDEFINITE);
             }
         });
+
+        mViewModel.firstInitialization.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (((ObservableBoolean) sender).get())
+                    checkInternetConnection();
+            }
+        });
+
+        mViewModel.initialize();
+    }
+    private void checkInternetConnection() {
+        // This will only happen on the first initialization
+        NetworkStateHelper.isInternetAvailable(this, R.string.notInternetFirstInit, new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                onBackPressed();
+                return true;
+            }
+        }));
     }
 
     private void initToolBar() {

@@ -94,21 +94,19 @@ public class SharedPreferencesManager {
     public boolean getForceDataUpdate() {
         return getBoolean(FORCE_DB_UPDATE, true);
     }
-
     public void setForceDataUpdate() {
         setBoolean(FORCE_DB_UPDATE, false);
     }
-    //region Force data update
+    //endregion Force data update
 
     //region Force release notes update
     public boolean getReleaseNotesUpdate() {
         return getBoolean(FORCE_RELEASE_NOTES, true);
     }
-
     public void setReleaseNotesUpdate() {
         setBoolean(FORCE_RELEASE_NOTES, false);
     }
-    //region Force data update
+    //endregion Force release notes update
 
     //region Helpers
     private boolean getBoolean(String key, boolean defaultValue) {
@@ -122,7 +120,7 @@ public class SharedPreferencesManager {
         editor.putBoolean(key, value);
         editor.apply();
     }
-    //endregion
+    //endregion Helpers
 
     //region RATING
 //    public boolean askForRate(String todayDate, int minStarts, int minDays) {

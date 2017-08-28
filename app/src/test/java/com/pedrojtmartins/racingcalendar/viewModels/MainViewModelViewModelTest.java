@@ -2,8 +2,8 @@ package com.pedrojtmartins.racingcalendar.viewModels;
 
 import android.content.Context;
 
-import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.BuildConfig;
+import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
@@ -40,6 +40,7 @@ public class MainViewModelViewModelTest {
         mViewModel = new MainViewModel(DatabaseManager.getInstance(context),
                 apiManager,
                 mock(SharedPreferencesManager.class));
+        mViewModel.initialize();
     }
 
     @Test
