@@ -65,7 +65,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
         showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
-        hideUpcomingRacesResultsIconIfNeeded(binding, raceWeekNo, thisWeekNo);
+        hideUpcomingRacesResultsIconIfNeeded(binding, currRace.getDate(0));
 
         setDatesInfo(binding, currRace);
         listenForAlarmStateChanges(binding, currRace);
@@ -162,9 +162,9 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         }
     }
 
-    private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {
-
-        binding.raceRowResultsParent.setVisibility(raceWeekNo > thisWeekNo ? View.GONE : View.VISIBLE);
+    private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, String date) {
+        boolean inTheFuture = DateFormatter.isInTheFuture(date);
+        binding.raceRowResultsParent.setVisibility(inTheFuture ? View.GONE : View.VISIBLE);
     }
 
     private void applyThisWeekVisualsIfNeeded(Race currRace, int raceWeekNo, int thisWeekNo) {

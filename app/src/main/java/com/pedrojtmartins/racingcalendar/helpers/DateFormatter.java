@@ -216,6 +216,4 @@ public class DateFormatter {
 
         return checking.after(now);
     }
-
-
 }
