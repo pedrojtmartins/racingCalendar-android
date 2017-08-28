@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     private ActivityMainBinding mBinding;
     private MainViewModel mViewModel;
     private MainPagerAdapter mPageAdapter;
-    private AdmobHelper mAdmobHelper;
 
     //region Initialization
     @Override
@@ -88,22 +87,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     private void startAdmob() {
-        mAdmobHelper = AdmobHelper.getInstance();
-        mAdmobHelper.showBannerAd(getApplicationContext(), getResources(), mBinding.adView);
-        mAdmobHelper.readyInterstitialAd(getApplicationContext(), getResources());
+        AdmobHelper admobHelper = AdmobHelper.getInstance();
+        admobHelper.showBannerAd(getApplicationContext(), getResources(), mBinding.adView);
+        admobHelper.readyInterstitialAd(getApplicationContext(), getResources());
     }
 
-    private boolean showInterstitialAd(Handler callback) {
+    private boolean showInterstitialAd(Handler.Callback callback) {
         SharedPreferencesManager spManager = new SharedPreferencesManager(this);
         int count = spManager.getNotificationAdsShownCount();
         spManager.notificationAdShown();
 
-        mAdmobHelper = AdmobHelper.getInstance();
-        return mAdmobHelper.showInterstitialAd(getApplicationContext(), getResources(), count, callback);
-    }
-
-    private boolean showInterstitialAd() {
-        return showInterstitialAd(null);
+        return AdmobHelper.getInstance()
+                .showInterstitialAd(getApplicationContext(), getResources(), count, callback);
     }
 
     private boolean showUrlAd(final String url) {
@@ -111,18 +106,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         int count = spManager.getUrlAdsShownCount();
         spManager.urlAdShown();
 
-        mAdmobHelper = AdmobHelper.getInstance();
-        return mAdmobHelper.showInterstitialAd(
-                getApplicationContext(),
-                getResources(),
-                count,
-                new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message msg) {
-                        openUrl(url);
-                        return true;
-                    }
-                }));
+        return AdmobHelper.getInstance()
+                .showInterstitialAd(
+                        getApplicationContext(),
+                        getResources(),
+                        count,
+                        new Handler.Callback() {
+                            @Override
+                            public boolean handleMessage(Message msg) {
+                                openUrl(url);
+                                return true;
+                            }
+                        });
     }
 
     private void initViewModel() {
@@ -448,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             race.setIsAlarmSet(index, true);
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
-            showInterstitialAd();
+            showInterstitialAd(null);
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
@@ -477,16 +472,20 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (race == null)
             return;
 
-        //// TODO: 19/08/2017 improve ads
-//        showInterstitialAd();
-
-        Intent intent = new Intent(this, ResultsActivity.class);
+        final Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("seriesId", race.getSeriesId());
         intent.putExtra("raceId", race.getId());
         intent.putExtra("raceNum", race.getRaceNumber());
         intent.putExtra("seriesName", race.getSeriesName());
         intent.putExtra("raceName", race.getRaceNumberString() + " - " + race.getName());
-        startActivity(intent);
+
+        showInterstitialAd(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                startActivity(intent);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -494,13 +493,17 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (series == null)
             return;
 
-        //// TODO: 19/08/2017 improve ads
-        //showInterstitialAd();
-
-        Intent intent = new Intent(this, ResultsActivity.class);
+        final Intent intent = new Intent(this, ResultsActivity.class);
         intent.putExtra("seriesId", series.getId());
         intent.putExtra("seriesName", series.getName());
-        startActivity(intent);
+
+        showInterstitialAd(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                startActivity(intent);
+                return false;
+            }
+        });
     }
 
     private void openUrl(String url) {

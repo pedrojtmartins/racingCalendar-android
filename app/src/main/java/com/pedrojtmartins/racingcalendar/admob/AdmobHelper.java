@@ -3,6 +3,7 @@ package com.pedrojtmartins.racingcalendar.admob;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
 import com.google.android.gms.ads.AdListener;
@@ -63,7 +64,15 @@ public class AdmobHelper {
         showInterstitialAd(context, resources, -1, null);
     }
 
-    public boolean showInterstitialAd(Context context, Resources resources, int count, final Handler callback) {
+    public boolean showInterstitialAd(Context context, Resources resources, int count, final Handler.Callback callback) {
+        if (Settings.PRO_VERSION) {
+            if (callback != null) {
+                callback.handleMessage(new Message());
+            }
+
+            return false;
+        }
+
         if (mInterstitialAd == null) {
             mInterstitialAd = new InterstitialAd(context);
             mInterstitialAd.setAdUnitId(resources.getString(R.string.admob_interstitial_ad_id));
@@ -76,8 +85,9 @@ public class AdmobHelper {
                 super.onAdClosed();
                 requestNewInterstitial();
 
-                if (callback != null)
-                    callback.sendEmptyMessage(1);
+                if (callback != null) {
+                    callback.handleMessage(new Message());
+                }
             }
 
             @Override
@@ -98,6 +108,10 @@ public class AdmobHelper {
             }
 
             return true;
+        } else {
+            if (callback != null) {
+                callback.handleMessage(new Message());
+            }
         }
 
         return false;
