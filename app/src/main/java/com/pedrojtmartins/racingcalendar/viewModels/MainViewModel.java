@@ -80,6 +80,14 @@ public class MainViewModel implements IDataUpdater {
         //checkAppVersion();
     }
 
+    public boolean displayReleaseNotes() {
+        return mSharedPreferencesManager.getReleaseNotesUpdate();
+    }
+
+    public void releaseNotesDismissed() {
+        mSharedPreferencesManager.setReleaseNotesUpdate();
+    }
+
     public void recheckUpdates() {
         checkAppVersion();
         initDataUpdate();

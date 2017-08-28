@@ -75,6 +75,6 @@
     <string name="times">Tempo/Delta</string>
     <string name="errorLoadingStandings">Não foi possível carregar as classificações. Tente novamente mais tarde.</string>
 
-    <string name="results">Classificação</string>
-
+    <string name="releaseNotesMsg">
+        .Adicionadas classificações gerais.\n.Adicionados resultados por corrida.\n\nNota: A cobertura das classificações será aumentada em futuras atualizações.</string>
 </resources>

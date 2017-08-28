@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 
 /**
@@ -65,6 +66,27 @@ public class AlertDialogHelper {
 
         return true;
     }
+
+    public static boolean displayReleaseNotesDialog(Context context, int msg, final Handler handler) {
+        if (context == null)
+            return false;
+
+        new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
+                .setTitle(BuildConfig.VERSION_NAME)
+                .setMessage(msg)
+                .setPositiveButton("Ok", null)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (handler != null)
+                            handler.sendEmptyMessage(0);
+                    }
+                })
+                .show();
+
+        return true;
+    }
+
 
     public static boolean displayNewSeriesDialog(Context context, Resources resources, int msg, String series) {
         if (context == null || resources == null)

@@ -16,17 +16,12 @@ public class SharedPreferencesManager {
     private final String SHARED_PREFS = "sharedPrefs";
     private final String DATA_VERSION = "dataVersion";
     private final String SETTINGS_NOTIFICATIONS = "notifSettings";
-    private final String RELEASE_NOTES1 = "notes1";
-    private final String FORCE_DATA_UPDATE = "forceDataUpdate_v7";
-    // TODO: 27/08/2017 increment force data update
 
     private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
     private final String ADS_URL = "urlOpenCount";
 
-//    private final String SESSION_STARTS = "session_starts";
-//    private final String DIFFERENT_DAYS_STARTS = "days_starts";
-//    private final String LAST_DAY_START = "last_day_start";
-//    private final String RATED = "rated"; //0-no, 1-yes, 2-do not ask
+    private final String FORCE_RELEASE_NOTES = "forceReleaseNotes_1";
+    private final String FORCE_DB_UPDATE = "forceDBUpdate_1";
 
     public SharedPreferencesManager(Context context) {
         mContext = context;
@@ -97,17 +92,37 @@ public class SharedPreferencesManager {
 
     //region Force data update
     public boolean getForceDataUpdate() {
-        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        return sp.getBoolean(FORCE_DATA_UPDATE, true);
+        return getBoolean(FORCE_DB_UPDATE, true);
     }
 
     public void setForceDataUpdate() {
-        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(FORCE_DATA_UPDATE, false);
-        editor.apply();
+        setBoolean(FORCE_DB_UPDATE, false);
     }
     //region Force data update
+
+    //region Force release notes update
+    public boolean getReleaseNotesUpdate() {
+        return getBoolean(FORCE_RELEASE_NOTES, true);
+    }
+
+    public void setReleaseNotesUpdate() {
+        setBoolean(FORCE_RELEASE_NOTES, false);
+    }
+    //region Force data update
+
+    //region Helpers
+    private boolean getBoolean(String key, boolean defaultValue) {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        return sp.getBoolean(key, defaultValue);
+    }
+
+    private void setBoolean(String key, boolean value) {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+    //endregion
 
     //region RATING
 //    public boolean askForRate(String todayDate, int minStarts, int minDays) {
@@ -145,17 +160,4 @@ public class SharedPreferencesManager {
 //        editor.apply();
 //    }
     //endregion
-
-//    //Not used yet
-//    public boolean getReleaseNotes1Shown() {
-//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-//        return sp.getBoolean(RELEASE_NOTES1, false);
-//    }
-//
-//    public void setReleaseNotes1Seen() {
-//        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sp.edit();
-//        editor.putBoolean(RELEASE_NOTES1, true);
-//        editor.apply();
-//    }
 }

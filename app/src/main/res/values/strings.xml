@@ -65,7 +65,7 @@
     <string name="settinns_links">Web links</string>
     <string name="settings_open_link_in_app">Open in default browser</string>
 
-    <string name="newSeries">New series\n</string>
+    <string name="newSeries">Latest additions\n</string>
     <string name="action_rate">Rate</string>
 
     <string name="raceShort">R</string>
@@ -77,5 +77,7 @@
     <string name="poweredby" translatable="false">Powered by</string>
     <string name="errorLoadingStandings">The requested results could not be loaded. Please try again later.</string>
 
-    <string name="results">Results</string>
+    <string name="releaseNotesMsg">
+        .Added series standings.\n.Added race results.\n\nNote: Standings and results coverage will be further increased on future updates.</string>
+
 </resources>

@@ -64,17 +64,20 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         checkDatabaseDataCount();
 
-//        showReleaseNotes();
+        showReleaseNotes();
     }
 
-//    private void showReleaseNotes() {
-//        SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-//        boolean notesShown = spManager.getReleaseNotes1Shown();
-//        if (!notesShown) {
-//            AlertDialogHelper.displayOkDialog(this, R.string.release_notes_1);
-//            spManager.setReleaseNotes1Seen();
-//        }
-//    }
+    private void showReleaseNotes() {
+        if (mViewModel.displayReleaseNotes()) {
+            AlertDialogHelper.displayReleaseNotesDialog(this, R.string.releaseNotesMsg, new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    mViewModel.releaseNotesDismissed();
+                    return true;
+                }
+            }));
+        }
+    }
 
     @Override
     protected void onStart() {
