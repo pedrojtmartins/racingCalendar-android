@@ -62,17 +62,17 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // For raceWeekNo we can ignore all the other dates (if they exist)
         // since they will all be in the same week.
         // E.g. Friday_Saturday_Sunday
+        boolean isInTheFuture = DateFormatter.isInTheFuture(currRace.getDate(0));
 
         showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
-        hideUpcomingRacesResultsIconIfNeeded(binding, currRace.getDate(0));
+        hideUpcomingRacesResultsIconIfNeeded(binding, isInTheFuture);
 
         setDatesInfo(binding, currRace);
         listenForAlarmStateChanges(binding, currRace);
 
-        setClickListeners(binding, currRace);
+        setClickListeners(binding, currRace, isInTheFuture);
     }
-
 
     private void setDatesInfo(RowRace2Binding binding, Race currRace) {
         // Let's set data and change the visibility of the layouts that contain the.
@@ -162,9 +162,8 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         }
     }
 
-    private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, String date) {
-        boolean inTheFuture = DateFormatter.isInTheFuture(date);
-        binding.raceRowResultsParent.setVisibility(inTheFuture ? View.GONE : View.VISIBLE);
+    private void hideUpcomingRacesResultsIconIfNeeded(RowRace2Binding binding, boolean isInTheFuture) {
+        binding.raceRowResultsParent.setVisibility(isInTheFuture ? View.GONE : View.VISIBLE);
     }
 
     private void applyThisWeekVisualsIfNeeded(Race currRace, int raceWeekNo, int thisWeekNo) {
@@ -184,7 +183,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         return false;
     }
 
-    private void setClickListeners(final RowRace2Binding binding, final Race race) {
+    private void setClickListeners(final RowRace2Binding binding, final Race race, final boolean isInTheFuture) {
         // This strategy is limiting the number of date notifications to 3.
         // Even if it will be enough for our needs, it is not an elegant solution.
         // TO IMPROVE
@@ -247,7 +246,8 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
 
                 boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
-                menu.findItem(R.id.openResults).setVisible(resultsAvailable);
+                menu.findItem(R.id.openResults).setVisible(resultsAvailable && !isInTheFuture);
+
 
                 popup.show();
             }
@@ -301,9 +301,9 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     }
 
     public static class BindingAdapters {
-        @BindingAdapter({"bind:background"})
-        public static void setFont(LinearLayout layout, int dateState) {
-            int color = 0;
+        @BindingAdapter({"app:raceBackground"})
+        public static void setBackground(LinearLayout layout, int dateState) {
+            int color;
             if (dateState == 0) {
                 color = APIHelper.getColor(layout.getContext().getResources(), R.color.raceThisWeekBackground);
             } else if (dateState < 0) {
