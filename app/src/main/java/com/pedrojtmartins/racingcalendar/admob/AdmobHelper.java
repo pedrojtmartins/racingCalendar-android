@@ -11,6 +11,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
 
@@ -36,7 +37,7 @@ public class AdmobHelper {
     }
 
     public void showBannerAd(final Context context, final Resources resources, final AdView adView) {
-        if (!Settings.PRO_VERSION) {
+        if (!BuildConfig.FLAVOR.equals("pro")) {
             MobileAds.initialize(context, resources.getString(R.string.admob_app_id));
             AdRequest adRequest = getAdRequest();
 
@@ -65,7 +66,7 @@ public class AdmobHelper {
     }
 
     public boolean showInterstitialAd(Context context, Resources resources, int count, final Handler.Callback callback) {
-        if (Settings.PRO_VERSION) {
+        if (BuildConfig.FLAVOR.equals("pro")) {
             if (callback != null) {
                 callback.handleMessage(new Message());
             }

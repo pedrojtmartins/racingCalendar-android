@@ -28,13 +28,21 @@ android {
             resValue "string", "app_name", "Racing Calendar"
         }
         pro {
-            applicationIdSuffix ".pro"
             resValue "string", "app_name", "Racing Calendar Pro"
+            applicationIdSuffix ".pro"
         }
     }
 
     dataBinding {
         enabled = true
+    }
+
+    variantFilter { variant ->
+        def isPro = variant.getFlavors().get(0).name.equals('pro')
+        def isDebug = variant.buildType.name.equals('debug')
+        if (isPro && isDebug) {
+            variant.setIgnore(true);
+        }
     }
 }
 
