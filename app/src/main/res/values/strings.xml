@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Racing Calendar</string>
-
     <string name="action_settings">Settings</string>
     <string name="maintab_favourites">Favourites</string>
     <string name="maintab_all">All</string>
@@ -78,9 +76,10 @@
     <string name="errorLoadingStandings">The requested results are not available yet. Please try again later.</string>
 
     <string name="releaseNotesMsg">
-        .Added series standings.\n.Added race results.\n\nNote: Standings and results coverage will be further increased on future updates.</string>
+        .Added series standings.\n.Added race results.\n\nNote: Standings and results coverage will be further increased in future updates.</string>
 
     <string name="noInternetConnection">No internet connection. Please make sure you\'re connected and try again.</string>
     <string name="notInternetFirstInit">No internet connection. For the first initialization you must have an active connection. Please make sure you\'re connected and try again.</string>
+    <string name="upgradePro">Remove ads</string>
 
 </resources>

@@ -23,6 +23,16 @@ android {
         }
     }
 
+    productFlavors {
+        regular {
+            resValue "string", "app_name", "Racing Calendar"
+        }
+        pro {
+            applicationIdSuffix ".pro"
+            resValue "string", "app_name", "Racing Calendar Pro"
+        }
+    }
+
     dataBinding {
         enabled = true
     }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Racing Calendar</string>
-
     <string name="action_settings">Definições</string>
     <string name="cancel">Cancelar</string>
     <string name="dataUpdated">Dados atualizados</string>
@@ -80,4 +78,5 @@
 
     <string name="noInternetConnection">Sem ligação à internet. Por favor, verifique a ligação e tente novamente.</string>
     <string name="notInternetFirstInit">Sem ligação à internet. Na primeira inicialização é necessária uma ligação ativa. Por favor, verifique a ligação e tente novamente.</string>
+    <string name="upgradePro">Remover publicidade</string>
 </resources>

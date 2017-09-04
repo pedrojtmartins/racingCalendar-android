@@ -86,6 +86,9 @@ public class RaceResultsManager {
             case 13:
                 return 60;
 
+            case 4:
+                return 90;
+
             default:
                 return 0;
         }

@@ -276,6 +276,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+//            case R.id.action_remove_ads:
+
+
             case R.id.action_notifications:
                 startActivityForResult(new Intent(this, NotificationsActivity.class), 1);
                 break;
