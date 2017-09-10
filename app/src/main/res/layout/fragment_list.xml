@@ -22,7 +22,8 @@
             style="@style/SeriesHeader"
             android:clickable="true"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -32,16 +33,11 @@
                 app:srcCompat="@drawable/arrow_black"/>
 
             <TextView
-                style="@style/SeriesTitle"
+                style="@style/SeriesRacesTitle"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@{data.name}"
                 tools:text="F1 - Formula 1"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/series_header_results"
