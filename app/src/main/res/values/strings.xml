@@ -76,10 +76,12 @@
     <string name="errorLoadingStandings">The requested results are not available yet. Please try again later.</string>
 
     <string name="releaseNotesMsg">
-        .Added series standings.\n.Added race results.\n\nNote: Standings and results coverage will be further increased in future updates.</string>
+        .Further increases standings/results coverage.\n.Tweaks the user interface.\n.Improves app reliability.\n.Adds support for Android 8.0 Oreo.</string>
 
     <string name="noInternetConnection">No internet connection. Please make sure you\'re connected and try again.</string>
     <string name="notInternetFirstInit">No internet connection. For the first initialization you must have an active connection. Please make sure you\'re connected and try again.</string>
     <string name="upgradePro">Remove ads</string>
+
+    <string name="notification_channel_race_starting">Races starting</string>
 
 </resources>

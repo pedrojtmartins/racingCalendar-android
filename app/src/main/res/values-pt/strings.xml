@@ -79,4 +79,6 @@
     <string name="noInternetConnection">Sem ligação à internet. Por favor, verifique a ligação e tente novamente.</string>
     <string name="notInternetFirstInit">Sem ligação à internet. Na primeira inicialização é necessária uma ligação ativa. Por favor, verifique a ligação e tente novamente.</string>
     <string name="upgradePro">Remover publicidade</string>
+
+    <string name="notification_channel_race_starting">Início de corridas</string>
 </resources>

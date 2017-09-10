@@ -75,21 +75,21 @@
         </activity>
 
         <!-- Notifications receiver and service -->
-        <receiver android:name=".alarms.RCAlarmBroadcastReceiver"/>
-
-        <service android:name=".notifications.RCNotificationService"/>
+        <!-- Updated for api 26 -->
+        <receiver android:name=".alarms.RCAlarmBroadcastReceiver2"/>
+        <service android:name=".notifications.RCNotificationService2"/>
 
         <!-- This needs to happen to reset the alarms. When -->
         <!-- the device is turned off all alarms are cleared -->
+        <!-- Updated for api 26 -->
         <receiver
-            android:name=".alarms.RCAlarmResetBroadcastReceiver"
+            android:name=".alarms.RCAlarmResetBroadcastReceiver2"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-        <service android:name=".alarms.RCAlarmResetService"/>
+        <service android:name=".alarms.RCAlarmResetService2"/>
 
 
     </application>
