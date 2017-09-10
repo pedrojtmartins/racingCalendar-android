@@ -112,6 +112,20 @@ public class StandingsResultsManager {
 
             case 34:
                 return "https://www.driverdb.com/championships/standings/tcr-international-series/2017/";
+
+            case 35:
+                return "https://www.driverdb.com/championships/standings/porsche-supercup/2017";
+
+            case 36:
+                return "https://www.driverdb.com/championships/standings/aussie-racing-cars-super-series/2017/";
+
+            case 37:
+                return null;
+//                return "http://www.touringcarmasters.com.au/2017-standings";
+
+            case 38:
+                return "https://www.driverdb.com/championships/standings/australian-v8-ute-racing-series/2018/";
+
         }
 
         return null;
@@ -121,15 +135,6 @@ public class StandingsResultsManager {
         String url = getUrl(id);
         return url != null && !url.isEmpty();
     }
-
-    //transam
-    // https://www.driverdb.com/championships/standings/scca-trans-am/2017/
-    // https://www.driverdb.com/championships/standings/trans-am---ta2/2017/
-
-    //blancpain
-    //  http://www.blancpain-gt-series.com/standings?filter_season_id=7&filter_standing_type=20_26_drivers
-
-    // pirelli
 
     public static ArrayList<EventResultUnit> getStandings(String data, int id) {
         switch (id) {
@@ -151,6 +156,9 @@ public class StandingsResultsManager {
             case 28:
             case 30:
             case 34:
+            case 35:
+            case 36:
+            case 37:
                 return getDriverDBStandings(data);
 
             case 3:
@@ -178,35 +186,7 @@ public class StandingsResultsManager {
         return null;
     }
 
-    //region WRC
-    // http://www.wrc.com/en/wrc/results/championship-standings/page/4176----.html
-    public static ArrayList<EventResultUnit> getWRCStandings(String data) {
-        if (data == null || data.length() == 0)
-            return null;
-
-        String[] splitted = data.split(".png\" alt=\"\" title=\"\">");
-        if (splitted.length == 0)
-            return null;
-
-        String[] arrHtmlPage = new String[splitted.length - 1];
-        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
-
-        ArrayList<EventResultUnit> results = new ArrayList<>();
-        for (String html : arrHtmlPage) {
-            String position = (results.size() + 1) + "";
-
-            String name = getStringUntil(html, "\n");
-            String team = "";
-            String points = getString(html, "<td class=\"aright highlight\">", "</td>");
-
-            results.add(new EventResultUnit(position, name, team, points));
-        }
-
-        return results;
-    }
-    //endregion
-
-    public static ArrayList<EventResultUnit> getAutosportStandings(String data) {
+    private static ArrayList<EventResultUnit> getAutosportStandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
@@ -269,9 +249,37 @@ public class StandingsResultsManager {
 
     //endregion
 
+    //region WRC
+    // http://www.wrc.com/en/wrc/results/championship-standings/page/4176----.html
+    private static ArrayList<EventResultUnit> getWRCStandings(String data) {
+        if (data == null || data.length() == 0)
+            return null;
+
+        String[] splitted = data.split(".png\" alt=\"\" title=\"\">");
+        if (splitted.length == 0)
+            return null;
+
+        String[] arrHtmlPage = new String[splitted.length - 1];
+        System.arraycopy(splitted, 1, arrHtmlPage, 0, arrHtmlPage.length);
+
+        ArrayList<EventResultUnit> results = new ArrayList<>();
+        for (String html : arrHtmlPage) {
+            String position = (results.size() + 1) + "";
+
+            String name = getStringUntil(html, "\n");
+            String team = "";
+            String points = getString(html, "<td class=\"aright highlight\">", "</td>");
+
+            results.add(new EventResultUnit(position, name, team, points));
+        }
+
+        return results;
+    }
+    //endregion
+
     //region stadiumsupertrucks
     // http://stadiumsupertrucks.com/results/standings/
-    public static ArrayList<EventResultUnit> getSSTruckstandings(String data) {
+    private static ArrayList<EventResultUnit> getSSTruckstandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
@@ -307,7 +315,7 @@ public class StandingsResultsManager {
 
     //region WORLD RX
     // http://www.fiaworldrallycross.com/standings
-    public static ArrayList<EventResultUnit> getWRXstandings(String data) {
+    private static ArrayList<EventResultUnit> getWRXstandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
@@ -346,7 +354,7 @@ public class StandingsResultsManager {
 
     //region WSBK
     // http://www.worldsbk.com/en/results%20statistics/riders%20manufacturers
-    public static ArrayList<EventResultUnit> getWSBKstandings(String data) {
+    private static ArrayList<EventResultUnit> getWSBKstandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
@@ -384,7 +392,7 @@ public class StandingsResultsManager {
     // MotoGP - http://www.gpupdate.net/en/standings/251/2017-motogp-standings/
     // Moto2  - http://www.gpupdate.net/en/standings/256/2017-moto2-standings/
     // Moto3  - http://www.gpupdate.net/en/standings/257/2017-moto3-standings/
-    public static ArrayList<EventResultUnit> getMotoGPStandings(String data) {
+    private static ArrayList<EventResultUnit> getMotoGPStandings(String data) {
         if (data == null || data.length() == 0)
             return null;
 
