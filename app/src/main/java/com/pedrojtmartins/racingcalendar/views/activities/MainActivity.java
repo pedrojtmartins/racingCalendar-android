@@ -1,6 +1,7 @@
 package com.pedrojtmartins.racingcalendar.views.activities;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
+import com.pedrojtmartins.racingcalendar.notifications.RCNotificationManager;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.viewModels.MainViewModel;
 
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         SettingsHelper.detectSystemSettings(this);
+        createNotificationChannels();
 
         startAdmob();
         initViewModel();
@@ -66,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         checkDatabaseDataCount();
 
         showReleaseNotes();
+    }
+
+    private void createNotificationChannels() {
+        RCNotificationManager.createChannels(
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE),
+                getResources());
     }
 
     private void showReleaseNotes() {

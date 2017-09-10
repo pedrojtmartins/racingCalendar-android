@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmBroadcastReceiver;
@@ -57,7 +57,7 @@ public class RCNotificationService extends Service {
         //Determine needed parameters
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         String title = rcNotification.seriesName;
-        String msg = RCNotificationManager.NotificationManagerHelper.getNotificationMessage(
+        String msg = RCNotificationManager.getNotificationMessage(
                 getResources(),
                 rcNotification);
 
