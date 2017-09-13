@@ -230,7 +230,6 @@ public class MainViewModel implements IDataUpdater {
     }
 
     private void propagateRaceAlarmUpdate(final Race race, final boolean newState, final int index) {
-        // TODO: 23/04/2017 bad solution. probably there should be only 1 list?
         int iAll = mAllRaces.indexOf(race);
         if (iAll != -1) {
             mAllRaces.get(iAll).setIsAlarmSet(index, newState);

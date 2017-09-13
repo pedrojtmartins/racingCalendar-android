@@ -438,14 +438,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     //endregion
+    private void updateAlarms() {
+        // TODO: 13/09/2017 this needs to be done to allow setting alarms for the entire series
+        throw new UnsupportedOperationException();
+    }
 
     private void updateAlarm(final Race race, final int timeBefore, final int index) {
         RCNotification rcNotification = mViewModel.addNotification(race, timeBefore, index);
         if (rcNotification == null) {
             return;
         }
-
-        rcNotification.minutesBefore = timeBefore;
 
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
