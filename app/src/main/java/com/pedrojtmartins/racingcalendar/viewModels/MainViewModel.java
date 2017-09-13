@@ -7,6 +7,7 @@ import android.databinding.ObservableInt;
 import com.pedrojtmartins.racingcalendar.api.APIManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.helpers.AppVersionHelper;
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.interfaces.viewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
@@ -204,12 +205,46 @@ public class MainViewModel implements IDataUpdater {
         return 0;
     }
 
+    public ArrayList<RCNotification> addNotifications(final int seriesId, final int minutesBefore) {
+        //Get all upcoming races for this series
+        ArrayList<Race> upcoming = mDbManager.getRaces(seriesId);
+        if (upcoming == null || upcoming.isEmpty())
+            return null;
+
+
+        boolean inTheFuture = false; //This will be used to ignore this check after all past dates are analysed
+        ArrayList<RCNotification> list = new ArrayList<>();
+
+        //Create notifications for all the upcoming races (for all indexes)
+        for (Race race : upcoming) {
+            int indexCount = race.getDatesCount();
+            if (indexCount <= 0)
+                continue;
+
+            for (int index = 0; index < indexCount; index++) {
+
+                //Does it exist already?
+                RCNotification oldNotification = mDbManager.getNotificationForEvent(race.getId(), index);
+                if (oldNotification != null)
+                    mDbManager.removeNotification(oldNotification);
+
+                if (!inTheFuture) {
+                    if (!DateFormatter.isInTheFuture(race.getFullDate(index))) continue;
+                    else inTheFuture = true;
+                }
+
+                list.add(addNotification(race, minutesBefore, index));
+            }
+        }
+
+        return list;
+    }
+
     public RCNotification addNotification(final Race race, final int minutesBefore, final int index) {
         RCNotification rcNotification = mDbManager.getNotificationForEvent(race.getId(), index);
         if (rcNotification != null)
             return rcNotification;
 
-        // TODO: 26/05/2017  
         rcNotification = new RCNotification(race.getId(), race.getSeriesId(), race.getFullDate(index), index, minutesBefore);
         long id = mDbManager.addNotification(rcNotification);
         if (id <= 0) {// TODO: 20/04/2017 Log error

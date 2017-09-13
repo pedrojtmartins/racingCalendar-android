@@ -233,6 +233,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                             case R.id.openResults:
                                 mCallback.openResults(race);
                                 break;
+
+                            case R.id.setNotifForAll:
+                                mCallback.updateAlarmForAllRaces(race);
+                                break;
                         }
                         return true;
                     }
@@ -243,7 +247,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 showCorrectMenu(datesCount, menu.findItem(R.id.set1notif), menu.findItem(R.id.rem1notif), race, 0);
                 showCorrectMenu(datesCount, menu.findItem(R.id.set2notif), menu.findItem(R.id.rem2notif), race, 1);
                 showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
-                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
+//                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
 
                 boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
                 menu.findItem(R.id.openResults).setVisible(resultsAvailable && !isInTheFuture);

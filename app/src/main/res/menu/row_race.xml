@@ -44,14 +44,21 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/three"
+        android:id="@+id/setNotifForAll"
         android:orderInCategory="4"
+        android:title="@string/setNotificatioForSeries"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/three"
+        android:orderInCategory="5"
         android:title="@string/openUrl"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/openResults"
-        android:orderInCategory="5"
+        android:orderInCategory="6"
         android:title="@string/openResults"
         app:showAsAction="never"/>
 

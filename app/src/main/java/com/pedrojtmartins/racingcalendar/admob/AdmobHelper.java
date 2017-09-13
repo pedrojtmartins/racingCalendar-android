@@ -62,10 +62,10 @@ public class AdmobHelper {
     }
 
     public void readyInterstitialAd(Context context, Resources resources) {
-        showInterstitialAd(context, resources, -1, null);
+        showInterstitialAd(context, resources, -1, false, null);
     }
 
-    public boolean showInterstitialAd(Context context, Resources resources, int count, final Handler.Callback callback) {
+    public boolean showInterstitialAd(Context context, Resources resources, int count, boolean ignoreCount, final Handler.Callback callback) {
         if (BuildConfig.FLAVOR.equals("pro")) {
             if (callback != null) {
                 callback.handleMessage(new Message());
@@ -101,7 +101,7 @@ public class AdmobHelper {
             }
         });
 
-        if (count > 0 && count % SHOW_NOTIF_AD_EVERY == 0) {
+        if (ignoreCount || (count > 0 && count % SHOW_NOTIF_AD_EVERY == 0)) {
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             } else {

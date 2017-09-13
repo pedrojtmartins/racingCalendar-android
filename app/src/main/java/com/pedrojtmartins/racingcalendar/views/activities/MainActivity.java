@@ -46,6 +46,8 @@ import com.pedrojtmartins.racingcalendar.notifications.RCNotificationManager;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 import com.pedrojtmartins.racingcalendar.viewModels.MainViewModel;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
     private ActivityMainBinding mBinding;
@@ -101,13 +103,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         admobHelper.readyInterstitialAd(getApplicationContext(), getResources());
     }
 
-    private boolean showInterstitialAd(Handler.Callback callback) {
-        SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-        int count = spManager.getNotificationAdsShownCount();
-        spManager.notificationAdShown();
+    private boolean showInterstitialAd(boolean always, Handler.Callback callback) {
+        int count = 0;
+        if (!always) {
+            SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+            count = spManager.getNotificationAdsShownCount();
+            spManager.notificationAdShown();
+        }
 
         return AdmobHelper.getInstance()
-                .showInterstitialAd(getApplicationContext(), getResources(), count, callback);
+                .showInterstitialAd(getApplicationContext(), getResources(), count, always, callback);
     }
 
     private boolean showUrlAd(final String url) {
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                         getApplicationContext(),
                         getResources(),
                         count,
+                        false,
                         new Handler.Callback() {
                             @Override
                             public boolean handleMessage(Message msg) {
@@ -393,20 +399,85 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 return false;
         }
 
-        // TODO: 23/05/2017 this needs to take dates count into consideration
-        if (race.hasDateOnly(0)) {
-            updateAlarm(race, 0, index);
+        int minutesBefore = getMinutesBefore(false, race, active, index);
+        if (minutesBefore == -1) {
+            //This means the user must choose still. After it is chosen the rest of the process will be run.
             return true;
-        } else {
+        }
 
+        updateAlarm(race, minutesBefore, index);
+        return true;
+
+//        // TODO: 23/05/2017 this needs to take dates count into consideration
+//        if (race.hasDateOnly(0)) {
+//            updateAlarm(race, 0, index);
+//            return true;
+//        } else {
+//
+//            final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+//            final RCSettings rcSettings = spManager.getSettings();
+//            if (rcSettings.notificationsRemember) {
+//                // Settings are stored. Use them
+//                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()), index);
+//                return true;
+//            } else {
+//                // Settings are not stored. Let's ask the user what to do.
+//                AlertDialogHelper.displayNewNotificationDialog(
+//                        this,
+//                        getLayoutInflater(),
+//                        rcSettings.getNotificationMinutesBefore(),
+//                        new Handler(new Handler.Callback() {
+//                            @Override
+//                            public boolean handleMessage(Message msg) {
+//                                int minutesBefore = ParsingHelper.stringToInt(msg.getData().getString("timeBefore", "0"));
+//
+//                                if (msg.what == 2) {
+//                                    // User wants to remember the settings. Update the settings we have already
+//                                    rcSettings.notificationsRemember = true;
+//                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+//                                    spManager.addSettings(rcSettings.toString());
+//                                } else {
+//                                    // Keep the minutes selected but just suggest next time
+//                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+//                                    spManager.addSettings(rcSettings.toString());
+//                                }
+//
+//                                updateAlarm(race, minutesBefore, index);
+//                                return true;
+//                            }
+//                        }));
+//            }
+//        }
+//
+//        return true;
+    }
+
+
+    public boolean updateAlarmForAllRaces(final Race race) {
+        int minutesBefore = getMinutesBefore(true, race, false, 0);
+        if (minutesBefore == -1) {
+            //This means the user must choose still. After it is chosen the rest of the process will be run.
+            return true;
+        }
+
+        updateAlarmForAllRaces(race, minutesBefore);
+        return true;
+    }
+    private boolean updateAlarmForAllRaces(final Race race, final int minutesBefore) {
+        updateAlarmForAllRaces(race.getSeriesId(), minutesBefore);
+        return true;
+    }
+
+    public int getMinutesBefore(final boolean forAllRaces, final Race race, final boolean active, final int index) {
+        if (race.hasDateOnly(0)) {
+            return 0;
+        } else {
             final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
             final RCSettings rcSettings = spManager.getSettings();
+
             if (rcSettings.notificationsRemember) {
-                // Settings are stored. Use them
-                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()), index);
-                return true;
+                return ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore());
             } else {
-                // Settings are not stored. Let's ask the user what to do.
                 AlertDialogHelper.displayNewNotificationDialog(
                         this,
                         getLayoutInflater(),
@@ -419,28 +490,51 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                                 if (msg.what == 2) {
                                     // User wants to remember the settings. Update the settings we have already
                                     rcSettings.notificationsRemember = true;
-                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                    spManager.addSettings(rcSettings.toString());
-                                } else {
-                                    // Keep the minutes selected but just suggest next time
-                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                    spManager.addSettings(rcSettings.toString());
                                 }
 
-                                updateAlarm(race, minutesBefore, index);
+                                rcSettings.setNotificationMinutesBefore(minutesBefore + "");
+                                spManager.addSettings(rcSettings.toString());
+
+                                if (forAllRaces) {
+                                    updateAlarmForAllRaces(race, minutesBefore);
+                                } else {
+                                    updateAlarm(race, minutesBefore, index);
+                                }
+
                                 return true;
                             }
                         }));
+
+                return -1;
             }
         }
-
-        return true;
     }
 
     //endregion
-    private void updateAlarms() {
-        // TODO: 13/09/2017 this needs to be done to allow setting alarms for the entire series
-        throw new UnsupportedOperationException();
+    private void updateAlarmForAllRaces(final int seriesId, final int timeBefore) {
+        ArrayList<RCNotification> list = mViewModel.addNotifications(seriesId, timeBefore);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+        int alarmsNotSet = 0;
+        for (RCNotification notification : list) {
+            // TODO: 14/09/2017 we need to update the race from series races view somehow
+            alarmsNotSet += setAlarm(notification, true) ? 0 : 1;
+        }
+
+        if (alarmsNotSet == 0) {
+            FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_SERIES_NOTIFICATION);
+            showInterstitialAd(true, new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message message) {
+                    SnackBarHelper.display(mBinding.mainContent, R.string.alarmsSet);
+                    return true;
+                }
+            });
+        } else {
+            SnackBarHelper.display(mBinding.mainContent, R.string.alarmsNotSet);
+        }
     }
 
     private void updateAlarm(final Race race, final int timeBefore, final int index) {
@@ -449,18 +543,33 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             return;
         }
 
+        race.setIsAlarmSet(index, true); //This is used to update the series races view
+        setAlarm(rcNotification, false);
+    }
+
+    private boolean setAlarm(RCNotification rcNotification, boolean isMulti) {
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
 
         boolean result = RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
+
+        if (isMulti)
+            return result;
+
         if (result) {
-            race.setIsAlarmSet(index, true);
-            SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
             FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION);
-            showInterstitialAd(null);
+            showInterstitialAd(false, new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message message) {
+                    SnackBarHelper.display(mBinding.mainContent, R.string.alarmSet);
+                    return true;
+                }
+            });
         } else {
             SnackBarHelper.display(mBinding.mainContent, R.string.alarmNotSet);
         }
+
+        return result;
     }
 
 
@@ -493,13 +602,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         intent.putExtra("seriesName", race.getSeriesName());
         intent.putExtra("raceName", race.getRaceNumberString() + " - " + race.getName());
 
-        showInterstitialAd(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                startActivity(intent);
-                return false;
-            }
-        });
+        showInterstitialAd(false,
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+                        startActivity(intent);
+                        return false;
+                    }
+                });
     }
 
     @Override
@@ -511,13 +621,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         intent.putExtra("seriesId", series.getId());
         intent.putExtra("seriesName", series.getName());
 
-        showInterstitialAd(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                startActivity(intent);
-                return false;
-            }
-        });
+        showInterstitialAd(false,
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+                        startActivity(intent);
+                        return false;
+                    }
+                });
     }
 
     private void openUrl(String url) {

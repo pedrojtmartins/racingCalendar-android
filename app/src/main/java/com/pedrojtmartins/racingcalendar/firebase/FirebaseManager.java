@@ -19,6 +19,7 @@ public class FirebaseManager {
     public static final String EVENT_ACTION_OPEN_SERIES = "action_open_series";
 
     public static final String EVENT_ACTION_SET_NOTIFICATION = "action_set_notification";
+    public static final String EVENT_ACTION_SET_SERIES_NOTIFICATION = "action_set_series_notification";
     public static final String EVENT_ACTION_SET_NOTIFICATION_REBOOT = "action_set_notification_reboot";
     public static final String EVENT_ACTION_SET_NOTIFICATION_TRIGGERED = "action_triggered_notification";
     public static final String EVENT_ACTION_REMOVE_NOTIFICATION = "action_remove_notification";
