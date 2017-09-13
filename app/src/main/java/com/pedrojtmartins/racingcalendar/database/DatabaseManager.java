@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.databinding.ObservableArrayList;
 
+import com.google.firebase.perf.metrics.AddTrace;
 import com.pedrojtmartins.racingcalendar.helpers.DateHelper;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -229,6 +230,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return values;
     }
 
+    @AddTrace(name = "sqlite_queryRaces")
     private ArrayList<Race> queryRaces(String query, boolean upcoming) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -337,6 +339,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param list all races to be added
      * @return amount of rows added
      */
+    @AddTrace(name = "sqlite_addRaces")
     public int addRaces(ArrayList<Race> list) {
         int totalRowsInserted = 0;
 
@@ -416,6 +419,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return values;
     }
 
+    @AddTrace(name = "sqlite_querySeries")
     private ArrayList<Series> querySeries(String query) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -476,6 +480,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param list all series to be added
      * @return amount of rows added
      */
+    @AddTrace(name = "sqlite_addSeries")
     public int addSeries(ArrayList<Series> list) {
         // TODO: 14/02/2017 This solution to insert or update is not the best
         int totalRowsInserted = 0;
@@ -510,6 +515,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return totalRowsInserted;
     }
 
+    @AddTrace(name = "sqlite_setSeriesFavorite")
     public void setSeriesFavorite(ObservableArrayList<Series> list) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -541,6 +547,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /**
      * @return amount of favourites
      */
+    @AddTrace(name = "sqlite_getFavouritesCount")
     public int getFavouritesCount() {
         SQLiteDatabase db = null;
         try {
@@ -599,6 +606,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return values;
     }
 
+    @AddTrace(name = "sqlite_queryNotifications")
     private ArrayList<RCNotification> queryNotifications(String query) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -616,12 +624,27 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+    private long addNotification(RCNotification notification, SQLiteDatabase db) {
+        if (notification == null || db == null)
+            return -1;
+
+        ContentValues cValues = createNotificationContentValue(notification);
+        long rowId = db.insert(TABLE_NOTIFICATIONS, null, cValues);
+        if (rowId == -1) {
+            cValues.remove(KEY_NOTIFICATIONS_ID);
+            rowId = db.update(TABLE_NOTIFICATIONS, cValues, KEY_NOTIFICATIONS_ID + "=" + notification.id, null);
+        }
+
+        return rowId;
+    }
+
     /**
      * Add a single notification into the database
      *
      * @param notification Notification to add
      * @return id of the added row, -1 if not successful
      */
+    @AddTrace(name = "sqlite_addNotification")
     public long addNotification(RCNotification notification) {
         if (notification == null)
             return -1;
@@ -630,14 +653,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         try {
             db = this.getWritableDatabase();
-            ContentValues cValues = createNotificationContentValue(notification);
-            long rowId = db.insert(TABLE_NOTIFICATIONS, null, cValues);
-            if (rowId == -1) {
-                cValues.remove(KEY_NOTIFICATIONS_ID);
-                rowId = db.update(TABLE_NOTIFICATIONS, cValues, KEY_NOTIFICATIONS_ID + "=" + notification.id, null);
-            }
-
-            return rowId;
+            return addNotification(notification, db);
         } finally {
             if (db != null) {
                 closeDatabase(db);
@@ -651,9 +667,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param list NotificationsActivity to add
      * @return amount of NotificationsActivity added
      */
+    @AddTrace(name = "sqlite_addNotifications")
     public int addNotifications(ArrayList<RCNotification> list) {
         if (list == null || list.size() == 0)
-            return 0;
+            return -1;
 
         int totalRowsInserted = 0;
         SQLiteDatabase db = null;
@@ -663,14 +680,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.beginTransaction();
 
             for (RCNotification notification : list) {
-                if (notification == null)
-                    continue;
-
-                ContentValues cValues = createNotificationContentValue(notification);
-                if (cValues == null)
-                    continue;
-
-                if (db.insert(TABLE_NOTIFICATIONS, null, cValues) != -1)
+                if (addNotification(notification, db) != -1)
                     totalRowsInserted++;
             }
 
@@ -751,6 +761,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @param notifications List of notifications to remove
      * @return amount of lines removed
      */
+    @AddTrace(name = "sqlite_removeNotifications")
     public int removeNotifications(ArrayList<RCNotification> notifications) {
         if (notifications == null || notifications.isEmpty())
             return 0;
