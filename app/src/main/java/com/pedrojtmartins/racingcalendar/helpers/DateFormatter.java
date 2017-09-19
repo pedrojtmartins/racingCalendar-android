@@ -102,6 +102,11 @@ public class DateFormatter {
         }
     }
 
+    public static int getThisYear() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
+
     public static int getThisWeekNumber() {
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);

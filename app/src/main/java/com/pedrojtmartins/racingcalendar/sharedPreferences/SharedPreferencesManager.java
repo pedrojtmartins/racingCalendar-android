@@ -24,6 +24,7 @@ public class SharedPreferencesManager {
     private final String FORCE_DB_UPDATE = "forceDBUpdate_1";
 
     public SharedPreferencesManager(Context context) {
+        // TODO: 19/09/2017 this should be a singleton?
         mContext = context;
     }
 

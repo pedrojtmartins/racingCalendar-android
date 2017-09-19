@@ -139,5 +139,47 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#fafafa"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settinns_layout"
+                android:textColor="#000"
+                android:textSize="20sp"/>
+
+            <include layout="@layout/list_divider_slim"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_activate_mini_layout"
+                    android:textColor="#000"/>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={data.isMiniLayoutAllActive}"
+                    android:theme="@style/SCBSwitch"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
     </LinearLayout>
 </layout>

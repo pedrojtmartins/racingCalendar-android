@@ -30,7 +30,10 @@
             android:paddingTop="16dp"
             android:textColor="#fff"
             android:textSize="16sp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:background="#3c3c3c"
+            tools:text="Dec 04 - 10"
+            tools:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,196 +42,188 @@
             app:raceBackground="@{data.eventDateStatus}">
 
             <LinearLayout
+                android:id="@+id/race_row_mini_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:visibility="gone">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-                    <!--android:background="#f2f2f2"-->
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:lines="1"
-                        android:text="@{data.seriesName}"
-                        android:textColor="#333"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="F1 - Formula 1"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{data.raceNumberString}"
-                            android:textColor="#333"
-                            android:textSize="14sp"
-                            tools:text="#13"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" - "
-                            android:textColor="#333"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:lines="1"
-                            android:text="@{data.name}"
-                            android:textColor="#333"
-                            android:textSize="14sp"
-                            tools:text="Spanish GP"/>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:lines="1"
-                        android:text="@{data.location}"
-                        android:textColor="#333"
-                        android:textSize="14sp"
-                        tools:text="Circuit de Catalunya, Barcelona, Spain"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/race_row_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:clickable="true"
-                        android:padding="5dp"
-                        app:srcCompat="@drawable/more_vertical_black"/>
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gradient"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="3dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="3dp">
+                    android:ellipsize="marquee"
+                    android:lines="1"
+                    android:text="@{data.seriesName}"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="F1 - Formula 1"/>
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/race_row_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:rotation="90"
                     android:tint="#A0A0A0"
-                    app:srcCompat="@drawable/link_black"/>
-
-                <FrameLayout
-                    android:id="@+id/race_row_results_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/race_row_results"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginStart="8dp"
-                        android:scaleX="-1"
-                        android:tint="#A0A0A0"
-                        android:visibility="@{data.hasResultsUrl ? View.VISIBLE : View.GONE}"
-                        app:srcCompat="@drawable/podium"/>
-                </FrameLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-
-                <LinearLayout
-                    android:id="@+id/datesContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/datesContainer1"
-                        layout="@layout/row_race_dates"/>
-
-                    <include
-                        android:id="@+id/datesContainer2"
-                        layout="@layout/row_race_dates"
-                        android:visibility="gone"/>
-
-                    <include
-                        android:id="@+id/datesContainer3"
-                        layout="@layout/row_race_dates"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
-
+                    app:srcCompat="@drawable/arrow_black"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/row_race_main_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#f2f2f2"
                 android:orientation="vertical">
-
-                <!--<GridLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_column="0"-->
-                <!--android:layout_row="0">-->
-
-                <!--<include layout="@layout/row_race_detail" />-->
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_column="0"-->
-                <!--android:layout_row="1">-->
-
-                <!--<include layout="@layout/row_race_detail" />-->
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<include layout="@layout/row_race_detail" />-->
-                <!--</LinearLayout>-->
-
-                <!--</GridLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:id="@+id/race_row_series_main_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:lines="1"
+                            android:text="@{data.seriesName}"
+                            android:textColor="#333"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="F1 - Formula 1"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.raceNumberString}"
+                                android:textColor="#333"
+                                android:textSize="14sp"
+                                tools:text="#13"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" - "
+                                android:textColor="#333"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:lines="1"
+                                android:text="@{data.name}"
+                                android:textColor="#333"
+                                android:textSize="14sp"
+                                tools:text="Spanish GP"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:lines="1"
+                            android:text="@{data.location}"
+                            android:textColor="#333"
+                            android:textSize="14sp"
+                            tools:text="Circuit de Catalunya, Barcelona, Spain"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/race_row_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            app:srcCompat="@drawable/more_vertical_black"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="3dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/race_row_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tint="#A0A0A0"
+                        app:srcCompat="@drawable/link_black"/>
+
+                    <FrameLayout
+                        android:id="@+id/race_row_results_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/race_row_results"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:scaleX="-1"
+                            android:tint="#A0A0A0"
+                            android:visibility="@{data.hasResultsUrl ? View.VISIBLE : View.GONE}"
+                            app:srcCompat="@drawable/podium"/>
+                    </FrameLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <LinearLayout
+                        android:id="@+id/datesContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            android:id="@+id/datesContainer1"
+                            layout="@layout/row_race_dates"/>
+
+                        <include
+                            android:id="@+id/datesContainer2"
+                            layout="@layout/row_race_dates"
+                            android:visibility="gone"/>
+
+                        <include
+                            android:id="@+id/datesContainer3"
+                            layout="@layout/row_race_dates"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

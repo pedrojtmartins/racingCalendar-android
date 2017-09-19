@@ -11,6 +11,10 @@ public class Settings {
     public static final String NOTIFICATION_MINUTES_BEFORE = "0";
 
     public static final boolean OPEN_LINK_IN_BROWSER = false;
+
+    public static final boolean IS_MINI_LAYOUT_ALL_ACTIVE = false;
+    public static final boolean IS_MINI_LAYOUT_FAV_ACTIVE = false;
+    public static final boolean IS_MINI_LAYOUT_SERIES_ACTIVE = false;
     //endregion
 
     public final static String TEST_DEVICE_ID = "B243049824CFD790875E71B3C9DC4847";

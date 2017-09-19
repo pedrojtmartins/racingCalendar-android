@@ -1,5 +1,7 @@
 package com.pedrojtmartins.racingcalendar.adapters.recyclerViews;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.Observable;
@@ -7,6 +9,8 @@ import android.databinding.ObservableArrayList;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
@@ -29,8 +33,9 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     private final String mRemSingleNotification;
     private final String mSetMultiNotification;
     private final String mRemMultiNotification;
+    private final boolean isMiniLayoutActive;
 
-    public RaceAdapter(int itemLayoutId, ObservableArrayList<Race> items, IRaceList iCallback, Resources resources) {
+    public RaceAdapter(int itemLayoutId, ObservableArrayList<Race> items, IRaceList iCallback, Resources resources, boolean isMiniLayoutActive) {
         super(itemLayoutId, items);
 
         mCallback = iCallback;
@@ -42,6 +47,8 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         mRemSingleNotification = resources.getString(R.string.removeSingleAlarm);
         mSetMultiNotification = resources.getString(R.string.setMultiAlarm);
         mRemMultiNotification = resources.getString(R.string.removeMultiAlarm);
+
+        this.isMiniLayoutActive = isMiniLayoutActive;
     }
 
     @Override
@@ -64,7 +71,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // E.g. Friday_Saturday_Sunday
         boolean isInTheFuture = DateFormatter.isInTheFuture(currRace.getDate(0));
 
+//        String raceDate = currRace.getFullDate(0);
+//        String thisYear = String.valueOf(DateFormatter.getThisYear());
+//        if (raceDate.startsWith(thisYear))
+//            raceDate = null;
+
         showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
+
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
         hideUpcomingRacesResultsIconIfNeeded(binding, isInTheFuture);
 
@@ -72,6 +85,112 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         listenForAlarmStateChanges(binding, currRace);
 
         setClickListeners(binding, currRace, isInTheFuture);
+
+        setupRowForMiniLayoutIfNeeded(binding, currRace, isInTheFuture);
+    }
+
+    private void setupRowForMiniLayoutIfNeeded(final RowRace2Binding binding, final Race race, final boolean isInTheFuture) {
+        if (!isMiniLayoutActive)
+            return;
+
+        binding.rowRaceMainParent.setVisibility(View.GONE);
+        binding.raceRowMiniParent.setVisibility(View.VISIBLE);
+
+        binding.raceRowMiniParent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showPopupMenu(binding, race, isInTheFuture);
+                return true;
+            }
+        });
+
+        final int EXPAND_ANIM_MS = 250;
+        binding.raceRowMiniParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.raceRowMiniParent.setVisibility(View.GONE);
+//                binding.rowRaceMainParent.setVisibility(View.VISIBLE);
+//                binding.rowRaceFooterParent.setVisibility(View.VISIBLE);
+
+                final int originalHeight = binding.raceRowMiniParent.getHeight();
+                binding.rowRaceMainParent.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                final int targetHeight = binding.rowRaceMainParent.getMeasuredHeight();
+
+//                ObjectAnimator.ofInt(binding.rowRaceMainParent, "height", 1, targetHeight).setDuration(1000).li
+                ValueAnimator anim = ValueAnimator.ofInt(originalHeight, targetHeight);
+                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        ViewGroup.LayoutParams layoutParams = binding.rowRaceMainParent.getLayoutParams();
+                        layoutParams.height = (Integer) valueAnimator.getAnimatedValue();
+                        binding.rowRaceMainParent.setLayoutParams(layoutParams);
+                    }
+                });
+                anim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                        binding.rowRaceMainParent.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+
+                    }
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+                anim.setDuration(EXPAND_ANIM_MS);
+                anim.setInterpolator(new AccelerateInterpolator());
+                anim.start();
+            }
+        });
+
+        binding.raceRowSeriesMainInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int originalHeight = binding.rowRaceMainParent.getHeight();
+                binding.raceRowMiniParent.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                final int targetHeight = binding.raceRowMiniParent.getMeasuredHeight();
+
+//                ObjectAnimator.ofInt(binding.rowRaceMainParent, "height", 1, targetHeight).setDuration(1000).li
+                ValueAnimator anim = ValueAnimator.ofInt(originalHeight, targetHeight);
+                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        ViewGroup.LayoutParams layoutParams = binding.rowRaceMainParent.getLayoutParams();
+                        layoutParams.height = (Integer) valueAnimator.getAnimatedValue();
+                        binding.rowRaceMainParent.setLayoutParams(layoutParams);
+                    }
+                });
+                anim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                    }
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        binding.rowRaceMainParent.setVisibility(View.GONE);
+                        binding.raceRowMiniParent.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+                anim.setDuration(EXPAND_ANIM_MS);
+                anim.setInterpolator(new AccelerateInterpolator());
+                anim.start();
+            }
+        });
+
     }
 
     private void setDatesInfo(RowRace2Binding binding, Race currRace) {
@@ -127,6 +246,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 if (binding.raceRowNotification.getVisibility() != View.GONE)
                     binding.raceRowNotification.setVisibility(View.GONE);
             }
+
         } else {
             if (binding.raceRowDateParent.getVisibility() != View.GONE)
                 binding.raceRowDateParent.setVisibility(View.GONE);
@@ -152,6 +272,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             } else {
                 dateLbl = mValues.get(position).getFullDate(0);
                 dateLbl = DateFormatter.getWeekInterval(dateLbl);
+
+//                if (raceDate != null && raceDate.length() >= 4)
+//                    dateLbl += "  --  " + raceDate.substring(0, 4);
+
                 binding.weekTitle.setText(dateLbl);
             }
 
@@ -191,69 +315,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         binding.raceRowMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(binding.raceRowMore.getContext(), binding.raceRowMore);
-                popup.getMenuInflater().inflate(R.menu.row_race, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.set1notif:
-                                mCallback.updateAlarm(race, true, 0);
-                                break;
-
-                            case R.id.rem1notif:
-                                if (mCallback.updateAlarm(race, false, 0)) {
-                                    race.setIsAlarmSet(0, false);
-                                }
-                                break;
-
-                            case R.id.set2notif:
-                                mCallback.updateAlarm(race, true, 1);
-                                break;
-//
-                            case R.id.rem2notif:
-                                if (mCallback.updateAlarm(race, false, 1)) {
-                                    race.setIsAlarmSet(1, false);
-                                }
-                                break;
-//
-                            case R.id.set3notif:
-                                mCallback.updateAlarm(race, true, 2);
-                                break;
-//
-                            case R.id.rem3notif:
-                                if (mCallback.updateAlarm(race, false, 2)) {
-                                    race.setIsAlarmSet(2, false);
-                                }
-                                break;
-
-                            case R.id.three:
-                                mCallback.openUrl(race);
-                                break;
-
-                            case R.id.openResults:
-                                mCallback.openResults(race);
-                                break;
-
-                            case R.id.setNotifForAll:
-                                mCallback.updateAlarmForAllRaces(race);
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
-                int datesCount = race.getDatesCount();
-                Menu menu = popup.getMenu();
-                showCorrectMenu(datesCount, menu.findItem(R.id.set1notif), menu.findItem(R.id.rem1notif), race, 0);
-                showCorrectMenu(datesCount, menu.findItem(R.id.set2notif), menu.findItem(R.id.rem2notif), race, 1);
-                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
-//                showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
-
-                boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
-                menu.findItem(R.id.openResults).setVisible(resultsAvailable && !isInTheFuture);
-
-
-                popup.show();
+                showPopupMenu(binding, race, isInTheFuture);
             }
         });
 
@@ -275,6 +337,70 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 }
             }
         });
+    }
+    private void showPopupMenu(RowRace2Binding binding, final Race race, boolean isInTheFuture) {
+        PopupMenu popup = new PopupMenu(binding.raceRowMore.getContext(), binding.raceRowMore);
+        popup.getMenuInflater().inflate(R.menu.row_race, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.set1notif:
+                        mCallback.updateAlarm(race, true, 0);
+                        break;
+
+                    case R.id.rem1notif:
+                        if (mCallback.updateAlarm(race, false, 0)) {
+                            race.setIsAlarmSet(0, false);
+                        }
+                        break;
+
+                    case R.id.set2notif:
+                        mCallback.updateAlarm(race, true, 1);
+                        break;
+//
+                    case R.id.rem2notif:
+                        if (mCallback.updateAlarm(race, false, 1)) {
+                            race.setIsAlarmSet(1, false);
+                        }
+                        break;
+//
+                    case R.id.set3notif:
+                        mCallback.updateAlarm(race, true, 2);
+                        break;
+//
+                    case R.id.rem3notif:
+                        if (mCallback.updateAlarm(race, false, 2)) {
+                            race.setIsAlarmSet(2, false);
+                        }
+                        break;
+
+                    case R.id.three:
+                        mCallback.openUrl(race);
+                        break;
+
+                    case R.id.openResults:
+                        mCallback.openResults(race);
+                        break;
+
+                    case R.id.setNotifForAll:
+                        mCallback.updateAlarmForAllRaces(race);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        int datesCount = race.getDatesCount();
+        Menu menu = popup.getMenu();
+        showCorrectMenu(datesCount, menu.findItem(R.id.set1notif), menu.findItem(R.id.rem1notif), race, 0);
+        showCorrectMenu(datesCount, menu.findItem(R.id.set2notif), menu.findItem(R.id.rem2notif), race, 1);
+        showCorrectMenu(datesCount, menu.findItem(R.id.set3notif), menu.findItem(R.id.rem3notif), race, 2);
+
+        boolean resultsAvailable = RaceResultsManager.areResultsAvailable(race.getSeriesId());
+        menu.findItem(R.id.openResults).setVisible(resultsAvailable && !isInTheFuture);
+
+
+        popup.show();
     }
     private void showCorrectMenu(final int datesCount, final MenuItem itemSet, final MenuItem itemRem, final Race race, final int index) {
         if (datesCount <= index) {

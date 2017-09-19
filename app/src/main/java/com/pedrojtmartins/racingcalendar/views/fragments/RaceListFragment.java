@@ -23,6 +23,7 @@ import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
+import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
 
 public class RaceListFragment extends Fragment implements IRecyclerViewFragment {
@@ -101,8 +102,17 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         // We can use shared preferences for that purpose for example.
         //TODO implement multiple layout selection capabilities
 //        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
+
+        boolean isMiniLayoutActive = new SharedPreferencesManager(getContext()).getSettings().isMiniLayoutAllActive;
+// TODO: 19/09/2017 the fragment needs to know what mini layout to look for
+
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.recyclerView.setAdapter(new RaceAdapter(R.layout.row_race2, mList, mIRaceList, getResources()));
+        mBinding.recyclerView.setAdapter(new RaceAdapter(
+                R.layout.row_race2,
+                mList,
+                mIRaceList,
+                getResources(),
+                isMiniLayoutActive));
 
         // When transitioning between fragments the recyclerview could be
         // initialized not on the top because of fragment recycling.

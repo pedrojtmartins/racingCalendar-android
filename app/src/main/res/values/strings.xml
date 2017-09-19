@@ -86,5 +86,7 @@
     <string name="upgradePro">Remove ads</string>
 
     <string name="notification_channel_race_starting">Races starting</string>
+    <string name="settinns_layout">Layout</string>
+    <string name="settings_activate_mini_layout">Alternate Layout</string>
 
 </resources>

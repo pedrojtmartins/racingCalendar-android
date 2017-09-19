@@ -1,7 +1,6 @@
 package com.pedrojtmartins.racingcalendar.models;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 
 import com.pedrojtmartins.racingcalendar._settings.Settings;
 
@@ -11,10 +10,8 @@ import com.pedrojtmartins.racingcalendar._settings.Settings;
  */
 
 public class RCSettings extends BaseObservable {
-    @Bindable
     public boolean notificationsRemember;
 
-    @Bindable
     private String notifMinutesBefore;
     public String getNotificationMinutesBefore() {
         return notifMinutesBefore;
@@ -27,6 +24,10 @@ public class RCSettings extends BaseObservable {
     }
 
     public boolean openLinksInBrowser;
+
+    public boolean isMiniLayoutAllActive;
+    public boolean isMiniLayoutFavActive;
+    public boolean isMiniLayoutSeriesActive;
 
     public RCSettings(String serialized) {
         setDefaults();
@@ -41,6 +42,15 @@ public class RCSettings extends BaseObservable {
 
             if (aSettings.length > 2)
                 openLinksInBrowser = aSettings[2].equals("1");
+
+            if (aSettings.length > 3)
+                isMiniLayoutAllActive = aSettings[3].equals("1");
+
+//            if (aSettings.length > 4)
+//                isMiniLayoutFavActive = aSettings[4].equals("1");
+//
+//            if (aSettings.length > 5)
+//                isMiniLayoutSeriesActive = aSettings[5].equals("1");
         }
     }
 
@@ -48,12 +58,19 @@ public class RCSettings extends BaseObservable {
         notificationsRemember = Settings.NOTIFICATION_REMEMBER;
         notifMinutesBefore = Settings.NOTIFICATION_MINUTES_BEFORE;
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
+
+        isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
+        isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
+        isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
     }
 
     @Override
     public String toString() {
         return (notificationsRemember ? "1" : "0") +
                 ";" + notifMinutesBefore +
-                ";" + (openLinksInBrowser ? "1" : "0");
+                ";" + (openLinksInBrowser ? "1" : "0") +
+                ";" + (isMiniLayoutAllActive ? "1" : "0");
+//                ";" + (isMiniLayoutFavActive ? "1" : "0") +
+//                ";" + (isMiniLayoutSeriesActive ? "1" : "0");
     }
 }
