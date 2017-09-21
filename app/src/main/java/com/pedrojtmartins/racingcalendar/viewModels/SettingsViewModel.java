@@ -21,8 +21,10 @@ public class SettingsViewModel {
         mSettings = mSharedPreferencesManager.getSettings();
     }
 
-    public void saveChanges() {
+    public boolean saveChanges() {
         String settings = mSettings.toString();
         mSharedPreferencesManager.addSettings(settings);
+
+        return mSettings.miniLayoutChanged();
     }
 }

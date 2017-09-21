@@ -196,7 +196,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-
     @Override
     public Parcelable saveState() {
         return null;

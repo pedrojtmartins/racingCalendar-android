@@ -50,6 +50,9 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
+    private static final int ACTIVITY_RESULT_NOTIFICATIONS = 1;
+    private static final int ACTIVITY_RESULT_SETTINGS = 2;
+
     private ActivityMainBinding mBinding;
     private MainViewModel mViewModel;
     private MainPagerAdapter mPageAdapter;
@@ -287,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -295,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
 
             case R.id.action_notifications:
-                startActivityForResult(new Intent(this, NotificationsActivity.class), 1);
+                startActivityForResult(new Intent(this, NotificationsActivity.class), ACTIVITY_RESULT_NOTIFICATIONS);
                 break;
 
             case R.id.action_about:
@@ -303,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 break;
 
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), ACTIVITY_RESULT_SETTINGS);
                 break;
 
             case R.id.action_rate:
@@ -339,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         super.onBackPressed();
     }
+
 
     //endregion
 
@@ -672,9 +677,18 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            mViewModel.reload();
-            mPageAdapter.resetFavouritesScrollPos();
+        if (resultCode != RESULT_OK)
+            return;
+
+        switch (requestCode) {
+            case ACTIVITY_RESULT_NOTIFICATIONS:
+                mViewModel.reload();
+                mPageAdapter.resetFavouritesScrollPos();
+                break;
+
+            case ACTIVITY_RESULT_SETTINGS:
+                mPageAdapter.notifyDataSetChanged();
+                break;
         }
     }
 }

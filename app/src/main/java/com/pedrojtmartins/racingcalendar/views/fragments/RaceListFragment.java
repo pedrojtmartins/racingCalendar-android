@@ -104,8 +104,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
 //        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
 
         boolean isMiniLayoutActive = new SharedPreferencesManager(getContext()).getSettings().isMiniLayoutAllActive;
-// TODO: 19/09/2017 the fragment needs to know what mini layout to look for
-
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(
                 R.layout.row_race2,

@@ -14,6 +14,7 @@ import com.pedrojtmartins.racingcalendar.viewModels.SettingsViewModel;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private boolean needsReload;
     private ActivitySettingsBinding mBinding;
     private SettingsViewModel mViewModel;
 
@@ -31,7 +32,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        mViewModel.saveChanges();
+        if (mViewModel.saveChanges()) {
+            setResult(RESULT_OK, getIntent());
+        }
+
         super.onBackPressed();
     }
 

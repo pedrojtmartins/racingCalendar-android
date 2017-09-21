@@ -25,9 +25,10 @@ public class RCSettings extends BaseObservable {
 
     public boolean openLinksInBrowser;
 
+    private boolean _isMiniLayoutAllActive;
     public boolean isMiniLayoutAllActive;
-    public boolean isMiniLayoutFavActive;
-    public boolean isMiniLayoutSeriesActive;
+//    public boolean isMiniLayoutFavActive;
+//    public boolean isMiniLayoutSeriesActive;
 
     public RCSettings(String serialized) {
         setDefaults();
@@ -43,8 +44,9 @@ public class RCSettings extends BaseObservable {
             if (aSettings.length > 2)
                 openLinksInBrowser = aSettings[2].equals("1");
 
-            if (aSettings.length > 3)
-                isMiniLayoutAllActive = aSettings[3].equals("1");
+            if (aSettings.length > 3) {
+                _isMiniLayoutAllActive = isMiniLayoutAllActive = aSettings[3].equals("1");
+            }
 
 //            if (aSettings.length > 4)
 //                isMiniLayoutFavActive = aSettings[4].equals("1");
@@ -59,9 +61,9 @@ public class RCSettings extends BaseObservable {
         notifMinutesBefore = Settings.NOTIFICATION_MINUTES_BEFORE;
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
 
-        isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
-        isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
-        isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
+        _isMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
+//        isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
+//        isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
     }
 
     @Override
@@ -72,5 +74,9 @@ public class RCSettings extends BaseObservable {
                 ";" + (isMiniLayoutAllActive ? "1" : "0");
 //                ";" + (isMiniLayoutFavActive ? "1" : "0") +
 //                ";" + (isMiniLayoutSeriesActive ? "1" : "0");
+    }
+
+    public boolean miniLayoutChanged() {
+        return _isMiniLayoutAllActive != isMiniLayoutAllActive;
     }
 }
