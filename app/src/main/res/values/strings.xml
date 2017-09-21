@@ -89,4 +89,7 @@
     <string name="settinns_layout">Layout</string>
     <string name="settings_activate_mini_layout">Alternate Layout</string>
 
+    <string name="inWeeks" formatted="false">In %d weeks</string>
+
+
 </resources>

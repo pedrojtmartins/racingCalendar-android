@@ -86,4 +86,6 @@
     <string name="notification_channel_race_starting">Início de corridas</string>
     <string name="settinns_layout">Layout</string>
     <string name="settings_activate_mini_layout">Mini Layout</string>
+
+    <string name="inWeeks" formatted="false">Em %d semanas</string>
 </resources>

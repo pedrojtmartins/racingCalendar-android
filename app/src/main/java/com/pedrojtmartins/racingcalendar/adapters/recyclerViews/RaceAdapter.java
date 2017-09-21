@@ -33,6 +33,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
     private final String mRemSingleNotification;
     private final String mSetMultiNotification;
     private final String mRemMultiNotification;
+    private final String mInWeeks;
     private final boolean isMiniLayoutActive;
 
     public RaceAdapter(int itemLayoutId, ObservableArrayList<Race> items, IRaceList iCallback, Resources resources, boolean isMiniLayoutActive) {
@@ -47,6 +48,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         mRemSingleNotification = resources.getString(R.string.removeSingleAlarm);
         mSetMultiNotification = resources.getString(R.string.setMultiAlarm);
         mRemMultiNotification = resources.getString(R.string.removeMultiAlarm);
+        mInWeeks = resources.getString(R.string.inWeeks);
 
         this.isMiniLayoutActive = isMiniLayoutActive;
     }
@@ -64,6 +66,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // Testing only
 //        currRace.setDate("2017-02-04T22:22:22_2017-02-05T23:22:22");
 
+        int totalWeeksThisYear = DateFormatter.getTotalWeeksThisYear();
         int thisWeekNo = DateFormatter.getThisWeekNumber();
         int raceWeekNo = DateFormatter.getWeekNumber(currRace.getDate(0));
         // For raceWeekNo we can ignore all the other dates (if they exist)
@@ -76,7 +79,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 //        if (raceDate.startsWith(thisYear))
 //            raceDate = null;
 
-        showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo);
+        showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo, totalWeeksThisYear, isInTheFuture);
 
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
         hideUpcomingRacesResultsIconIfNeeded(binding, isInTheFuture);
@@ -262,13 +265,21 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         });
     }
 
-    private void showWeekNumberHeaderIfNeeded(int position, RowRace2Binding binding, int raceWeekNo, int thisWeekNo) {
+    private void showWeekNumberHeaderIfNeeded(
+            int position,
+            RowRace2Binding binding,
+            int raceWeekNo,
+            int thisWeekNo,
+            int toalWeeksThisYear,
+            boolean isInTheFuture) {
         if (position == 0 || displayTitle(position, raceWeekNo)) {
             String dateLbl;
             if (raceWeekNo == thisWeekNo) {
-                binding.weekTitle.setText(mThisWeek);
+                binding.weekRemaining.setText(mThisWeek);
+                binding.weekTitle.setText("");
             } else if (raceWeekNo == thisWeekNo + 1) {
-                binding.weekTitle.setText(mNextWeek);
+                binding.weekRemaining.setText(mNextWeek);
+                binding.weekTitle.setText("");
             } else {
                 dateLbl = mValues.get(position).getFullDate(0);
                 dateLbl = DateFormatter.getWeekInterval(dateLbl);
@@ -277,12 +288,22 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 //                    dateLbl += "  --  " + raceDate.substring(0, 4);
 
                 binding.weekTitle.setText(dateLbl);
+
+                if (!isInTheFuture)
+                    binding.weekRemaining.setText("");
+                else {
+                    int weeksRemaining = raceWeekNo - thisWeekNo;
+                    if (weeksRemaining <= 0)
+                        weeksRemaining += toalWeeksThisYear;
+
+                    binding.weekRemaining.setText(String.format(mInWeeks, weeksRemaining));
+                }
             }
 
-            binding.weekTitle.setVisibility(View.VISIBLE);
+            binding.weekHeader.setVisibility(View.VISIBLE);
 
         } else {
-            binding.weekTitle.setVisibility(View.GONE);
+            binding.weekHeader.setVisibility(View.GONE);
         }
     }
 

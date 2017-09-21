@@ -113,6 +113,13 @@ public class DateFormatter {
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
+    public static int getTotalWeeksThisYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        return calendar.getActualMaximum(Calendar.WEEK_OF_YEAR);
+    }
+
+
     public static String getDate(String date) {
         if (date != null) {
             if (date.contains("T"))
