@@ -498,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                                 }
 
                                 rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-                                spManager.addSettings(rcSettings.toString());
+                                spManager.addSettings(rcSettings);
 
                                 if (forAllRaces) {
                                     updateAlarmForAllRaces(race, minutesBefore);

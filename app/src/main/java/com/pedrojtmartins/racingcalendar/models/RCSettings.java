@@ -2,6 +2,7 @@ package com.pedrojtmartins.racingcalendar.models;
 
 import android.databinding.BaseObservable;
 
+import com.google.gson.annotations.SerializedName;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
 
 /**
@@ -10,8 +11,10 @@ import com.pedrojtmartins.racingcalendar._settings.Settings;
  */
 
 public class RCSettings extends BaseObservable {
+    @SerializedName("notif_remember")
     public boolean notificationsRemember;
 
+    @SerializedName("notif_minBefore")
     private String notifMinutesBefore;
     public String getNotificationMinutesBefore() {
         return notifMinutesBefore;
@@ -23,8 +26,10 @@ public class RCSettings extends BaseObservable {
         this.notifMinutesBefore = notificationMinutesBefore;
     }
 
+    @SerializedName("links_inBrowser")
     public boolean openLinksInBrowser;
 
+    @SerializedName("layout_miniAll")
     private boolean _isMiniLayoutAllActive;
     public boolean isMiniLayoutAllActive;
 //    public boolean isMiniLayoutFavActive;
@@ -72,8 +77,6 @@ public class RCSettings extends BaseObservable {
                 ";" + notifMinutesBefore +
                 ";" + (openLinksInBrowser ? "1" : "0") +
                 ";" + (isMiniLayoutAllActive ? "1" : "0");
-//                ";" + (isMiniLayoutFavActive ? "1" : "0") +
-//                ";" + (isMiniLayoutSeriesActive ? "1" : "0");
     }
 
     public boolean miniLayoutChanged() {

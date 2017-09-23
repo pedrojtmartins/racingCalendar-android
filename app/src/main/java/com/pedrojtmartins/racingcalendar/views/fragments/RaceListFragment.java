@@ -21,6 +21,7 @@ import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
@@ -103,7 +104,9 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         //TODO implement multiple layout selection capabilities
 //        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
 
-        boolean isMiniLayoutActive = new SharedPreferencesManager(getContext()).getSettings().isMiniLayoutAllActive;
+        RCSettings settings = new SharedPreferencesManager(getContext()).getSettings();
+        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive;
+
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(
                 R.layout.row_race2,

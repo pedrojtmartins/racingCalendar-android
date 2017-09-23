@@ -3,6 +3,8 @@ package com.pedrojtmartins.racingcalendar.sharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
 
 /**
@@ -80,13 +82,25 @@ public class SharedPreferencesManager {
     //region Settings
     public RCSettings getSettings() {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        return new RCSettings(sp.getString(SETTINGS_NOTIFICATIONS, ""));
+        String sSettings = sp.getString(SETTINGS_NOTIFICATIONS, "");
+
+        try {
+            RCSettings settings = new Gson().fromJson(sSettings, RCSettings.class);
+            if (settings == null)
+                return new RCSettings(sSettings);
+
+            return settings;
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+            return new RCSettings(sSettings);
+        }
     }
 
-    public void addSettings(String settings) {
+    public void addSettings(RCSettings settings) {
         SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SETTINGS_NOTIFICATIONS, settings);
+        String serialized = new Gson().toJson(settings);
+        editor.putString(SETTINGS_NOTIFICATIONS, serialized);
         editor.apply();
     }
     //endregion
