@@ -96,8 +96,13 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         if (!isMiniLayoutActive)
             return;
 
-        binding.rowRaceMainParent.setVisibility(View.GONE);
-        binding.raceRowMiniParent.setVisibility(View.VISIBLE);
+        if (race.isExpanded) {
+            binding.rowRaceMainParent.setVisibility(View.VISIBLE);
+            binding.raceRowMiniParent.setVisibility(View.GONE);
+        } else {
+            binding.rowRaceMainParent.setVisibility(View.GONE);
+            binding.raceRowMiniParent.setVisibility(View.VISIBLE);
+        }
 
         binding.raceRowMiniParent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -111,10 +116,6 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         binding.raceRowMiniParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.raceRowMiniParent.setVisibility(View.GONE);
-//                binding.rowRaceMainParent.setVisibility(View.VISIBLE);
-//                binding.rowRaceFooterParent.setVisibility(View.VISIBLE);
-
                 final int originalHeight = binding.raceRowMiniParent.getHeight();
                 binding.rowRaceMainParent.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 final int targetHeight = binding.rowRaceMainParent.getMeasuredHeight();
@@ -132,6 +133,8 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 anim.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
+                        race.isExpanded = true;
+                        binding.raceRowMiniParent.setVisibility(View.GONE);
                         binding.rowRaceMainParent.setVisibility(View.VISIBLE);
                     }
                     @Override
@@ -173,6 +176,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 anim.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
+                        race.isExpanded = false;
                     }
                     @Override
                     public void onAnimationEnd(Animator animator) {

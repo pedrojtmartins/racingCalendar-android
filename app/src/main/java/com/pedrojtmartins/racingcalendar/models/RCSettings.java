@@ -35,10 +35,13 @@ public class RCSettings extends BaseObservable {
 //    public boolean isMiniLayoutFavActive;
 //    public boolean isMiniLayoutSeriesActive;
 
+    // TODO: 23/09/2017 this should be a singleton?
     public RCSettings(String serialized) {
         setDefaults();
 
         if (serialized != null && !serialized.isEmpty()) {
+            // This will only be called if settings are still stored as plain text (old version)
+
             String[] aSettings = serialized.split(";");
             if (aSettings.length > 0)
                 notificationsRemember = aSettings[0].equals("1");

@@ -187,6 +187,10 @@ public class Race extends BaseObservable {
     @Bindable
     public int eventDateStatus;
 
+
+    // Used when the miniLayout is active. It will keep track of the state of a particular row.
+    public boolean isExpanded;
+
     public Race(int id,
                 int seriesId,
                 int raceNumber,
