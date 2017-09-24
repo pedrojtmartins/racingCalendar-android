@@ -58,7 +58,7 @@
     <string name="notification_enable_defaults">Do not ask when setting</string>
     <string name="remember">Remember</string>
     <string name="notify">Notify</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
 
     <string name="openUrl">Open website</string>
     <string name="openResults">Open results</string>
@@ -87,7 +87,7 @@
 
     <string name="notification_channel_race_starting">Races starting</string>
     <string name="settinns_layout">Layout</string>
-    <string name="settings_activate_mini_layout">Alternate Layout</string>
+    <string name="settings_activate_mini_layout">Collapsed Layout</string>
 
     <string name="inWeeks" formatted="false">In %d weeks</string>
 
