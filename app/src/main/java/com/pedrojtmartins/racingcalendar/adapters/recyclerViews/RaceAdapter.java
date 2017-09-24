@@ -408,7 +408,9 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                         break;
 
                     case R.id.setNotifForAll:
-                        mCallback.updateAlarmForAllRaces(race);
+                        // By passing the races list we'll be saving some checks
+                        // to find out what tab is active.
+                        mCallback.updateAlarmForAllRaces(race, mValues);
                         break;
                 }
                 return true;

@@ -404,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 return false;
         }
 
-        int minutesBefore = getMinutesBefore(false, race, active, index);
+        int minutesBefore = getMinutesBefore(false, race, index);
         if (minutesBefore == -1) {
             //This means the user must choose still. After it is chosen the rest of the process will be run.
             return true;
@@ -412,68 +412,28 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         updateAlarm(race, minutesBefore, index);
         return true;
-
-//        // TODO: 23/05/2017 this needs to take dates count into consideration
-//        if (race.hasDateOnly(0)) {
-//            updateAlarm(race, 0, index);
-//            return true;
-//        } else {
-//
-//            final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
-//            final RCSettings rcSettings = spManager.getSettings();
-//            if (rcSettings.notificationsRemember) {
-//                // Settings are stored. Use them
-//                updateAlarm(race, ParsingHelper.stringToInt(rcSettings.getNotificationMinutesBefore()), index);
-//                return true;
-//            } else {
-//                // Settings are not stored. Let's ask the user what to do.
-//                AlertDialogHelper.displayNewNotificationDialog(
-//                        this,
-//                        getLayoutInflater(),
-//                        rcSettings.getNotificationMinutesBefore(),
-//                        new Handler(new Handler.Callback() {
-//                            @Override
-//                            public boolean handleMessage(Message msg) {
-//                                int minutesBefore = ParsingHelper.stringToInt(msg.getData().getString("timeBefore", "0"));
-//
-//                                if (msg.what == 2) {
-//                                    // User wants to remember the settings. Update the settings we have already
-//                                    rcSettings.notificationsRemember = true;
-//                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-//                                    spManager.addSettings(rcSettings.toString());
-//                                } else {
-//                                    // Keep the minutes selected but just suggest next time
-//                                    rcSettings.setNotificationMinutesBefore(minutesBefore + "");
-//                                    spManager.addSettings(rcSettings.toString());
-//                                }
-//
-//                                updateAlarm(race, minutesBefore, index);
-//                                return true;
-//                            }
-//                        }));
-//            }
-//        }
-//
-//        return true;
     }
 
-
-    public boolean updateAlarmForAllRaces(final Race race) {
-        int minutesBefore = getMinutesBefore(true, race, false, 0);
+    public boolean updateAlarmForAllRaces(final Race race, final ArrayList<Race> list) {
+        int minutesBefore = getMinutesBefore(true, race, 0, list);
         if (minutesBefore == -1) {
             //This means the user must choose still. After it is chosen the rest of the process will be run.
             return true;
         }
 
-        updateAlarmForAllRaces(race, minutesBefore);
+        updateAlarmForAllRaces(race, minutesBefore, list);
         return true;
     }
-    private boolean updateAlarmForAllRaces(final Race race, final int minutesBefore) {
-        updateAlarmForAllRaces(race.getSeriesId(), minutesBefore);
+    private boolean updateAlarmForAllRaces(final Race race, final int minutesBefore, ArrayList<Race> list) {
+        updateAlarmForAllRaces(race.getSeriesId(), minutesBefore, list);
         return true;
     }
 
-    public int getMinutesBefore(final boolean forAllRaces, final Race race, final boolean active, final int index) {
+    public int getMinutesBefore(final boolean forAllRaces, final Race race, final int index) {
+        return getMinutesBefore(forAllRaces, race, index, null);
+    }
+
+    public int getMinutesBefore(final boolean forAllRaces, final Race race, final int index, final ArrayList<Race> list) {
         if (race.hasDateOnly(0)) {
             return 0;
         } else {
@@ -501,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                                 spManager.addSettings(rcSettings);
 
                                 if (forAllRaces) {
-                                    updateAlarmForAllRaces(race, minutesBefore);
+                                    updateAlarmForAllRaces(race, minutesBefore, list);
                                 } else {
                                     updateAlarm(race, minutesBefore, index);
                                 }
@@ -516,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     //endregion
-    private void updateAlarmForAllRaces(final int seriesId, final int timeBefore) {
+    private void updateAlarmForAllRaces(final int seriesId, final int timeBefore, ArrayList<Race> raceList) {
         ArrayList<RCNotification> list = mViewModel.addNotifications(seriesId, timeBefore);
         if (list == null || list.isEmpty()) {
             return;
@@ -524,8 +484,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         int alarmsNotSet = 0;
         for (RCNotification notification : list) {
-            // TODO: 14/09/2017 we need to update the race from series races view somehow
-            alarmsNotSet += setAlarm(notification, true) ? 0 : 1;
+            boolean alarmSet = setAlarm(notification, true);
+            alarmsNotSet += alarmSet ? 0 : 1;
+
+            // Find the correct race and set it's alarm state to the right one
+            for (Race r : raceList) {
+                if (r.getId() == notification.raceId) {
+                    r.setIsAlarmSet(notification.timeIndex, true); //This is used to update the series races view
+                    break;
+                }
+            }
         }
 
         if (alarmsNotSet == 0) {

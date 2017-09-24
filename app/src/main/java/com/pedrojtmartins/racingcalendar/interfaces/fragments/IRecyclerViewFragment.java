@@ -11,6 +11,7 @@ public interface IRecyclerViewFragment {
     void itemsReloaded(int count);
     void resetScrollPos();
 
+
     int getScrollPosition();
     void setScrollPos(int seriesScrollPosition);
 }
