@@ -76,8 +76,6 @@
     <string name="times">Tempo/Delta</string>
     <string name="errorLoadingStandings">As classificações ainda não estão disponíveis. Por favor, tente novamente mais tarde.</string>
 
-    <string name="releaseNotesMsg">
-        .Adicionadas classificações gerais.\n.Adicionados resultados por corrida.\n\nNota: A cobertura das classificações será aumentada em futuras atualizações.</string>
 
     <string name="noInternetConnection">Sem ligação à internet. Por favor, verifique a ligação e tente novamente.</string>
     <string name="notInternetFirstInit">Sem ligação à internet. Na primeira inicialização é necessária uma ligação ativa. Por favor, verifique a ligação e tente novamente.</string>
@@ -88,4 +86,8 @@
     <string name="settings_activate_mini_layout">Layout reduzido</string>
 
     <string name="inWeeks" formatted="false">Em %d semanas</string>
+
+
+    <string name="releaseNotesMsg">
+                Adiciona um layout alternativo (Ativado nas Definições).\n.Adiciona a possibilidade de criar notificações para toda a série.\n.Expande cobertura de classificações.\n.Aumenta fiabilidade da app.\n.Adiciona suporte para Android 8.0 Oreo.</string>
 </resources>

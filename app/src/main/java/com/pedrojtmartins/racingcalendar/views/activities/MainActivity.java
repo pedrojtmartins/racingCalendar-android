@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
@@ -12,6 +13,7 @@ import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -26,6 +28,7 @@ import com.pedrojtmartins.racingcalendar.admob.AdmobHelper;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
 import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.api.APIManager;
+import com.pedrojtmartins.racingcalendar.contentProviders.CalendarProvider;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivityMainBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
@@ -50,6 +53,8 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
+
+
     private static final int ACTIVITY_RESULT_NOTIFICATIONS = 1;
     private static final int ACTIVITY_RESULT_SETTINGS = 2;
 
@@ -658,5 +663,15 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 mPageAdapter.notifyDataSetChanged();
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            CalendarProvider.getAllCalendars(this);
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
