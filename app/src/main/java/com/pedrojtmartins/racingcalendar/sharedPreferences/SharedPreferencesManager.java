@@ -89,6 +89,7 @@ public class SharedPreferencesManager {
             if (settings == null)
                 return new RCSettings(sSettings);
 
+            settings.normalize();
             return settings;
         } catch (JsonSyntaxException e) {
             e.printStackTrace();

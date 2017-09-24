@@ -30,16 +30,18 @@ public class RCSettings extends BaseObservable {
     public boolean openLinksInBrowser;
 
     @SerializedName("layout_miniAll")
-    private boolean _isMiniLayoutAllActive;
     public boolean isMiniLayoutAllActive;
+
+    private boolean originalMiniLayoutAllActive;
+
 //    public boolean isMiniLayoutFavActive;
 //    public boolean isMiniLayoutSeriesActive;
 
-    // TODO: 23/09/2017 this should be a singleton?
+
     public RCSettings(String serialized) {
         setDefaults();
 
-        if (serialized != null && !serialized.isEmpty()) {
+        if (serialized != null && !serialized.isEmpty() && serialized.contains(";")) {
             // This will only be called if settings are still stored as plain text (old version)
 
             String[] aSettings = serialized.split(";");
@@ -53,7 +55,7 @@ public class RCSettings extends BaseObservable {
                 openLinksInBrowser = aSettings[2].equals("1");
 
             if (aSettings.length > 3) {
-                _isMiniLayoutAllActive = isMiniLayoutAllActive = aSettings[3].equals("1");
+                originalMiniLayoutAllActive = isMiniLayoutAllActive = aSettings[3].equals("1");
             }
 
 //            if (aSettings.length > 4)
@@ -64,12 +66,16 @@ public class RCSettings extends BaseObservable {
         }
     }
 
+    public void normalize() {
+        originalMiniLayoutAllActive = isMiniLayoutAllActive;
+    }
+
     private void setDefaults() {
         notificationsRemember = Settings.NOTIFICATION_REMEMBER;
         notifMinutesBefore = Settings.NOTIFICATION_MINUTES_BEFORE;
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
 
-        _isMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
+        originalMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
 //        isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
 //        isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
     }
@@ -83,6 +89,6 @@ public class RCSettings extends BaseObservable {
     }
 
     public boolean miniLayoutChanged() {
-        return _isMiniLayoutAllActive != isMiniLayoutAllActive;
+        return originalMiniLayoutAllActive != isMiniLayoutAllActive;
     }
 }
