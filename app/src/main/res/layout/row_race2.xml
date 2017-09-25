@@ -29,7 +29,7 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/weekRemaining"
+                android:id="@+id/weekTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,10 +40,10 @@
                 android:textColor="#fff"
                 android:textSize="16sp"
                 tools:background="#3c3c3c"
-                tools:text="In 3 weeks"/>
+                tools:text="Dec 04 - 10"/>
 
             <TextView
-                android:id="@+id/weekTitle"
+                android:id="@+id/weekRemaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
@@ -53,7 +53,7 @@
                 android:textColor="#fff"
                 android:textSize="16sp"
                 tools:background="#3c3c3c"
-                tools:text="Dec 04 - 10"/>
+                tools:text="In 3 weeks"/>
         </LinearLayout>
 
         <LinearLayout

@@ -73,13 +73,9 @@ public class RaceAdapter extends ObservableAdapter<Race> {
         // since they will all be in the same week.
         // E.g. Friday_Saturday_Sunday
         boolean isInTheFuture = DateFormatter.isInTheFuture(currRace.getDate(0));
+        boolean isThisYear = DateFormatter.isThisYear(currRace.getFullDate(0));
 
-//        String raceDate = currRace.getFullDate(0);
-//        String thisYear = String.valueOf(DateFormatter.getThisYear());
-//        if (raceDate.startsWith(thisYear))
-//            raceDate = null;
-
-        showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo, totalWeeksThisYear, isInTheFuture);
+        showWeekNumberHeaderIfNeeded(position, binding, raceWeekNo, thisWeekNo, totalWeeksThisYear, isInTheFuture, isThisYear, currRace.getDate(0));
 
         applyThisWeekVisualsIfNeeded(currRace, raceWeekNo, thisWeekNo);
         hideUpcomingRacesResultsIconIfNeeded(binding, isInTheFuture);
@@ -274,22 +270,24 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             RowRace2Binding binding,
             int raceWeekNo,
             int thisWeekNo,
-            int toalWeeksThisYear,
-            boolean isInTheFuture) {
+            int totalWeeksThisYear,
+            boolean isInTheFuture,
+            boolean isThisYear,
+            String raceDate) {
         if (position == 0 || displayTitle(position, raceWeekNo)) {
             String dateLbl;
             if (raceWeekNo == thisWeekNo) {
-                binding.weekRemaining.setText(mThisWeek);
-                binding.weekTitle.setText("");
+                binding.weekTitle.setText(mThisWeek);
+                binding.weekRemaining.setText("");
             } else if (raceWeekNo == thisWeekNo + 1) {
-                binding.weekRemaining.setText(mNextWeek);
-                binding.weekTitle.setText("");
+                binding.weekTitle.setText(mNextWeek);
+                binding.weekRemaining.setText("");
             } else {
                 dateLbl = mValues.get(position).getFullDate(0);
                 dateLbl = DateFormatter.getWeekInterval(dateLbl);
 
-//                if (raceDate != null && raceDate.length() >= 4)
-//                    dateLbl += "  --  " + raceDate.substring(0, 4);
+                if (!isThisYear)
+                    dateLbl += "   " + raceDate.substring(0, 4);
 
                 binding.weekTitle.setText(dateLbl);
 
@@ -298,7 +296,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                 else {
                     int weeksRemaining = raceWeekNo - thisWeekNo;
                     if (weeksRemaining <= 0)
-                        weeksRemaining += toalWeeksThisYear;
+                        weeksRemaining += totalWeeksThisYear;
 
                     binding.weekRemaining.setText(String.format(mInWeeks, weeksRemaining));
                 }

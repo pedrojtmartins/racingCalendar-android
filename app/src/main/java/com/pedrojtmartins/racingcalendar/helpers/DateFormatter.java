@@ -228,4 +228,8 @@ public class DateFormatter {
 
         return checking.after(now);
     }
+    public static boolean isThisYear(String fullDate) {
+        String thisYear = String.valueOf(DateFormatter.getThisYear());
+        return fullDate.startsWith(thisYear);
+    }
 }
