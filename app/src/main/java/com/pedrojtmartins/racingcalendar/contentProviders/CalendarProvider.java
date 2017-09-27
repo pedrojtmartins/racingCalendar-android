@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 
+import com.pedrojtmartins.racingcalendar._settings.Constants;
 import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.InternalCalendars;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -43,7 +44,7 @@ public class CalendarProvider {
      */
     public static ArrayList<InternalCalendars> getAllCalendars(Activity context) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CALENDAR}, 1);
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CALENDAR}, Constants.PERMISSION_REQUEST_READ_CALENDAR);
             return null;
         }
 
@@ -55,7 +56,7 @@ public class CalendarProvider {
 
         ArrayList<InternalCalendars> list = new ArrayList<>();
         while (cur.moveToNext()) {
-            long calID = cur.getLong(PROJECTION_ID_INDEX);
+            int calID = cur.getInt(PROJECTION_ID_INDEX);
             String displayName = cur.getString(PROJECTION_DISPLAY_NAME_INDEX);
             String accountName = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX);
             String ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
@@ -66,27 +67,34 @@ public class CalendarProvider {
         return list;
     }
 
-    public static void addRaceToCalendar(Activity context, Race race, int calendarId) {
+    public static boolean addRaceToCalendar(Activity context, Race race, int calendarId) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_CALENDAR}, 2);
-            return;
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_CALENDAR}, Constants.PERMISSION_REQUEST_WRITE_CALENDAR);
+            return false;
         }
 
         for (int i = 0; i < race.getDatesCount(); i++) {
 
             long startInMillis = DateFormatter.getDateInMillis(race.getFullDate(i));
-            long endInMillis = startInMillis + (race.getRaceLength() + 1000);
 
             ContentValues values = new ContentValues();
             values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, "UTC");
-            values.put(CalendarContract.Events.DTSTART, startInMillis);
-            values.put(CalendarContract.Events.DTEND, endInMillis);
             values.put(CalendarContract.Events.TITLE, race.getSeriesName());
             values.put(CalendarContract.Events.DESCRIPTION, race.getName());
             values.put(CalendarContract.Events.EVENT_LOCATION, race.getLocation());
+            values.put(CalendarContract.Events.ALL_DAY, race.hasDateOnly(i));
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, "UTC");
+            values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
+            values.put(CalendarContract.Events.DTSTART, startInMillis);
+
+            long endInMillis = startInMillis + (race.getRaceLength() * 1000);
+            values.put(CalendarContract.Events.DTEND, endInMillis);
+
+
             Uri uri = context.getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
 
         }
+
+        return true;
     }
 }

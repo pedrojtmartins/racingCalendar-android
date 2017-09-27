@@ -410,6 +410,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
                         // to find out what tab is active.
                         mCallback.updateAlarmForAllRaces(race, mValues);
                         break;
+
+                    case R.id.exportToCalendar:
+                        mCallback.exportToCalendar(race);
+                        break;
                 }
                 return true;
             }

@@ -90,4 +90,8 @@
 
     <string name="releaseNotesMsg">
                 Adiciona um layout alternativo (Ativado nas Definições).\n.Adiciona a possibilidade de criar notificações para toda a série.\n.Expande cobertura de classificações.\n.Aumenta fiabilidade da app.\n.Adiciona suporte para Android 8.0 Oreo.</string>
+
+    <string name="exportToCalendar">Exportar para o calendário</string>
+    <string name="raceExported">Evento exportado</string>
+    <string name="exportRaceTo">Exportar evento para</string>
 </resources>

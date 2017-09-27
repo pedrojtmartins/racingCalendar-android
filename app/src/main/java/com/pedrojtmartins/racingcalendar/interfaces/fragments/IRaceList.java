@@ -32,4 +32,5 @@ public interface IRaceList {
 
     void loadPrevious(boolean mFavouritesOnly);
     void loadPrevious(Series mSeries);
+    void exportToCalendar(Race race);
 }

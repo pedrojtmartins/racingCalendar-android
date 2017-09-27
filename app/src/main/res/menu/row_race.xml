@@ -62,4 +62,10 @@
         android:title="@string/openResults"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/exportToCalendar"
+        android:orderInCategory="7"
+        android:title="@string/exportToCalendar"
+        app:showAsAction="never"/>
+
 </menu>

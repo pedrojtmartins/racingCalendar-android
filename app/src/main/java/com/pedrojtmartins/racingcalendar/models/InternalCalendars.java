@@ -6,13 +6,13 @@ package com.pedrojtmartins.racingcalendar.models;
  */
 
 public class InternalCalendars {
-    public long id;
+    public int id;
     public String displayName;
     public String accountName;
     public String ownerName;
 
 
-    public InternalCalendars(long calID, String displayName, String accountName, String ownerName) {
+    public InternalCalendars(int calID, String displayName, String accountName, String ownerName) {
         this.id = calID;
         this.displayName = displayName;
         this.accountName = accountName;

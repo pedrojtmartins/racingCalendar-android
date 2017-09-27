@@ -1,5 +1,6 @@
 package com.pedrojtmartins.racingcalendar.alertDialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -10,10 +11,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar.models.InternalCalendars;
+
+import java.util.ArrayList;
 
 /**
  * Pedro Martins
@@ -117,7 +123,7 @@ public class AlertDialogHelper {
             final Handler handler) {
 
         final View v = inflater.inflate(R.layout.alert_dialog_notification, null);
-        final EditText et = (EditText) v.findViewById(R.id.alert_dialog_minutes_before);
+        final EditText et = v.findViewById(R.id.alert_dialog_minutes_before);
         et.setText(notificationMinutesBefore);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom));
@@ -157,4 +163,34 @@ public class AlertDialogHelper {
     }
 
 
+    public static void requestCalendar(Activity context, final ArrayList<InternalCalendars> allCalendars, final Handler.Callback handler) {
+        final View v = context.getLayoutInflater().inflate(R.layout.alert_dialog_pick_calendar, null);
+        final Spinner sp = v.findViewById(R.id.dropDown);
+
+        final ArrayList<String> list = new ArrayList<>();
+        for (InternalCalendars cal : allCalendars) {
+            list.add(cal.displayName);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, list);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        sp.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom));
+        builder.setTitle("");
+        builder.setCancelable(true);
+        builder.setView(v);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Message msg = new Message();
+                msg.arg1 = allCalendars.get(sp.getSelectedItemPosition()).id;
+                handler.handleMessage(msg);
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.create();
+        builder.show();
+    }
 }

@@ -62,6 +62,9 @@ public class MainViewModel implements IDataUpdater {
 
     private ObservableArrayList<Series> mSeriesList;
 
+    private Race raceBeingExported;
+    private int calendarToExportTo;
+
     public MainViewModel(DatabaseManager dbManager, APIManager apiManager, SharedPreferencesManager sharedPreferencesManager) {
         mDbManager = dbManager;
         mApiManager = apiManager;
@@ -299,4 +302,18 @@ public class MainViewModel implements IDataUpdater {
         return settings != null && settings.openLinksInBrowser;
     }
 
+    public void export(Race race, int calendarId) {
+        raceBeingExported = race;
+        calendarToExportTo = calendarId;
+    }
+    public Race getRaceBeingExported() {
+        return raceBeingExported;
+    }
+    public int getCalendarToExportTo() {
+        return calendarToExportTo;
+    }
+    public void exportComplete() {
+        raceBeingExported = null;
+        calendarToExportTo = -1;
+    }
 }

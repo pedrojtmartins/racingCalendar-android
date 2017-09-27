@@ -92,4 +92,7 @@
 
     <string name="releaseNotesMsg">
         .Adds new optional layout (Can be activated in Settings menu).\n.Adds the ability to set notifications for an entire series.\n.Further increases standings/results coverage.\n.Improves app reliability.\n.Adds support for Android 8.0 Oreo.</string>
+    <string name="exportToCalendar">Export to calendar</string>
+    <string name="raceExported">Race exported</string>
+    <string name="exportRaceTo">Export event to</string>
 </resources>

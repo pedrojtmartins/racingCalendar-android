@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar._settings.Constants;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
 import com.pedrojtmartins.racingcalendar.admob.AdmobHelper;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
@@ -41,6 +42,7 @@ import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
+import com.pedrojtmartins.racingcalendar.models.InternalCalendars;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -79,33 +81,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         checkDatabaseDataCount();
 
         showReleaseNotes();
-
-//        selectCalendar();
     }
-
-//    private void selectCalendar() {
-//        final ArrayList<InternalCalendars> cals = CalendarProvider.getAllCalendars(this);
-//        ArrayList<String> s = new ArrayList<>();
-//        for (InternalCalendars ic : cals)
-//            s.add(ic.displayName + " - " + ic.accountName);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, s);
-//        adapter.setDropDownViewResource(R.layout.calendar_picker);
-//
-//        Spinner popupSpinner = new Spinner(this, Spinner.MODE_DROPDOWN);
-//        popupSpinner.setAdapter(adapter);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        builder.setView(popupSpinner);
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//            }
-//        });
-//        builder.create().show();
-//    }
-
 
     private void createNotificationChannels() {
         RCNotificationManager.createChannels(
@@ -664,6 +640,44 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     @Override
+    public void exportToCalendar(final Race race) {
+        exportToCalendar(race, -1);
+    }
+
+    private void exportToCalendar(final Race race, final int calendarId) {
+        if (race == null) // This must never happen
+            return;
+
+        if (calendarId == -1) {
+            mViewModel.export(race, -1);
+            ArrayList<InternalCalendars> allCalendars = CalendarProvider.getAllCalendars(this);
+            if (allCalendars == null) // Permission requested or no calendars available
+                return;
+
+            AlertDialogHelper.requestCalendar(this, allCalendars, new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message message) {
+                    if (message.arg1 >= 0)
+                        exportToCalendar(race, message.arg1);
+                    return true;
+                }
+            });
+            return;
+        }
+
+        mViewModel.export(race, calendarId);
+        boolean exported = CalendarProvider.addRaceToCalendar(this, race, calendarId);
+        if (!exported)
+            // In case the permission needs to be requested
+            // this function will called again from the onRequestPermissionsResult
+            return;
+
+        // If this is reached event was exported successfully
+        mViewModel.exportComplete();
+        SnackBarHelper.display(mBinding.mainContent, R.string.raceExported);
+    }
+
+    @Override
     public void loadPrevious(boolean favouritesOnly) {
         int count = mViewModel.loadPrevious(favouritesOnly);
         mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
@@ -693,11 +707,17 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED)
+            return;
 
-        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            CalendarProvider.getAllCalendars(this);
+        switch (requestCode) {
+            case Constants.PERMISSION_REQUEST_READ_CALENDAR:
+                exportToCalendar(mViewModel.getRaceBeingExported(), -1);
+                break;
+
+            case Constants.PERMISSION_REQUEST_WRITE_CALENDAR:
+                exportToCalendar(mViewModel.getRaceBeingExported(), mViewModel.getCalendarToExportTo());
+                break;
         }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
