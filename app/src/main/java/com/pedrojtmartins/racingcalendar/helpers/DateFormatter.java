@@ -232,4 +232,9 @@ public class DateFormatter {
         String thisYear = String.valueOf(DateFormatter.getThisYear());
         return fullDate.startsWith(thisYear);
     }
+
+    public static long getDateInMillis(String date) {
+        Calendar calendar = DateFormatter.getCalendar(date);
+        return calendar.getTimeInMillis();
+    }
 }

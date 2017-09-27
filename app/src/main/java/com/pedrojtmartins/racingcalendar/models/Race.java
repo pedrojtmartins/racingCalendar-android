@@ -17,6 +17,7 @@ import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 
 //@Parcel(Parcel.Serialization.BEAN)
 public class Race extends BaseObservable {
+    //region Id
     @SerializedName("i")
     private int mId;
 
@@ -27,7 +28,9 @@ public class Race extends BaseObservable {
     public void setId(int id) {
         mId = id;
     }
+    //endregion
 
+    //region Series Id
     @SerializedName("s")
     private int mSeriesId;
 
@@ -38,7 +41,9 @@ public class Race extends BaseObservable {
     public void setSeriesId(int seriesId) {
         mSeriesId = seriesId;
     }
+    //endregion
 
+    //region Number
     @SerializedName("u")
     private int mRaceNumber;
 
@@ -53,7 +58,9 @@ public class Race extends BaseObservable {
     public void setRaceNumber(int raceNumber) {
         mRaceNumber = raceNumber;
     }
+    //endregion
 
+    //region Name
     @SerializedName("n")
     @Bindable
     private String mName;
@@ -65,7 +72,9 @@ public class Race extends BaseObservable {
     public void setName(String name) {
         mName = name;
     }
+    //endregion
 
+    //region Location
     @SerializedName("l")
     @Bindable
     private String mLocation;
@@ -77,7 +86,9 @@ public class Race extends BaseObservable {
     public void setLocation(String location) {
         mLocation = location;
     }
+    //endregion
 
+    //region Dates
     @SerializedName("d")
     @Bindable
     private String mDates;
@@ -138,7 +149,9 @@ public class Race extends BaseObservable {
         String date = getFullDate(index);
         return date == null || !date.contains("T");
     }
+    //endregion
 
+    //region URL
     @SerializedName("w")
     private String mUrl;
 
@@ -152,6 +165,18 @@ public class Race extends BaseObservable {
     public boolean hasResultsUrl() {
         return RaceResultsManager.areResultsAvailable(mSeriesId);
     }
+    //endregion
+
+    //region Race Length
+    @SerializedName("e")
+    private int raceLength;
+    public int getRaceLength() {
+        return raceLength;
+    }
+    public void setRaceLength(int raceLength) {
+        this.raceLength = raceLength;
+    }
+    //endregion
 
     @Bindable
     private String mSeriesName;

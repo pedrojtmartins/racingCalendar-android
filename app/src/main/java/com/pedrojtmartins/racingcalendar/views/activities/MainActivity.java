@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -18,13 +17,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
@@ -45,7 +41,6 @@ import com.pedrojtmartins.racingcalendar.helpers.SnackBarHelper;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
-import com.pedrojtmartins.racingcalendar.models.InternalCalendars;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -85,31 +80,31 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         showReleaseNotes();
 
-        selectCalendar();
+//        selectCalendar();
     }
 
-    private void selectCalendar() {
-        final ArrayList<InternalCalendars> cals = CalendarProvider.getAllCalendars(this);
-        ArrayList<String> s = new ArrayList<>();
-        for (InternalCalendars ic : cals)
-            s.add(ic.displayName + " - " + ic.accountName);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, s);
-        adapter.setDropDownViewResource(R.layout.calendar_picker);
-
-        Spinner popupSpinner = new Spinner(this, Spinner.MODE_DROPDOWN);
-        popupSpinner.setAdapter(adapter);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setView(popupSpinner);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        builder.create().show();
-    }
+//    private void selectCalendar() {
+//        final ArrayList<InternalCalendars> cals = CalendarProvider.getAllCalendars(this);
+//        ArrayList<String> s = new ArrayList<>();
+//        for (InternalCalendars ic : cals)
+//            s.add(ic.displayName + " - " + ic.accountName);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, s);
+//        adapter.setDropDownViewResource(R.layout.calendar_picker);
+//
+//        Spinner popupSpinner = new Spinner(this, Spinner.MODE_DROPDOWN);
+//        popupSpinner.setAdapter(adapter);
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        builder.setView(popupSpinner);
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//            }
+//        });
+//        builder.create().show();
+//    }
 
 
     private void createNotificationChannels() {
