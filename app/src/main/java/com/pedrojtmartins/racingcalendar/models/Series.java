@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 
 public class Series extends BaseObservable {
+    //region Id
     @SerializedName("i")
     private int mId;
 
@@ -25,7 +26,9 @@ public class Series extends BaseObservable {
     public void setId(int id) {
         mId = id;
     }
+    //endregion
 
+    //region Name
     @SerializedName("n")
     @Bindable
     private String mName;
@@ -37,7 +40,9 @@ public class Series extends BaseObservable {
     public void setName(String name) {
         mName = name;
     }
+    //endregion
 
+    //region Year
     @SerializedName("y")
     @Bindable
     private int mYear;
@@ -49,7 +54,9 @@ public class Series extends BaseObservable {
     public void setYear(int year) {
         mYear = year;
     }
+    //endregion
 
+    //region URL
     @SerializedName("w")
     private String mUrl;
 
@@ -88,7 +95,18 @@ public class Series extends BaseObservable {
     public boolean hasResultsUrl() {
         return StandingsResultsManager.areResultsAvailable(mId);
     }
+    //endregion
 
+    //region Race Length
+    @SerializedName("e")
+    private int raceLength;
+    public int getRaceLength() {
+        return raceLength;
+    }
+    public void setRaceLength(int raceLength) {
+        this.raceLength = raceLength;
+    }
+    //endregion
 
     @Bindable
     private boolean mFavorite;

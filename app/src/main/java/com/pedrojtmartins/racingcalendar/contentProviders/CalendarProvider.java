@@ -3,12 +3,16 @@ package com.pedrojtmartins.racingcalendar.contentProviders;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.InternalCalendars;
+import com.pedrojtmartins.racingcalendar.models.Race;
 
 import java.util.ArrayList;
 
@@ -62,11 +66,27 @@ public class CalendarProvider {
         return list;
     }
 
-//    public static void addRaceToCalendar(Activity context, Race race, int calendarId) {
-//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_CALENDAR}, 2);
-//            return;
-//        }
-//
-//    }
+    public static void addRaceToCalendar(Activity context, Race race, int calendarId) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_CALENDAR}, 2);
+            return;
+        }
+
+        for (int i = 0; i < race.getDatesCount(); i++) {
+
+            long startInMillis = DateFormatter.getDateInMillis(race.getFullDate(i));
+            long endInMillis = startInMillis + (race.getRaceLength() + 1000);
+
+            ContentValues values = new ContentValues();
+            values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, "UTC");
+            values.put(CalendarContract.Events.DTSTART, startInMillis);
+            values.put(CalendarContract.Events.DTEND, endInMillis);
+            values.put(CalendarContract.Events.TITLE, race.getSeriesName());
+            values.put(CalendarContract.Events.DESCRIPTION, race.getName());
+            values.put(CalendarContract.Events.EVENT_LOCATION, race.getLocation());
+            Uri uri = context.getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+
+        }
+    }
 }
