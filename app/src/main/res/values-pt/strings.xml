@@ -94,4 +94,5 @@
     <string name="exportToCalendar">Exportar para o calendário</string>
     <string name="raceExported">Evento exportado</string>
     <string name="exportRaceTo">Exportar evento para</string>
+    <string name="noCalendarsAvailable">Não tem calendários externo. Adicione um e tente novamente.</string>
 </resources>

@@ -653,8 +653,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         if (calendarId == -1) {
             mViewModel.export(race, -1);
             ArrayList<InternalCalendars> allCalendars = CalendarProvider.getAllCalendars(this);
-            if (allCalendars == null) // Permission requested or no calendars available
+            if (allCalendars == null) { // Permission requested, do nothing for now
                 return;
+            }
+
+            if (allCalendars.isEmpty()) { // No calendars available, warn user
+                AlertDialogHelper.displayOkDialog(this, R.string.noCalendarsAvailable);
+                return;
+            }
 
             AlertDialogHelper.requestCalendar(this, allCalendars, new Handler.Callback() {
                 @Override
