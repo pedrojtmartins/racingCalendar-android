@@ -37,7 +37,7 @@ public class AdmobHelper {
     }
 
     public void showBannerAd(final Context context, final Resources resources, final AdView adView) {
-        if (!BuildConfig.FLAVOR.equals("pro")) {
+        if (BuildConfig.FLAVOR.equals("regular")) {
             MobileAds.initialize(context, resources.getString(R.string.admob_app_id));
             AdRequest adRequest = getAdRequest();
 
@@ -66,7 +66,7 @@ public class AdmobHelper {
     }
 
     public boolean showInterstitialAd(Context context, Resources resources, int count, boolean ignoreCount, final Handler.Callback callback) {
-        if (BuildConfig.FLAVOR.equals("pro")) {
+        if (!BuildConfig.FLAVOR.equals("regular")) {
             if (callback != null) {
                 callback.handleMessage(new Message());
             }

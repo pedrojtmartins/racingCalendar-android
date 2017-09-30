@@ -196,7 +196,8 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
      * @param miniLayout
      */
     public void updateLayoutIfNeeded(boolean miniLayout) {
-        if (this.miniLayout == miniLayout) {
+        // Probably use a Application singleton to prevent the isAdded returning false??
+        if (this.miniLayout == miniLayout || !isAdded()) {
             return;
         }
 
