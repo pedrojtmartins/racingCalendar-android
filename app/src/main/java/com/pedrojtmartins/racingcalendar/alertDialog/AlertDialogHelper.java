@@ -183,9 +183,12 @@ public class AlertDialogHelper {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Message msg = new Message();
-                msg.arg1 = allCalendars.get(sp.getSelectedItemPosition()).id;
-                handler.handleMessage(msg);
+                int index = sp.getSelectedItemPosition();
+                if (index >= 0) {
+                    Message msg = new Message();
+                    msg.arg1 = allCalendars.get(index).id;
+                    handler.handleMessage(msg);
+                }
             }
         });
 

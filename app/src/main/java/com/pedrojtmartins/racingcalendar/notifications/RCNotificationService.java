@@ -2,16 +2,15 @@ package com.pedrojtmartins.racingcalendar.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
+import android.util.Log;
 
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar.alarms.RCAlarmBroadcastReceiver;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
@@ -22,19 +21,25 @@ import com.pedrojtmartins.racingcalendar.views.activities.MainActivity;
  * 20/04/2017
  */
 
-public class RCNotificationService extends Service {
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+public class RCNotificationService extends JobIntentService {
+    static final int JOB_ID = 6782;
+
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, RCNotificationService.class, JOB_ID, work);
     }
 
+
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleWork(@NonNull Intent intent) {
+        Log.i("debug", "RCNotificationService: onHandleWork");
+
         int notifId = intent.getIntExtra("notifId", -1);
         if (notifId == -1) {
             // TODO: 20/04/2017 log error
-            return finishCommand(intent);
+            return;
         }
 
         DatabaseManager db = DatabaseManager.getInstance(this);
@@ -42,7 +47,7 @@ public class RCNotificationService extends Service {
         if (rcNotification == null || rcNotification.complete) {
             //It wasn't found or it was already triggered (user restarted phone?)
             // TODO: 20/04/2017 log error
-            return finishCommand(intent);
+            return;
         }
 
         //Create pending intent
@@ -66,13 +71,5 @@ public class RCNotificationService extends Service {
 
         db.setNotificationCompleted(rcNotification);
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_TRIGGERED);
-
-        return finishCommand(intent);
     }
-
-    private int finishCommand(Intent intent) {
-        RCAlarmBroadcastReceiver.completeWakefulIntent(intent);
-        return START_NOT_STICKY;
-    }
-
 }

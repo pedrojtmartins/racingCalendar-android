@@ -93,7 +93,7 @@ public class RCAlarmManager {
     }
 
     public static PendingIntent generatePendingIntent(Context context, RCNotification rcNotification) {
-        Intent intent = new Intent(context, RCAlarmBroadcastReceiver2.class);
+        Intent intent = new Intent(context, RCAlarmBroadcastReceiver.class);
         intent.putExtra("notifId", rcNotification.id);
 
         return PendingIntent.getBroadcast(context, rcNotification.id, intent,

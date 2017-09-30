@@ -2,11 +2,11 @@ package com.pedrojtmartins.racingcalendar.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
+import android.util.Log;
 
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
@@ -16,23 +16,26 @@ import java.util.ArrayList;
 
 /**
  * Pedro Martins
- * 22/04/2017
+ * 10/09/2017
  */
 
-public class RCAlarmResetService extends Service {
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+public class RCAlarmResetService extends JobIntentService {
+    static final int JOB_ID = 14782;
+
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, RCAlarmResetService.class, JOB_ID, work);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleWork(@NonNull Intent intent) {
+        Log.i("debug", "RCAlarmResetService: onHandleWork");
         DatabaseManager db = DatabaseManager.getInstance(this);
         ArrayList<RCNotification> rcNotifications = db.getUpcomingNotifications();
         if (rcNotifications == null || rcNotifications.isEmpty()) {
-            // Nothing to reset
-            return finishCommand(intent);
+            return;
         }
 
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_REBOOT, rcNotifications.size());
@@ -45,13 +48,5 @@ public class RCAlarmResetService extends Service {
             final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
             RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
         }
-
-        return finishCommand(intent);
-    }
-
-    private int finishCommand(Intent intent) {
-        RCAlarmResetBroadcastReceiver.completeWakefulIntent(intent);
-        return START_NOT_STICKY;
     }
 }
-

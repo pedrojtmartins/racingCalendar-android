@@ -56,7 +56,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements IRaceList, ISeriesList, ISeriesCallback {
 
-
     private static final int ACTIVITY_RESULT_NOTIFICATIONS = 1;
     private static final int ACTIVITY_RESULT_SETTINGS = 2;
 
@@ -660,8 +659,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             AlertDialogHelper.requestCalendar(this, allCalendars, new Handler.Callback() {
                 @Override
                 public boolean handleMessage(Message message) {
-                    if (message.arg1 >= 0)
-                        exportToCalendar(race, message.arg1);
+                    int index = message.arg1;
+                    if (index >= 0)
+                        exportToCalendar(race, index);
+
                     return true;
                 }
             });
@@ -677,7 +678,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         // If this is reached event was exported successfully
         mViewModel.exportComplete();
-        SnackBarHelper.display(mBinding.mainContent, R.string.raceExported);
+
+        showInterstitialAd(true, new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                SnackBarHelper.display(mBinding.mainContent, R.string.raceExported);
+                return true;
+            }
+        });
     }
 
     @Override

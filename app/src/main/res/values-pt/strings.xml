@@ -89,7 +89,7 @@
 
 
     <string name="releaseNotesMsg">
-                Adiciona um layout alternativo (Ativado nas Definições).\n.Adiciona a possibilidade de criar notificações para toda a série.\n.Expande cobertura de classificações.\n.Aumenta fiabilidade da app.\n.Adiciona suporte para Android 8.0 Oreo.</string>
+        1. Adiciona novo layout minimalista (ativado no menu Configurações).\n2. Adiciona opção para definir notificações para todas as restantes corridas de uma série.\n3. Adiciona opção para exportar corridas para um calendário externo.\n4. Melhora o layout.\n5. Melhora a cobertura das classificações.\n6. Melhora a estabilidade da app.\n7. Melhora o suporte para o Android 8.0 Oreo.</string>
 
     <string name="exportToCalendar">Exportar para o calendário</string>
     <string name="raceExported">Evento exportado</string>
