@@ -228,7 +228,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     private void initViewPager() {
-        mPageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources());
+        final SharedPreferencesManager spManager = new SharedPreferencesManager(this);
+        final RCSettings rcSettings = spManager.getSettings();
+
+        mPageAdapter = new MainPagerAdapter(getSupportFragmentManager(), getResources(), rcSettings);
         mBinding.viewPager.setAdapter(mPageAdapter);
 
         mBinding.tabs.setupWithViewPager(mBinding.viewPager);
@@ -700,7 +703,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 break;
 
             case ACTIVITY_RESULT_SETTINGS:
-                mPageAdapter.notifyDataSetChanged();
+                mPageAdapter.updateLayoutsIfNeeded(new SharedPreferencesManager(this).getSettings());
                 break;
         }
     }

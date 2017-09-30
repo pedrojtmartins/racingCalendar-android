@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.views.fragments.RaceListFragment;
 import com.pedrojtmartins.racingcalendar.views.fragments.SeriesListFragment;
@@ -28,6 +29,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment[] mFragments;
     private Fragment mFragmentSeriesRace;
     private final Resources mResources;
+    private RCSettings settings;
 
     private int seriesScrollPosition;
 
@@ -40,11 +42,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     //In case we have transitions on multiple fragments we'll need this variable
     //private int[] tempFragmentPosition; //This int will be used to check if we need to undo the transition
 
-    public MainPagerAdapter(FragmentManager fm, Resources resources) {
+    public MainPagerAdapter(FragmentManager fm, Resources resources, RCSettings settings) {
         super(fm);
 
         mFragments = new Fragment[getCount()];
         mResources = resources;
+
+        this.settings = settings;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case PAGE_ALL:
                 if (mFragments[PAGE_ALL] == null) {
-                    mFragments[PAGE_ALL] = new RaceListFragment().newInstance(false);
+                    mFragments[PAGE_ALL] = new RaceListFragment().newInstance(false, settings.isMiniLayoutAllActive());
 
                 }
                 return mFragments[PAGE_ALL];
@@ -97,7 +101,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case PAGE_FAVOURITES:
             default:
                 if (mFragments[PAGE_FAVOURITES] == null) {
-                    mFragments[PAGE_FAVOURITES] = new RaceListFragment().newInstance(true);
+                    mFragments[PAGE_FAVOURITES] = new RaceListFragment().newInstance(true, settings.isMiniLayoutFavActive());
                 }
                 return mFragments[PAGE_FAVOURITES];
         }
@@ -127,7 +131,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
      * @param series what series will be loaded
      */
     public void replaceSeriesWithRaces(Series series) {
-        mFragmentSeriesRace = new RaceListFragment().newInstance(series);
+        mFragmentSeriesRace = new RaceListFragment().newInstance(series, settings.isMiniLayoutSeriesActive());
         notifyDataSetChanged();
     }
 
@@ -199,5 +203,19 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Parcelable saveState() {
         return null;
+    }
+
+    public void updateLayoutsIfNeeded(RCSettings settings) {
+        if (settings == null) {
+            return;
+        }
+
+        ((RaceListFragment) mFragments[PAGE_ALL]).updateLayoutIfNeeded(settings.isMiniLayoutAllActive());
+        ((RaceListFragment) mFragments[PAGE_FAVOURITES]).updateLayoutIfNeeded(settings.isMiniLayoutFavActive());
+
+        if (mFragmentSeriesRace != null)
+            ((RaceListFragment) mFragmentSeriesRace).updateLayoutIfNeeded(settings.isMiniLayoutSeriesActive());
+
+        this.settings = settings;
     }
 }

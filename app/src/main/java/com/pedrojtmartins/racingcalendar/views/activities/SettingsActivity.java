@@ -24,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ActivitySettingsBinding binding;
     private SettingsViewModel viewModel;
-    private boolean initComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

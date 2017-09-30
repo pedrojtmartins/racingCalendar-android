@@ -21,32 +21,33 @@ import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
-import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
-import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
 
 public class RaceListFragment extends Fragment implements IRecyclerViewFragment {
     private IRaceList mIRaceList;
     private FragmentListBinding mBinding;
     private ObservableArrayList<Race> mList;
+    private boolean miniLayout;
 
     private boolean mFavouritesOnly;
     private Series mSeries;
 
     private int scrollPos = 0;
 
-    public Fragment newInstance(final boolean favouritesOnly) {
+    public Fragment newInstance(final boolean favouritesOnly, boolean miniLayout) {
         RaceListFragment f = new RaceListFragment();
         f.mFavouritesOnly = favouritesOnly;
+        f.miniLayout = miniLayout;
 
         return f;
     }
 
-    public Fragment newInstance(final Series series) {
+    public Fragment newInstance(final Series series, boolean miniLayout) {
         RaceListFragment f = new RaceListFragment();
         f.mSeries = series;
+        f.miniLayout = miniLayout;
 
         return f;
     }
@@ -104,8 +105,8 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         //TODO implement multiple layout selection capabilities
 //        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
 
-        RCSettings settings = new SharedPreferencesManager(getContext()).getSettings();
-        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive();
+//        RCSettings settings = new SharedPreferencesManager(getContext()).getSettings();
+//        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive();
 
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(
@@ -113,7 +114,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
                 mList,
                 mIRaceList,
                 getResources(),
-                isMiniLayoutActive));
+                miniLayout));
 
         // When transitioning between fragments the recyclerview could be
         // initialized not on the top because of fragment recycling.
@@ -186,5 +187,27 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     }
     @Override
     public void setScrollPos(int scrollPos) {
+    }
+
+    /**
+     * Updates the layout if it needs was change since the last check.
+     * It does nothing otherwise.
+     *
+     * @param miniLayout
+     */
+    public void updateLayoutIfNeeded(boolean miniLayout) {
+        if (this.miniLayout == miniLayout) {
+            return;
+        }
+
+        this.miniLayout = miniLayout;
+
+        // Update layout
+        mBinding.recyclerView.setAdapter(new RaceAdapter(
+                R.layout.row_race2,
+                mList,
+                mIRaceList,
+                getResources(),
+                miniLayout));
     }
 }
