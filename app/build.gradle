@@ -3,7 +3,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.pedrojtmartins.racingcalendar"
         minSdkVersion 15
@@ -53,23 +53,23 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile 'com.android.support:design:26.0.2'
-    compile 'com.android.support:support-v4:26.0.2'
-    compile 'com.android.support:recyclerview-v7:26.0.2'
-    compile 'com.android.support:cardview-v7:26.0.2'
-    compile 'com.android.support:support-vector-drawable:26.0.2'
-    compile 'com.android.support:customtabs:26.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}"
+    compile "com.android.support:design:${rootProject.ext.supportVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportVersion}"
+    compile "com.android.support:recyclerview-v7:${rootProject.ext.supportVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportVersion}"
+    compile "com.android.support:support-vector-drawable:${rootProject.ext.supportVersion}"
+    compile "com.android.support:customtabs:${rootProject.ext.supportVersion}"
+    compile "com.android.support.constraint:constraint-layout:${rootProject.ext.constraintLayoutVersion}"
 
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile "com.squareup.retrofit2:retrofit:${rootProject.ext.gsonVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.gsonVersion}"
 
-    compile 'com.google.firebase:firebase-core:11.2.2'
-    compile 'com.google.firebase:firebase-crash:11.2.2'
-    compile 'com.google.firebase:firebase-perf:11.2.2'
-    compile 'com.google.firebase:firebase-ads:11.2.2'
-    compile 'com.google.firebase:firebase-messaging:11.2.2'
+    compile "com.google.firebase:firebase-core:${rootProject.ext.firebaseVersion}"
+    compile "com.google.firebase:firebase-crash:${rootProject.ext.firebaseVersion}"
+    compile "com.google.firebase:firebase-perf:${rootProject.ext.firebaseVersion}"
+    compile "com.google.firebase:firebase-ads:${rootProject.ext.firebaseVersion}"
+    compile "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseVersion}"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.4.2'

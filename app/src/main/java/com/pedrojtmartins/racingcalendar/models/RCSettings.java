@@ -1,8 +1,10 @@
 package com.pedrojtmartins.racingcalendar.models;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
+import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
 
 /**
@@ -30,13 +32,41 @@ public class RCSettings extends BaseObservable {
     public boolean openLinksInBrowser;
 
     @SerializedName("layout_miniAll")
-    public boolean isMiniLayoutAllActive;
+    private boolean isMiniLayoutAllActive;
+    @Bindable
+    public boolean isMiniLayoutAllActive() {
+        return isMiniLayoutAllActive;
+    }
+    public void setMiniLayoutAllActive(boolean miniLayoutAllActive) {
+        isMiniLayoutAllActive = miniLayoutAllActive;
+        notifyPropertyChanged(BR.miniLayoutAllActive);
+    }
+
+    @SerializedName("layout_miniFav")
+    private boolean isMiniLayoutFavActive;
+    @Bindable
+    public boolean isMiniLayoutFavActive() {
+        return isMiniLayoutFavActive;
+    }
+    public void setMiniLayoutFavActive(boolean miniLayoutFavActive) {
+        isMiniLayoutFavActive = miniLayoutFavActive;
+        notifyPropertyChanged(BR.miniLayoutFavActive);
+    }
+
+    @SerializedName("layout_miniSer")
+    private boolean isMiniLayoutSeriesActive;
+    @Bindable
+    public boolean isMiniLayoutSeriesActive() {
+        return isMiniLayoutSeriesActive;
+    }
+    public void setMiniLayoutSeriesActive(boolean miniLayoutSeriesActive) {
+        isMiniLayoutSeriesActive = miniLayoutSeriesActive;
+        notifyPropertyChanged(BR.miniLayoutSeriesActive);
+    }
 
     private boolean originalMiniLayoutAllActive;
-
-//    public boolean isMiniLayoutFavActive;
-//    public boolean isMiniLayoutSeriesActive;
-
+    private boolean originalMiniLayoutFavActive;
+    private boolean originalMiniLayoutSerActive;
 
     public RCSettings(String serialized) {
         setDefaults();
@@ -68,6 +98,8 @@ public class RCSettings extends BaseObservable {
 
     public void normalize() {
         originalMiniLayoutAllActive = isMiniLayoutAllActive;
+        originalMiniLayoutFavActive = isMiniLayoutFavActive;
+        originalMiniLayoutSerActive = isMiniLayoutSeriesActive;
     }
 
     private void setDefaults() {
@@ -76,8 +108,8 @@ public class RCSettings extends BaseObservable {
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
 
         originalMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
-//        isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
-//        isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
+        originalMiniLayoutFavActive = isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
+        originalMiniLayoutSerActive = isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
     }
 
     @Override
@@ -88,7 +120,13 @@ public class RCSettings extends BaseObservable {
                 ";" + (isMiniLayoutAllActive ? "1" : "0");
     }
 
+    public boolean isMiniLayoutActive() {
+        return isMiniLayoutAllActive || isMiniLayoutFavActive || isMiniLayoutSeriesActive;
+    }
+
     public boolean miniLayoutChanged() {
-        return originalMiniLayoutAllActive != isMiniLayoutAllActive;
+        return originalMiniLayoutAllActive != isMiniLayoutAllActive ||
+                originalMiniLayoutFavActive != isMiniLayoutFavActive ||
+                originalMiniLayoutSerActive != isMiniLayoutSeriesActive;
     }
 }

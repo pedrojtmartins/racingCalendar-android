@@ -6,6 +6,8 @@
         <variable
             name="data"
             type="com.pedrojtmartins.racingcalendar.models.RCSettings"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -57,12 +59,85 @@
                     android:textColor="#000"/>
 
                 <Switch
+                    android:id="@+id/miniLayoutActiveSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="@={data.isMiniLayoutAllActive}"
+                    android:checked="@{data.miniLayoutActive}"
                     android:theme="@style/SCBSwitch"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/miniLayoutsettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:visibility="@{data.miniLayoutActive ? View.VISIBLE : View.GONE}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/maintab_all"
+                        android:textColor="#000"/>
+
+                    <Switch
+                        android:id="@+id/miniLayoutActiveAllSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={data.miniLayoutAllActive}"
+                        android:theme="@style/SCBSwitch"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/maintab_favourites"
+                        android:textColor="#000"/>
+
+                    <Switch
+                        android:id="@+id/miniLayoutActiveFavSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={data.miniLayoutFavActive}"
+                        android:theme="@style/SCBSwitch"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/maintab_series"
+                        android:textColor="#000"/>
+
+                    <Switch
+                        android:id="@+id/miniLayoutActiveSerSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={data.miniLayoutSeriesActive}"
+                        android:theme="@style/SCBSwitch"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

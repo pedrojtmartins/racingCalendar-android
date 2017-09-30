@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar._settings.AnimationConstants;
 import com.pedrojtmartins.racingcalendar.databinding.RowRace2Binding;
 import com.pedrojtmartins.racingcalendar.databinding.RowRaceDatesBinding;
 import com.pedrojtmartins.racingcalendar.eventResults.RaceResultsManager;
@@ -108,7 +109,6 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             }
         });
 
-        final int EXPAND_ANIM_MS = 250;
         binding.raceRowMiniParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +146,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
                     }
                 });
-                anim.setDuration(EXPAND_ANIM_MS);
+                anim.setDuration(AnimationConstants.EXPAND_ANIM_MS);
                 anim.setInterpolator(new AccelerateInterpolator());
                 anim.start();
             }
@@ -188,7 +188,7 @@ public class RaceAdapter extends ObservableAdapter<Race> {
 
                     }
                 });
-                anim.setDuration(EXPAND_ANIM_MS);
+                anim.setDuration(AnimationConstants.EXPAND_ANIM_MS);
                 anim.setInterpolator(new AccelerateInterpolator());
                 anim.start();
             }

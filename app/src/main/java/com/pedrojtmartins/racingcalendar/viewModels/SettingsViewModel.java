@@ -26,4 +26,9 @@ public class SettingsViewModel {
 
         return mSettings.miniLayoutChanged();
     }
+    public void setMiniLayoutActive(boolean state) {
+        mSettings.setMiniLayoutAllActive(state);
+        mSettings.setMiniLayoutFavActive(state);
+        mSettings.setMiniLayoutSeriesActive(state);
+    }
 }

@@ -105,7 +105,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
 //        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
 
         RCSettings settings = new SharedPreferencesManager(getContext()).getSettings();
-        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive;
+        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive();
 
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(
