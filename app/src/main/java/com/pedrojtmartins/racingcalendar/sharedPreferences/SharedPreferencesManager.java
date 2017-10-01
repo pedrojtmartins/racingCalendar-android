@@ -22,7 +22,7 @@ public class SharedPreferencesManager {
     private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
     private final String ADS_URL = "urlOpenCount";
 
-    private final String FORCE_RELEASE_NOTES = "forceReleaseNotes_1";
+    private final String FORCE_RELEASE_NOTES = "forceReleaseNotes_2";
     private final String FORCE_DB_UPDATE = "forceDBUpdate_1";
 
     public SharedPreferencesManager(Context context) {
