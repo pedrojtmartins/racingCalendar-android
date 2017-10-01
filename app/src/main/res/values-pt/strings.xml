@@ -24,10 +24,10 @@
     <string name="notifRace" formatted="false">A corrida está a começar</string>
     <string name="notifRaceToday" formatted="false">Corrida hoje</string>
 
+    <string name="setSingleAlarm">Definir notificação para a corrida</string>
+    <string name="setMultiAlarm" formatted="false">Definir notificação para a C%d</string>
     <string name="setNotificatioForSeries">Definir notificações para a série</string>
-    <string name="setSingleAlarm">Definir notificação</string>
     <string name="removeSingleAlarm">Remover notificação</string>
-    <string name="setMultiAlarm" formatted="false">Definir notificação C%d</string>
     <string name="removeMultiAlarm" formatted="false">Remover notificação C%d</string>
 
     <string name="alarmSet">Nova notificação definida</string>

@@ -51,15 +51,15 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/three"
+        android:id="@+id/openResults"
         android:orderInCategory="5"
-        android:title="@string/openUrl"
+        android:title="@string/openResults"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/openResults"
+        android:id="@+id/three"
         android:orderInCategory="6"
-        android:title="@string/openResults"
+        android:title="@string/openUrl"
         app:showAsAction="never"/>
 
     <item

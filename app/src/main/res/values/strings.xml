@@ -23,10 +23,10 @@
     <string name="notifRace" formatted="false">Green flag</string>
     <string name="notifRaceToday" formatted="false">Race is today</string>
 
-    <string name="setNotificatioForSeries">Set notifications for series</string>
-    <string name="setSingleAlarm">Set notification</string>
-    <string name="removeSingleAlarm">Remove notification</string>
+    <string name="setSingleAlarm">Set race notification</string>
     <string name="setMultiAlarm" formatted="false">Set R%d notification</string>
+    <string name="setNotificatioForSeries">Set series notifications</string>
+    <string name="removeSingleAlarm">Remove notification</string>
     <string name="removeMultiAlarm" formatted="false">Remove R%d notification</string>
 
     <string name="alarmSet">Notification set</string>
