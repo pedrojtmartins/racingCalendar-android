@@ -276,10 +276,10 @@ public class RaceAdapter extends ObservableAdapter<Race> {
             String raceDate) {
         if (position == 0 || displayTitle(position, raceWeekNo)) {
             String dateLbl;
-            if (raceWeekNo == thisWeekNo) {
+            if (raceWeekNo == thisWeekNo && isThisYear) {
                 binding.weekTitle.setText(mThisWeek);
                 binding.weekRemaining.setText("");
-            } else if (raceWeekNo == thisWeekNo + 1) {
+            } else if (raceWeekNo == thisWeekNo + 1 && isThisYear) {
                 binding.weekTitle.setText(mNextWeek);
                 binding.weekRemaining.setText("");
             } else {
