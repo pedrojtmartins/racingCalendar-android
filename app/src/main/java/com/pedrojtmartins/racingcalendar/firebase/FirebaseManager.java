@@ -25,6 +25,7 @@ public class FirebaseManager {
     public static final String EVENT_ACTION_REMOVE_NOTIFICATION = "action_remove_notification";
     public static final String EVENT_ACTION_UPDATE_NOTIFICATION = "action_update_notification";
     public static final String EVENT_ACTION_OPEN_NOTIFICATION = "action_open_notification";
+    public static final String EVENT_ACTION_EXPORT_RACE_TO_CALENDAR = "action_export_to_calendar";
 
     public static final String EVENT_ACTION_OPEN_RACE_URL = "action_open_race_url";
     public static final String EVENT_ACTION_OPEN_SERIES_URL = "action_open_series_url";

@@ -684,6 +684,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         // If this is reached event was exported successfully
         mViewModel.exportComplete();
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_EXPORT_RACE_TO_CALENDAR);
 
         showInterstitialAd(true, new Handler.Callback() {
             @Override
