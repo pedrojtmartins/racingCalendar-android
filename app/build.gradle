@@ -8,8 +8,8 @@ android {
         applicationId "com.pedrojtmartins.racingcalendar"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 11
-        versionName "1.07.beta1"
+        versionCode 12
+        versionName "1.07.beta2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -42,10 +42,9 @@ android {
     }
 
     variantFilter { variant ->
-        def isPro = variant.getFlavors().get(0).name.equals('pro')
-        def isBeta = variant.getFlavors().get(0).name.equals('beta')
-        def isDebug = variant.buildType.name.equals('debug')
-        if ((isPro || isBeta) && isDebug) {
+        def isRegular = variant.getFlavors().get(0).name == 'regular'
+        def isDebug = variant.buildType.name == 'debug'
+        if (!isRegular && isDebug) {
             variant.setIgnore(true);
         }
     }

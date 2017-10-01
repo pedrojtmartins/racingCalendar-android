@@ -79,7 +79,9 @@
         <!-- Notifications receiver and service -->
         <!-- Updated for api 26 -->
         <receiver android:name=".alarms.RCAlarmBroadcastReceiver"/>
-        <service android:name=".notifications.RCNotificationService"/>
+        <service
+            android:name=".notifications.RCNotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <!-- This needs to happen to reset the alarms. When -->
         <!-- the device is turned off all alarms are cleared -->
@@ -91,8 +93,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <service android:name=".alarms.RCAlarmResetService"/>
-
+        <service
+            android:name=".alarms.RCAlarmResetService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
     </application>
 
