@@ -95,4 +95,6 @@
     <string name="raceExported">Evento exportado</string>
     <string name="exportRaceTo">Exportar evento para</string>
     <string name="noCalendarsAvailable">Não tem calendários externo. Adicione um e tente novamente.</string>
+
+    <string name="notification_show_other_years">Mostrar anos anteriores</string>
 </resources>

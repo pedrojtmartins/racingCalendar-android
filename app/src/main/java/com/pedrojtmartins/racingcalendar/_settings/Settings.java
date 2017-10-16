@@ -15,6 +15,8 @@ public class Settings {
     public static final boolean IS_MINI_LAYOUT_ALL_ACTIVE = false;
     public static final boolean IS_MINI_LAYOUT_FAV_ACTIVE = false;
     public static final boolean IS_MINI_LAYOUT_SERIES_ACTIVE = false;
+
+    public static final boolean SHOW_OTHER_SERIES_YEARS = false;
     //endregion
 
     public final static String TEST_DEVICE_ID = "B243049824CFD790875E71B3C9DC4847";

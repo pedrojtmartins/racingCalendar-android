@@ -225,6 +225,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="#fafafa"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/maintab_series"
+                        android:textColor="#000"
+                        android:textSize="20sp"/>
+
+                    <include layout="@layout/list_divider_slim"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/notification_show_other_years"
+                            android:textColor="#000"/>
+
+                        <Switch
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="@={data.showOtherYears}"
+                            android:theme="@style/SCBSwitch"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="#fafafa"
                     android:orientation="vertical"
                     android:padding="16dp">
@@ -261,6 +300,7 @@
 
                 </LinearLayout>
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 </layout>

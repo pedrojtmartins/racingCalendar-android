@@ -68,6 +68,17 @@ public class RCSettings extends BaseObservable {
     private boolean originalMiniLayoutFavActive;
     private boolean originalMiniLayoutSerActive;
 
+    @SerializedName("show_other_years")
+    private boolean showOtherYears;
+    @Bindable
+    public boolean isShowOtherYears() {
+        return showOtherYears;
+    }
+    public void setShowOtherYears(boolean showOtherYears) {
+        this.showOtherYears = showOtherYears;
+        notifyPropertyChanged(BR.showOtherYears);
+    }
+
     public RCSettings(String serialized) {
         setDefaults();
 
@@ -106,6 +117,7 @@ public class RCSettings extends BaseObservable {
         notificationsRemember = Settings.NOTIFICATION_REMEMBER;
         notifMinutesBefore = Settings.NOTIFICATION_MINUTES_BEFORE;
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
+        showOtherYears = Settings.SHOW_OTHER_SERIES_YEARS;
 
         originalMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
         originalMiniLayoutFavActive = isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
