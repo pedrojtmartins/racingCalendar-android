@@ -40,11 +40,23 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (viewModel.saveChanges()) {
+        viewModel.saveChanges();
+        setupIntentResult();
+
+        super.onBackPressed();
+    }
+
+    void setupIntentResult() {
+        if (viewModel.needsLayoutUpdate()) {
+            getIntent().putExtra("update_layout", true);
             setResult(RESULT_OK, getIntent());
         }
 
-        super.onBackPressed();
+        if (viewModel.needsSeriesUpdate()) {
+            getIntent().putExtra("reload_series", true);
+            setResult(RESULT_OK, getIntent());
+        }
+
     }
 
     @Override

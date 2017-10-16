@@ -21,11 +21,17 @@ public class SettingsViewModel {
         mSettings = mSharedPreferencesManager.getSettings();
     }
 
-    public boolean saveChanges() {
+    public void saveChanges() {
         mSharedPreferencesManager.addSettings(mSettings);
-
-        return mSettings.miniLayoutChanged() || mSettings.showPreviousYearsChanged();
     }
+
+    public boolean needsLayoutUpdate() {
+        return mSettings.miniLayoutChanged();
+    }
+    public boolean needsSeriesUpdate() {
+        return mSettings.showPreviousYearsChanged();
+    }
+
     public void setMiniLayoutActive(boolean state) {
         mSettings.setMiniLayoutAllActive(state);
         mSettings.setMiniLayoutFavActive(state);

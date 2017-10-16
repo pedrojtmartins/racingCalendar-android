@@ -718,7 +718,14 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 break;
 
             case ACTIVITY_RESULT_SETTINGS:
-                mPageAdapter.updateLayoutsIfNeeded(new SharedPreferencesManager(this).getSettings());
+                if (data.getBooleanExtra("update_layout", false)) {
+                    mPageAdapter.updateLayoutsIfNeeded(new SharedPreferencesManager(this).getSettings());
+                }
+
+                if (data.getBooleanExtra("reload_series", false)) {
+                    mViewModel.reload();
+                }
+
                 break;
         }
     }
