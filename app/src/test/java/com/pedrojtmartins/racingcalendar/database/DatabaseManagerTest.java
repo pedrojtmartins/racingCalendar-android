@@ -107,9 +107,9 @@ public class DatabaseManagerTest {
     private int addFakeSeries() {
 
         ArrayList<Series> series = new ArrayList<>();
-        series.add(new Series(1, "series1", 2017, false, 10, 2, "", ""));
-        series.add(new Series(2, "series2", 2017, false, 10, 2, "", ""));
-        series.add(new Series(3, "series3", 2017, false, 10, 2, "", ""));
+        series.add(new Series(1, "series1", 2017, false, 10, 2, "", "", 0, 0));
+        series.add(new Series(2, "series2", 2017, false, 10, 2, "", "", 0, 0));
+        series.add(new Series(3, "series3", 2017, false, 10, 2, "", "", 0, 0));
 
         return db.addSeries(series);
     }

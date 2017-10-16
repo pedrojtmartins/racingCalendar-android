@@ -97,16 +97,23 @@ public class Series extends BaseObservable {
     }
     //endregion
 
-    //region Race Length
-    @SerializedName("e")
-    private int raceLength;
-    public int getRaceLength() {
-        return raceLength;
+    @SerializedName("s")
+    private int nextSeriesId;
+    public int getNextSeriesId() {
+        return nextSeriesId;
     }
-    public void setRaceLength(int raceLength) {
-        this.raceLength = raceLength;
+    public void setNextSeriesId(int nextSeriesId) {
+        this.nextSeriesId = nextSeriesId;
     }
-    //endregion
+
+    @SerializedName("p")
+    private int previousSeriesId;
+    public int getPreviousSeriesId() {
+        return previousSeriesId;
+    }
+    public void setPreviousSeriesId(int previousSeriesId) {
+        this.previousSeriesId = previousSeriesId;
+    }
 
     @Bindable
     private boolean mFavorite;
@@ -167,7 +174,7 @@ public class Series extends BaseObservable {
         return percentageCompleted;
     }
 
-    public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace, String url, String urlPrefix) {
+    public Series(int id, String name, int year, boolean isFavorite, int totalRaces, int currRace, String url, String urlPrefix, int prevYId, int nextYId) {
         mId = id;
         mName = name;
         mYear = year;
@@ -176,6 +183,8 @@ public class Series extends BaseObservable {
         mCurrentRace = currRace;
         mUrl = url;
         mUrlPrefix = urlPrefix;
+        previousSeriesId = prevYId;
+        nextSeriesId = nextYId;
     }
 
     public static Series getSeries(ArrayList<Series> list, int id) {

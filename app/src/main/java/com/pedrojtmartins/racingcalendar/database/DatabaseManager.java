@@ -28,7 +28,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     //endregion
 
     //region Tables
@@ -67,6 +67,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_SERIES_FAVOURITE = "series_favourite";
     private static final String KEY_SERIES_URL = "series_url"; //f1.com
     private static final String KEY_SERIES_PURL = "series_purl";///calendar/
+    private static final String KEY_SERIES_PREVIOUS_YEAR_SERIES_ID = "prev_year_id";
+    private static final String KEY_SERIES_NEXT_YEAR_SERIES_ID = "next_year_id";
     //endregion
 
     //region Create Statement
@@ -76,7 +78,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
             KEY_SERIES_YEAR + " INTEGER," +
             KEY_SERIES_FAVOURITE + " INTEGER," +
             KEY_SERIES_URL + " TEXT," +
-            KEY_SERIES_PURL + " TEXT)";
+            KEY_SERIES_PURL + " TEXT," +
+            KEY_SERIES_PREVIOUS_YEAR_SERIES_ID + " INTEGER DEFAULT 0," +
+            KEY_SERIES_NEXT_YEAR_SERIES_ID + " INTEGER DEFAULT 0)";
     //endregion
     //endregion
 
@@ -154,6 +158,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
             db.execSQL("ALTER TABLE " + TABLE_NOTIFICATIONS + " ADD COLUMN " +
                     KEY_NOTIFICATIONS_COMPLETED + " INTEGER DEFAULT 0");
+        }
+
+        if (oldVersion <= 4) {
+            db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
+                    KEY_SERIES_PREVIOUS_YEAR_SERIES_ID + " INTEGER DEFAULT 0");
+
+            db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
+                    KEY_SERIES_NEXT_YEAR_SERIES_ID + " INTEGER DEFAULT 0");
+
         }
     }
 
@@ -390,6 +403,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 boolean favourite = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_FAVOURITE)) == 1;
                 String url = cursor.getString(cursor.getColumnIndex(KEY_SERIES_URL));
                 String purl = cursor.getString(cursor.getColumnIndex(KEY_SERIES_PURL));
+                int prevYId = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_PREVIOUS_YEAR_SERIES_ID));
+                int nextYId = cursor.getInt(cursor.getColumnIndex(KEY_SERIES_NEXT_YEAR_SERIES_ID));
 
 
                 int totalRaces = 0;
@@ -401,7 +416,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     currRace = cursor.getInt(5);
 
 
-                list.add(new Series(id, name, year, favourite, totalRaces, currRace, url, purl));
+                list.add(new Series(id, name, year, favourite, totalRaces, currRace, url, purl, prevYId, nextYId));
             } while (cursor.moveToNext());
         }
 
@@ -416,6 +431,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         values.put(KEY_SERIES_FAVOURITE, series.isFavorite() ? 1 : 0);
         values.put(KEY_SERIES_URL, series.getUrl());
         values.put(KEY_SERIES_PURL, series.getUrlPrefix());
+        values.put(KEY_SERIES_PREVIOUS_YEAR_SERIES_ID, series.getPreviousSeriesId());
+        values.put(KEY_SERIES_NEXT_YEAR_SERIES_ID, series.getNextSeriesId());
         return values;
     }
 
