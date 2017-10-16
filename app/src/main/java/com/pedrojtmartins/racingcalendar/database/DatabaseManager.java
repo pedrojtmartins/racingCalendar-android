@@ -460,18 +460,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of series
      */
     public ArrayList<Series> getSeries() {
+        return getSeries(false);
+    }
+
+    public ArrayList<Series> getSeries(boolean showPreviousYears) {
         String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
-        String query = "SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME +
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append("SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME +
                 ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE +
                 ",COUNT(DISTINCT r." + KEY_RACE_NUMBER + "), rr." + KEY_RACE_NUMBER +
                 ",s." + KEY_SERIES_URL + ",s." + KEY_SERIES_PURL +
                 " FROM " + TABLE_SERIES + " s " +
                 " LEFT JOIN " + TABLE_RACES + " r ON r." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID +
-                " LEFT JOIN " + TABLE_RACES + " rr ON rr." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID + " AND rr." + KEY_RACE_DATE + "<('" + today + "')" +
-                " GROUP BY s." + KEY_SERIES_ID +
-                " ORDER BY s." + KEY_SERIES_NAME;
+                " LEFT JOIN " + TABLE_RACES + " rr ON rr." + KEY_RACE_SERIES_ID + "=s." + KEY_SERIES_ID + " AND rr." + KEY_RACE_DATE + "<('" + today + "')");
 
-        return querySeries(query);
+        if (!showPreviousYears) {
+            sBuilder.append("WHERE S." + KEY_SERIES_PREVIOUS_YEAR_SERIES_ID + "==0");
+        }
+
+        sBuilder.append(" GROUP BY s." + KEY_SERIES_ID +
+                " ORDER BY s." + KEY_SERIES_NAME);
+
+
+        return querySeries(sBuilder.toString());
     }
 
     /**

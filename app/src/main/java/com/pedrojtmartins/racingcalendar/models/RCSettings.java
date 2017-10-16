@@ -79,6 +79,8 @@ public class RCSettings extends BaseObservable {
         notifyPropertyChanged(BR.showOtherYears);
     }
 
+    private boolean originalShowOtherYears;
+
     public RCSettings(String serialized) {
         setDefaults();
 
@@ -111,14 +113,15 @@ public class RCSettings extends BaseObservable {
         originalMiniLayoutAllActive = isMiniLayoutAllActive;
         originalMiniLayoutFavActive = isMiniLayoutFavActive;
         originalMiniLayoutSerActive = isMiniLayoutSeriesActive;
+        originalShowOtherYears = showOtherYears;
     }
 
     private void setDefaults() {
         notificationsRemember = Settings.NOTIFICATION_REMEMBER;
         notifMinutesBefore = Settings.NOTIFICATION_MINUTES_BEFORE;
         openLinksInBrowser = Settings.OPEN_LINK_IN_BROWSER;
-        showOtherYears = Settings.SHOW_OTHER_SERIES_YEARS;
 
+        originalShowOtherYears = showOtherYears = Settings.SHOW_OTHER_SERIES_YEARS;
         originalMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
         originalMiniLayoutFavActive = isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
         originalMiniLayoutSerActive = isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
@@ -140,5 +143,9 @@ public class RCSettings extends BaseObservable {
         return originalMiniLayoutAllActive != isMiniLayoutAllActive ||
                 originalMiniLayoutFavActive != isMiniLayoutFavActive ||
                 originalMiniLayoutSerActive != isMiniLayoutSeriesActive;
+    }
+
+    public boolean showPreviousYearsChanged() {
+        return showOtherYears != originalShowOtherYears;
     }
 }

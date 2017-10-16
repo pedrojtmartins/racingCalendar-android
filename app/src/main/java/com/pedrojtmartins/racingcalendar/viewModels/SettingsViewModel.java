@@ -24,7 +24,7 @@ public class SettingsViewModel {
     public boolean saveChanges() {
         mSharedPreferencesManager.addSettings(mSettings);
 
-        return mSettings.miniLayoutChanged();
+        return mSettings.miniLayoutChanged() || mSettings.showPreviousYearsChanged();
     }
     public void setMiniLayoutActive(boolean state) {
         mSettings.setMiniLayoutAllActive(state);

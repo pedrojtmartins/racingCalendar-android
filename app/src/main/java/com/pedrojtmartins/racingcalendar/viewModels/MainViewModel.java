@@ -98,8 +98,10 @@ public class MainViewModel implements IDataUpdater {
     }
 
     private void loadDataFromLocalDb() {
+        RCSettings settings = mSharedPreferencesManager.getSettings();
+
         mSeriesList.clear();
-        ArrayList<Series> seriesList = mDbManager.getSeries();
+        ArrayList<Series> seriesList = mDbManager.getSeries(settings.isShowOtherYears());
         if (seriesList != null && seriesList.size() > 0)
             mSeriesList.addAll(seriesList);
 
