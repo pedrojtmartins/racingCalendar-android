@@ -51,6 +51,11 @@ public class Series extends BaseObservable {
         return mYear;
     }
 
+    @Bindable
+    public String getSYear() {
+        return mYear + "";
+    }
+
     public void setYear(int year) {
         mYear = year;
     }
