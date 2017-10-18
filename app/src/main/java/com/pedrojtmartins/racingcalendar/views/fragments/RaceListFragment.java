@@ -29,6 +29,8 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     private IRaceList mIRaceList;
     private FragmentListBinding mBinding;
     private ObservableArrayList<Race> mList;
+    private int firstActiveRaceIndex = -1;
+
     private boolean miniLayout;
 
     private boolean mFavouritesOnly;
@@ -69,6 +71,9 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
+                int originalSize = mList != null ? mList.size() : 0;
+
                 if (mSeries != null) {
                     mIRaceList.loadPrevious(mSeries);
                 } else {
@@ -78,6 +83,14 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
                 // After we load the previous rows
                 // disable the swiping functionality
                 mBinding.swipeRefresh.setEnabled(false);
+
+                // We need to keep track of the first active race.
+                // This will be needed in case the user changes the layout settings
+                // and previous races are loaded. If we don't keep track of this
+                // when the layout is updated the first visible item will be the first one in the list.
+
+                int newSize = mList != null ? mList.size() : 0;
+                firstActiveRaceIndex = newSize - originalSize;
             }
         });
 
@@ -127,6 +140,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
             }
         });
     }
+
 
     private void setupHeader() {
         mBinding.setVariable(BR.data, mSeries);
@@ -193,7 +207,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
      * Updates the layout if it needs was change since the last check.
      * It does nothing otherwise.
      *
-     * @param miniLayout
+     * @param miniLayout layout to load
      */
     public void updateLayoutIfNeeded(boolean miniLayout) {
         // Probably use a Application singleton to prevent the isAdded returning false??
@@ -210,5 +224,9 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
                 mIRaceList,
                 getResources(),
                 miniLayout));
+
+        if (firstActiveRaceIndex > 0) {
+            mBinding.recyclerView.scrollToPosition(firstActiveRaceIndex);
+        }
     }
 }
