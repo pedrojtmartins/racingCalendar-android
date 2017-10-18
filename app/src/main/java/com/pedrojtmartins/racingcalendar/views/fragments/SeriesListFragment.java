@@ -7,7 +7,6 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,26 +21,16 @@ import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
 import com.pedrojtmartins.racingcalendar.models.Series;
 
 public class SeriesListFragment extends Fragment implements IRecyclerViewFragment {
+
+    private static final String STATE_SCROLL_POS = "currSeriesScrollPos";
+
     private ISeriesList mISeriesList;
     private ISeriesCallback mISeriesCallback;
     private FragmentListBinding mBinding;
 
-    private int scrollPos;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
-
-        // This is needed to keep track of the scroll position. When the user presses back
-        // the app will scroll up if is not on the top.
-        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                scrollPos += dy;
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
         mBinding.swipeRefresh.setEnabled(false);
 
         return mBinding.getRoot();
@@ -62,6 +51,12 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
         //TODO implement multiple layout selection capabilities
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new SeriesAdapter(R.layout.row_series, list, mISeriesCallback));
+
+//        if (savedInstanceState != null) {
+//            int scrollPos = savedInstanceState.getInt(STATE_SCROLL_POS);
+//            if (scrollPos != 0)
+//                setScrollPos(scrollPos);
+//        }
     }
 
     @Override
@@ -86,23 +81,8 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
         // Series list won't use this.
     }
     @Override
-    public void resetScrollPos() {
+    public void resetScrollPosToItem0() {
         // Series list won't use this.
-    }
-
-    @Override
-    public int getScrollPosition() {
-        return scrollPos;
-    }
-    @Override
-    public void setScrollPos(final int scrollPos) {
-        this.scrollPos = scrollPos;
-        mBinding.recyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mBinding.recyclerView.scrollTo(0, scrollPos);
-            }
-        });
     }
 
     @Override
@@ -112,9 +92,18 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
 
     @Override
     public boolean isOnTop() {
-        if (scrollPos < 0)
-            scrollPos = 0;
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mBinding.recyclerView.getLayoutManager();
+        if (layoutManager == null)
+            return true;
 
-        return Math.abs(scrollPos) < Settings.SCROLL_ON_TOP_THRESHOLD;
+        int firstPos = layoutManager.findFirstVisibleItemPosition();
+        return firstPos <= Settings.SCROLL_ON_TOP_NORMAL_OFFSET;
     }
+
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putInt(STATE_SCROLL_POS, scrollPos);
+//    }
 }

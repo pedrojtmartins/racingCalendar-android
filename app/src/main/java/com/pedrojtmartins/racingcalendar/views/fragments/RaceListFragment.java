@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +35,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     private boolean mFavouritesOnly;
     private Series mSeries;
 
-    private int scrollPos = 0;
-
     public Fragment newInstance(final boolean favouritesOnly, boolean miniLayout) {
         RaceListFragment f = new RaceListFragment();
         f.mFavouritesOnly = favouritesOnly;
@@ -57,17 +54,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
-
-        // This is needed to keep track of the scroll position. When the user presses back
-        // the app will scroll up if is not on the top.
-        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                scrollPos += dy;
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
         mBinding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -111,16 +97,6 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
             mBinding.listHeader.setVisibility(View.GONE);
         }
 
-        // Since we are specifying the item layout here and using databinding
-        // we will be able to have different layouts easily without changing the adapter.
-        // To achieve that the fragment will need to be aware of the selected layout.
-        // We can use shared preferences for that purpose for example.
-        //TODO implement multiple layout selection capabilities
-//        mBinding.recyclerView.setLayoutManager(new SmoothScrollerLinearLayoutManager(getActivity()));
-
-//        RCSettings settings = new SharedPreferencesManager(getContext()).getSettings();
-//        boolean isMiniLayoutActive = settings.isMiniLayoutAllActive();
-
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBinding.recyclerView.setAdapter(new RaceAdapter(
                 R.layout.row_race2,
@@ -135,8 +111,7 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         mBinding.recyclerView.post(new Runnable() {
             @Override
             public void run() {
-                mBinding.recyclerView.smoothScrollBy(0, -Integer.MAX_VALUE);
-                scrollPos = 0;
+                scrollToTop();
             }
         });
     }
@@ -174,12 +149,33 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
 
     @Override
     public void smoothScrollToTop() {
-        mBinding.recyclerView.smoothScrollBy(0, -scrollPos);
+        if (firstActiveRaceIndex > 0) {
+            mBinding.recyclerView.smoothScrollToPosition(firstActiveRaceIndex);
+        } else {
+            mBinding.recyclerView.smoothScrollToPosition(0);
+        }
+    }
+
+    private void scrollToTop() {
+        if (firstActiveRaceIndex > 0) {
+            mBinding.recyclerView.scrollToPosition(firstActiveRaceIndex);
+        } else {
+            mBinding.recyclerView.scrollToPosition(0);
+        }
     }
 
     @Override
     public boolean isOnTop() {
-        return Math.abs(scrollPos) < Settings.SCROLL_ON_TOP_THRESHOLD;
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mBinding.recyclerView.getLayoutManager();
+        if (layoutManager == null)
+            return true;
+
+        int firstVisiblePos = layoutManager.findFirstVisibleItemPosition();
+        int activeOffset = firstActiveRaceIndex > 0 ? firstActiveRaceIndex : 0;
+        int offset = Math.abs(activeOffset - firstVisiblePos);
+
+        int maxOffset = miniLayout ? Settings.SCROLL_ON_TOP_MINI_OFFSET : Settings.SCROLL_ON_TOP_NORMAL_OFFSET;
+        return offset <= maxOffset;
     }
 
     @Override
@@ -189,18 +185,9 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
     }
 
     @Override
-    public void resetScrollPos() {
-        scrollPos = 0;
+    public void resetScrollPosToItem0() {
         mBinding.recyclerView.scrollToPosition(0);
         mBinding.swipeRefresh.setEnabled(true);
-    }
-
-    @Override
-    public int getScrollPosition() {
-        return 0;
-    }
-    @Override
-    public void setScrollPos(int scrollPos) {
     }
 
     /**

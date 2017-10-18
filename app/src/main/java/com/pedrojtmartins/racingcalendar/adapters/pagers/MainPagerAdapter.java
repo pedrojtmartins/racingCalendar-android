@@ -31,7 +31,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private final Resources mResources;
     private RCSettings settings;
 
-    private int seriesScrollPosition;
 
     // This adapter will provide fragment transition capabilities
     // To control it we'll need a couple of temp variables.
@@ -152,7 +151,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public void smoothScrollToTop(int tab) {
-        if (tab < 0 || tab > mFragments.length)
+        if (tab < 0 || tab >= mFragments.length)
             return;
 
         Fragment fragment = mFragments[tab];
@@ -190,13 +189,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         return false;
     }
 
-    public void resetFavouritesScrollPos() {
+    public void favouritesHaveChanged() {
         if (mFragments == null || mFragments.length <= PAGE_FAVOURITES)
             return;
 
         Fragment fragment = mFragments[PAGE_FAVOURITES];
         if (fragment instanceof IRecyclerViewFragment) {
-            ((IRecyclerViewFragment) fragment).resetScrollPos();
+            ((IRecyclerViewFragment) fragment).resetScrollPosToItem0();
         }
     }
 

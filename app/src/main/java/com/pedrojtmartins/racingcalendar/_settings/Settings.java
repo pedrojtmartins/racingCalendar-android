@@ -27,6 +27,8 @@ public class Settings {
     public static String DAY_MONTH_FORMAT;
 
     public static int SCROLL_ON_TOP_THRESHOLD = 500;
+    public static int SCROLL_ON_TOP_NORMAL_OFFSET = 1;
+    public static int SCROLL_ON_TOP_MINI_OFFSET = 3;
     //endregion
 
     public final static String RACE_DATES_DIVIDER = "_";

@@ -338,7 +338,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
-        if (undoFragmentTransition())
+        boolean fragmentUndo = undoFragmentTransition();
+        if (fragmentUndo)
             return;
 
         // In case the active scroll view is not on top, move it up and return
@@ -714,7 +715,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         switch (requestCode) {
             case ACTIVITY_RESULT_NOTIFICATIONS:
                 mViewModel.reload();
-                mPageAdapter.resetFavouritesScrollPos();
+                mPageAdapter.favouritesHaveChanged();
                 break;
 
             case ACTIVITY_RESULT_SETTINGS:
