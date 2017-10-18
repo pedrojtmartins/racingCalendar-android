@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         initToolBar();
         initViewPager();
 
-        checkDatabaseDataCount();
-
         showReleaseNotes();
     }
 
@@ -155,10 +153,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             @Override
             public void onPropertyChanged(Observable observable, int i) {
                 String seriesAdded = mViewModel.updatedFromServerNewSeries;
-                if (seriesAdded == null || seriesAdded.isEmpty()) {
-                    // Series were only updated
-                    SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
-                } else {
+                if (seriesAdded != null && !seriesAdded.isEmpty()) {
                     // New series added
                     AlertDialogHelper.displayNewSeriesDialog(
                             mBinding.mainContent.getContext(),
@@ -166,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                             R.string.newSeries,
                             seriesAdded);
                 }
+
+                SnackBarHelper.display(mBinding.mainContent, R.string.dataUpdated);
             }
         });
 
@@ -193,6 +190,13 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             public void onPropertyChanged(Observable sender, int propertyId) {
                 if (((ObservableBoolean) sender).get())
                     checkInternetConnection();
+            }
+        });
+
+        mViewModel.startingDownload.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                SnackBarHelper.display(mBinding.mainContent, R.string.downloadingData, Snackbar.LENGTH_INDEFINITE);
             }
         });
 
@@ -281,17 +285,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             mBinding.viewPager.setCurrentItem(MainPagerAdapter.PAGE_FAVOURITES, true);
         }
 
-    }
-
-    private void checkDatabaseDataCount() {
-        // We only need to check if series table is populated.
-        // The races table will be in the same state.
-        // In case we have no series show a snackbar to warn the user
-        // that the data is being downloaded from the server.
-        ObservableArrayList<Series> seriesList = mViewModel.getSeriesList();
-        if (seriesList == null || seriesList.size() == 0) {
-            SnackBarHelper.display(mBinding.mainContent, R.string.firstTimeDataDownload, Snackbar.LENGTH_INDEFINITE);
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

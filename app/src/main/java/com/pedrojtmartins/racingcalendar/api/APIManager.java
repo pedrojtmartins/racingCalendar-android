@@ -56,10 +56,11 @@ public class APIManager {
     }
 
     private void updateData(final IDataUpdater dataUpdater, final int version) {
+        dataUpdater.newDataIsAvailable();
         getApi().getData().enqueue(new Callback<ServerData>() {
             @Override
             public void onResponse(Call<ServerData> call, Response<ServerData> response) {
-                if (response == null || response.code() != 200)
+                if (response.code() != 200)
                     return;
 
                 ServerData data = response.body();

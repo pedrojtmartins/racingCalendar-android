@@ -16,7 +16,7 @@
     <string name="title_activity_settings">Definições</string>
     <string name="update">Atualizar</string>
     <string name="no_favourites_selected">Não tem nenhuma série favorita.</string>
-    <string name="firstTimeDataDownload">Ocorreu um erro ao carregar as classificações. Por favor, tente novamente mais tarde.</string>
+    <string name="downloadingData">A atualizar dados…</string>
     <string name="of">de</string>
     <string name="next">Próxima corrida:</string>
     <string name="seriesIsOver">Completa</string>

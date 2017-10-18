@@ -100,7 +100,6 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
         return firstPos <= Settings.SCROLL_ON_TOP_NORMAL_OFFSET;
     }
 
-
 //    @Override
 //    public void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);

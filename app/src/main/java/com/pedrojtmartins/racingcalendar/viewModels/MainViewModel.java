@@ -34,6 +34,7 @@ public class MainViewModel implements IDataUpdater {
 
     public ObservableBoolean newAppUpdate;
     public ObservableBoolean firstInitialization;
+    public ObservableBoolean startingDownload;
 
     public ObservableArrayList<Race> getRacesList(boolean favouritesOnly) {
         if (favouritesOnly)
@@ -78,6 +79,7 @@ public class MainViewModel implements IDataUpdater {
         updatedFromServer = new ObservableInt(0);
         newAppUpdate = new ObservableBoolean(false);
         firstInitialization = new ObservableBoolean(false);
+        startingDownload = new ObservableBoolean(false);
     }
 
     public void initialize() {
@@ -177,6 +179,11 @@ public class MainViewModel implements IDataUpdater {
     @Override
     public void newAppVersionIsAvailable() {
         newAppUpdate.set(true);
+    }
+
+    @Override
+    public void newDataIsAvailable() {
+        startingDownload.set(true);
     }
 
     public void reload() {

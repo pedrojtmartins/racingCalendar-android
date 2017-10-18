@@ -28,7 +28,10 @@ import java.util.ArrayList;
 
 public class AlertDialogHelper {
     public static boolean displayYesNoDialog(Context context, int msg, int positive, int negative, final Handler handler) {
-        if (context == null || handler == null)
+        if (handler == null)
+            return false;
+
+        if (!isReadyToShowDialog(context))
             return false;
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
@@ -55,7 +58,7 @@ public class AlertDialogHelper {
     }
 
     public static boolean displayOkDialog(Context context, int msg, final Handler handler) {
-        if (context == null)
+        if (!isReadyToShowDialog(context))
             return false;
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
@@ -74,7 +77,7 @@ public class AlertDialogHelper {
     }
 
     public static boolean displayReleaseNotesDialog(Context context, int msg, final Handler handler) {
-        if (context == null)
+        if (!isReadyToShowDialog(context))
             return false;
 
         new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
@@ -95,7 +98,10 @@ public class AlertDialogHelper {
 
 
     public static boolean displayNewSeriesDialog(Context context, Resources resources, int msg, String series) {
-        if (context == null || resources == null)
+        if (resources == null)
+            return false;
+
+        if (!isReadyToShowDialog(context))
             return false;
 
         String m = resources.getString(msg) + series;
@@ -121,6 +127,9 @@ public class AlertDialogHelper {
             final String notificationMinutesBefore,
             final boolean withRememberOption,
             final Handler handler) {
+
+        if (!isReadyToShowDialog(context))
+            return;
 
         final View v = inflater.inflate(R.layout.alert_dialog_notification, null);
         final EditText et = v.findViewById(R.id.alert_dialog_minutes_before);
@@ -164,6 +173,9 @@ public class AlertDialogHelper {
 
 
     public static void requestCalendar(Activity context, final ArrayList<InternalCalendars> allCalendars, final Handler.Callback handler) {
+        if (!isReadyToShowDialog(context))
+            return;
+
         final View v = context.getLayoutInflater().inflate(R.layout.alert_dialog_pick_calendar, null);
         final Spinner sp = v.findViewById(R.id.dropDown);
 
@@ -195,5 +207,12 @@ public class AlertDialogHelper {
         builder.setNegativeButton(R.string.cancel, null);
         builder.create();
         builder.show();
+    }
+
+    private static boolean isReadyToShowDialog(Context context) {
+        if (context == null || !(context instanceof Activity))
+            return false;
+
+        return !((Activity) context).isFinishing();
     }
 }

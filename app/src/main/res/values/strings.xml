@@ -15,7 +15,7 @@
     <string name="no_favourites_selected">You don\'t have any favourite series yet.\nTo select new ones touch the bottom right button.</string>
     <string name="newAppVersion">New app version</string>
     <string name="update">Update</string>
-    <string name="firstTimeDataDownload">Downloading data…</string>
+    <string name="downloadingData">Updating data…</string>
     <string name="next">Next race:</string>
     <string name="of">of</string>
     <string name="seriesIsOver">Completed</string>
