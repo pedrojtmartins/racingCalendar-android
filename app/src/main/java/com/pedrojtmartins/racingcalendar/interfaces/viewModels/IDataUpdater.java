@@ -9,6 +9,6 @@ import com.pedrojtmartins.racingcalendar.models.ServerData;
 
 public interface IDataUpdater {
     void newDataIsReady(ServerData data);
-
     void newAppVersionIsAvailable();
+    void newDataIsAvailable();
 }

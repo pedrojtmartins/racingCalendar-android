@@ -1,5 +1,7 @@
 package com.pedrojtmartins.racingcalendar.api;
 
+import android.support.annotation.NonNull;
+
 import com.pedrojtmartins.racingcalendar.interfaces.viewModels.IDataUpdater;
 import com.pedrojtmartins.racingcalendar.models.ServerData;
 
@@ -38,8 +40,8 @@ public class APIManager {
 
         getApi().getDataVersion().enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if (response == null || response.code() != 200)
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
+                if (response.code() != 200)
                     return;
 
                 int version = response.body();
@@ -49,17 +51,18 @@ public class APIManager {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
                 //TODO: Handle unsuccessful call
             }
         });
     }
 
     private void updateData(final IDataUpdater dataUpdater, final int version) {
+        dataUpdater.newDataIsAvailable();
         getApi().getData().enqueue(new Callback<ServerData>() {
             @Override
-            public void onResponse(Call<ServerData> call, Response<ServerData> response) {
-                if (response == null || response.code() != 200)
+            public void onResponse(@NonNull Call<ServerData> call, @NonNull Response<ServerData> response) {
+                if (response.code() != 200)
                     return;
 
                 ServerData data = response.body();
@@ -70,7 +73,7 @@ public class APIManager {
             }
 
             @Override
-            public void onFailure(Call<ServerData> call, Throwable t) {
+            public void onFailure(@NonNull Call<ServerData> call, @NonNull Throwable t) {
                 //TODO: Handle unsuccessful call
             }
         });
@@ -82,8 +85,8 @@ public class APIManager {
 
         getApi().getAppVersion().enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if (response == null || response.code() != 200)
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
+                if (response.code() != 200)
                     return;
 
                 int version = response.body();
@@ -93,7 +96,7 @@ public class APIManager {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
                 //TODO: Handle unsuccessful call
             }
         });
