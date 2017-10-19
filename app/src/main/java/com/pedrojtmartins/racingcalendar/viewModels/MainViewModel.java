@@ -165,6 +165,10 @@ public class MainViewModel implements IDataUpdater {
             Series series = Series.getSeries(data.series, id);
             if (series != null) {
                 sb.append("\n-").append(series.getName());
+
+                if (series.getPreviousSeriesId() > 0) {
+                    sb.append(" ").append(series.getYear());
+                }
             }
         }
 

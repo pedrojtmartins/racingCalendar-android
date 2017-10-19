@@ -31,10 +31,10 @@ android {
         beta {
             resValue "string", "app_name", "Racing Calendar Beta"
         }
-        pro {
-            resValue "string", "app_name", "Racing Calendar Pro"
-            applicationIdSuffix ".pro"
-        }
+//        pro {
+//            resValue "string", "app_name", "Racing Calendar Pro"
+//            applicationIdSuffix ".pro"
+//        }
     }
 
     dataBinding {
