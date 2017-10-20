@@ -10,13 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.databinding.ObservableArrayList;
 
 import com.google.firebase.perf.metrics.AddTrace;
-import com.pedrojtmartins.racingcalendar.helpers.DateHelper;
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
+import com.pedrojtmartins.racingcalendar.models.UserActivity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Pedro Martins
@@ -112,6 +112,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
     //endregion
 
+    //region Table User Activity
+    private static final String TABLE_USER_ACTIVITY = "user_activity";
+
+    //region Columns
+
+    private static final String KEY_USER_ACTIVITY_ID = "id";
+    private static final String KEY_USER_ACTIVITY_DATE = "date";
+    private static final String KEY_USER_ACTIVITY_TIME = "time";
+    private static final String KEY_USER_ACTIVITY_RATE_REQUEST = "request";
+    private static final String KEY_USER_ACTIVITY_RATE_REQUEST_ACCEPTED = "isAccepted";
+    //endregion
+
+    //region Create Statement
+    private static final String CREATE_TABLE_USER_ACTIVITY = "CREATE TABLE " + TABLE_USER_ACTIVITY + "(" +
+            KEY_USER_ACTIVITY_ID + " INTEGER PRIMARY KEY," +
+            KEY_USER_ACTIVITY_DATE + " TEXT," +
+            KEY_USER_ACTIVITY_TIME + " TEXT," +
+            KEY_USER_ACTIVITY_RATE_REQUEST + " INTEGER DEFAULT 0," +
+            KEY_USER_ACTIVITY_RATE_REQUEST_ACCEPTED + " INTEGER DEFAULT 0)";
+    //endregion
+    //endregion
+    //endregion
+
     /**
      * @param context Requesting context
      * @return the instance of the DatabaseManager
@@ -132,6 +155,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_RACES);
         db.execSQL(CREATE_TABLE_SERIES);
         db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+        db.execSQL(CREATE_TABLE_USER_ACTIVITY);
     }
 
     @Override
@@ -167,6 +191,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + TABLE_SERIES + " ADD COLUMN " +
                     KEY_SERIES_NEXT_YEAR_SERIES_ID + " INTEGER DEFAULT 0");
 
+            db.execSQL(CREATE_TABLE_USER_ACTIVITY);
         }
     }
 
@@ -291,7 +316,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return
      */
     public ArrayList<Race> getRaces(boolean favouritesOnly, boolean upcoming) {
-        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String today = DateFormatter.getFormattedDateOnlyNow();
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_ID + ",n." + KEY_NOTIFICATIONS_DATE_INDEX +
                 " FROM " + TABLE_RACES + " r" +
@@ -328,7 +353,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return
      */
     public ArrayList<Race> getRaces(int seriesId, boolean upcoming) {
-        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String today = DateFormatter.getFormattedDateOnlyNow();
+
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("SELECT  r.*, s." + KEY_SERIES_NAME + ",n." + KEY_NOTIFICATIONS_ID + ",n." + KEY_NOTIFICATIONS_DATE_INDEX +
                 " FROM " + TABLE_RACES + " r" +
@@ -464,7 +490,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public ArrayList<Series> getSeries(boolean showPreviousYears) {
-        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String today = DateFormatter.getFormattedDateOnlyNow();
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("SELECT s." + KEY_SERIES_ID + ",s." + KEY_SERIES_NAME +
                 ",s." + KEY_SERIES_YEAR + ",s." + KEY_SERIES_FAVOURITE +
@@ -738,7 +764,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * @return list of notifications
      */
     public ArrayList<RCNotification> getUpcomingNotifications() {
-        String today = DateHelper.getDateNow(Calendar.getInstance(), "yyyy-MM-dd");
+        String today = DateFormatter.getFormattedDateOnlyNow();
         String query = "SELECT n.*,s." + KEY_SERIES_NAME +
                 " FROM " + TABLE_NOTIFICATIONS + " n " +
                 " LEFT OUTER JOIN " + TABLE_SERIES + " s ON n." + KEY_NOTIFICATIONS_SERIES_ID + "=s." + KEY_SERIES_ID +
@@ -815,5 +841,82 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return removed;
     }
 
+    //endregion
+
+    //region UserActivity
+    private ArrayList<UserActivity> buildUserActivity(Cursor cursor) {
+        ArrayList<UserActivity> list = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(KEY_USER_ACTIVITY_ID));
+                String date = cursor.getString(cursor.getColumnIndex(KEY_USER_ACTIVITY_DATE));
+                String time = cursor.getString(cursor.getColumnIndex(KEY_USER_ACTIVITY_TIME));
+                boolean isRequest = cursor.getInt(cursor.getColumnIndex(KEY_USER_ACTIVITY_RATE_REQUEST)) == 1;
+                boolean accepted = cursor.getInt(cursor.getColumnIndex(KEY_USER_ACTIVITY_RATE_REQUEST_ACCEPTED)) == 1;
+
+                list.add(new UserActivity(id, date, time, isRequest, accepted));
+            } while (cursor.moveToNext());
+        }
+
+        return list;
+    }
+
+    private ContentValues createUserActivityContentValue(UserActivity userActivity) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_ACTIVITY_ID, userActivity.id);
+        values.put(KEY_USER_ACTIVITY_DATE, userActivity.date);
+        values.put(KEY_USER_ACTIVITY_TIME, userActivity.time);
+        values.put(KEY_USER_ACTIVITY_RATE_REQUEST, userActivity.isRequest);
+        values.put(KEY_USER_ACTIVITY_RATE_REQUEST_ACCEPTED, userActivity.isAccepted);
+
+        return values;
+    }
+
+    @AddTrace(name = "sqlite_queryUserActivity")
+    private ArrayList<UserActivity> queryUserActivity(String query) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+
+        try {
+            db = getReadableDatabase();
+            cursor = db.rawQuery(query, null);
+
+            return buildUserActivity(cursor);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            close(db, cursor);
+        }
+    }
+
+    private int addUserActivity(ContentValues item, SQLiteDatabase db) {
+        return (int) db.insert(TABLE_NOTIFICATIONS, null, item);
+    }
+
+    public ArrayList<UserActivity> getUserActivity() {
+        return queryUserActivity("SELECT * FROM " + TABLE_USER_ACTIVITY);
+    }
+
+    @AddTrace(name = "sqlite_addUserActivity")
+    public int addUserActivity(String date, boolean isRequest, boolean isAccepted) {
+        if (date == null || !date.contains("T"))
+            return 0;
+
+        String[] aTime = date.split("T");
+        UserActivity userActivity = new UserActivity(aTime[0], aTime[1], isRequest, isAccepted);
+        ContentValues cValues = createUserActivityContentValue(userActivity);
+
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            return addUserActivity(cValues, db);
+        } finally {
+            if (db != null) {
+                closeDatabase(db);
+            }
+        }
+    }
     //endregion
 }

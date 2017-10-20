@@ -55,7 +55,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void onClick_sendEmail(View v) {
-        IntentHelper.composeEmail(this, new String[]{getString(R.string.devEmail)}, "");
+        IntentHelper.sendFeedback(this);
     }
 
     public void onClick_toStore(View v) {

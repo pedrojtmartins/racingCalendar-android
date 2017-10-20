@@ -14,11 +14,11 @@ import com.pedrojtmartins.racingcalendar.R;
  */
 
 public class IntentHelper {
-    public static void composeEmail(Context context, String[] addresses, String subject) {
+    public static void sendFeedback(Context context) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.devEmail)});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "How to improve");
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
         }

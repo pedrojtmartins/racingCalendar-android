@@ -32,4 +32,8 @@ public class Settings {
     //endregion
 
     public final static String RACE_DATES_DIVIDER = "_";
+
+    //region RATE REQUEST
+    public static final int RATE_REQUEST_MINIMUM_STARTS = 5;
+    //endregion
 }

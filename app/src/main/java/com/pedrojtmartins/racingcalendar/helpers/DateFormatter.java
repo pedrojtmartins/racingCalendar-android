@@ -228,6 +228,7 @@ public class DateFormatter {
 
         return checking.after(now);
     }
+
     public static boolean isThisYear(String fullDate) {
         String thisYear = String.valueOf(DateFormatter.getThisYear());
         return fullDate.startsWith(thisYear);
@@ -236,5 +237,27 @@ public class DateFormatter {
     public static long getDateInMillis(String date) {
         Calendar calendar = DateFormatter.getCalendar(date);
         return calendar.getTimeInMillis();
+    }
+
+    public static String getFormattedNow() {
+        Calendar now = Calendar.getInstance();
+
+        try {
+            SimpleDateFormat currFormat = new SimpleDateFormat(defaultFormat);
+            return currFormat.format(now.getTime());
+        } catch (IllegalArgumentException iae) {
+            return "";
+        }
+    }
+
+    public static String getFormattedDateOnlyNow() {
+        Calendar now = Calendar.getInstance();
+
+        try {
+            SimpleDateFormat currFormat = new SimpleDateFormat(defaultDataOnlyFormat);
+            return currFormat.format(now.getTime());
+        } catch (IllegalArgumentException iae) {
+            return "";
+        }
     }
 }

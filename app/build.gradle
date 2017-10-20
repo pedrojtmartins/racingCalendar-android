@@ -65,8 +65,8 @@ dependencies {
     compile "com.android.support:customtabs:${rootProject.ext.supportVersion}"
     compile "com.android.support.constraint:constraint-layout:${rootProject.ext.constraintLayoutVersion}"
 
-    compile "com.squareup.retrofit2:retrofit:${rootProject.ext.gsonVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.gsonVersion}"
+    compile "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofit2Version}"
+    compile "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofit2Version}"
 
     compile "com.google.firebase:firebase-core:${rootProject.ext.firebaseVersion}"
     compile "com.google.firebase:firebase-crash:${rootProject.ext.firebaseVersion}"

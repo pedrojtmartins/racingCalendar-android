@@ -42,6 +42,15 @@ public class FirebaseManager {
     public static final String ERROR_STANDINGS_EMPTY = "error_standings_";
 
 
+    public static final String EVENT_USER_LIKES_APP = "action_user_y_likes_app";
+    public static final String EVENT_USER_LIKES_Y_RATES_APP = "action_user_likes_y_rates_app";
+    public static final String EVENT_USER_LIKES_N_RATES_APP = "action_user_likes_n_rates_app";
+
+    public static final String EVENT_USER_DISLIKES_APP = "action_user_n_likes_app";
+    public static final String EVENT_USER_DISLIKES_Y_SENDS_MAIL = "action_user_dislikes_y_email_app";
+    public static final String EVENT_USER_DISLIKES_N_SENDS_MAIL = "action_user_dislikes_n_email_app";
+
+
     public static boolean logEvent(Context context, String event) {
         if (BuildConfig.DEBUG)
             return true;

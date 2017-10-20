@@ -47,6 +47,7 @@
 
     <string name="maintab_about">About</string>
     <string name="action_about">About</string>
+    <string name="action_feedback">Send feedback</string>
     <string name="dataVersion">Database</string>
     <string name="devName" translatable="false">Pedro J T Martins</string>
     <string name="devEmail" translatable="false">racingcalendar.pm@gmail.com</string>
@@ -98,4 +99,10 @@
     <string name="exportRaceTo">Export event to</string>
     <string name="noCalendarsAvailable">You don\'t have any external calendars. Add one and try again.</string>
     <string name="notification_show_other_years">Show previous years</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="areYouHappyWithApp">Thank you for using Racing Calendar!\nAre you enjoying the app?</string>
+    <string name="requestRate">Great news!\nWould you like to rate it?</string>
+    <string name="contactForSupport">Please help us improve your experience!\nWould you like to send us some feedback?</string>
 </resources>

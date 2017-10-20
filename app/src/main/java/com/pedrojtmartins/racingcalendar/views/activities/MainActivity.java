@@ -49,6 +49,7 @@ import com.pedrojtmartins.racingcalendar.models.Race;
 import com.pedrojtmartins.racingcalendar.models.Series;
 import com.pedrojtmartins.racingcalendar.notifications.RCNotificationManager;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
+import com.pedrojtmartins.racingcalendar.userActivity.UserActivityManager;
 import com.pedrojtmartins.racingcalendar.viewModels.MainViewModel;
 
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         initViewPager();
 
         showReleaseNotes();
+        checkRateRequestStatus();
     }
 
     private void createNotificationChannels() {
@@ -97,6 +99,83 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
             }));
         }
     }
+
+    private void checkRateRequestStatus() {
+        DatabaseManager databaseManager = DatabaseManager.getInstance(this);
+        UserActivityManager.addAppStart(databaseManager);
+        mViewModel.setReadyToRequestRate(UserActivityManager.isReadyToRequestRate(databaseManager));
+    }
+
+    //region Rate request
+    private void requestRate() {
+        if (!mViewModel.isReadyToRequestRate())
+            return;
+
+        AlertDialogHelper.displayYesNoDialog(this, R.string.areYouHappyWithApp, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                if (message.what == 1) {
+                    requestRatePositive();
+                } else {
+                    requestRateNegative();
+                }
+                return true;
+            }
+        }));
+    }
+
+    private void requestRatePositive() {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_APP);
+        AlertDialogHelper.displayYesNoDialog(this, R.string.requestRate, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                requestRatePositiveResult(message.what);
+                return true;
+            }
+        }));
+    }
+
+    private void requestRatePositiveResult(int res) {
+        switch (res) {
+            case 1:
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_Y_RATES_APP);
+                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, true);
+                startActivity(AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager()));
+                break;
+
+            case 0:
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_N_RATES_APP);
+                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
+                break;
+        }
+    }
+
+    private void requestRateNegative() {
+        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_APP);
+        AlertDialogHelper.displayYesNoDialog(this, R.string.contactForSupport, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                requestRateNegativeResult(message.what);
+                return true;
+            }
+        }));
+    }
+
+    private void requestRateNegativeResult(int res) {
+        UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
+
+        switch (res) {
+            case 1:
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_Y_SENDS_MAIL);
+                IntentHelper.sendFeedback(this);
+                break;
+
+            case 0:
+                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_N_SENDS_MAIL);
+                break;
+        }
+    }
+    //endregion
 
     @Override
     protected void onStart() {
@@ -317,6 +396,10 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
                 startActivity(intent);
                 break;
 
+            case R.id.action_feedback:
+                IntentHelper.sendFeedback(this);
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -427,6 +510,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         updateAlarmForAllRaces(race, minutesBefore, list);
         return true;
     }
+
     private boolean updateAlarmForAllRaces(final Race race, final int minutesBefore, ArrayList<Race> list) {
         updateAlarmForAllRaces(race.getSeriesId(), minutesBefore, list);
         return true;

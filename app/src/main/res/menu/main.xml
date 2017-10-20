@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--<item-->
-        <!--android:id="@+id/action_remove_ads"-->
-        <!--android:icon="@drawable/add_favorites"-->
-        <!--android:orderInCategory="1"-->
-        <!--android:title="@string/upgradePro"-->
-        <!--app:showAsAction="ifRoom"/>-->
+    <!--android:id="@+id/action_remove_ads"-->
+    <!--android:icon="@drawable/add_favorites"-->
+    <!--android:orderInCategory="1"-->
+    <!--android:title="@string/upgradePro"-->
+    <!--app:showAsAction="ifRoom"/>-->
 
     <item
         android:id="@+id/action_notifications"
@@ -27,8 +27,14 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_about"
+        android:id="@+id/action_feedback"
         android:orderInCategory="5"
+        android:title="@string/action_feedback"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="6"
         android:title="@string/action_about"
         app:showAsAction="never"/>
 

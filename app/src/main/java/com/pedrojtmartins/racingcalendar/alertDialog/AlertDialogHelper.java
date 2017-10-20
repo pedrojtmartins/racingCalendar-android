@@ -28,6 +28,10 @@ import java.util.ArrayList;
 
 public class AlertDialogHelper {
     public static boolean displayYesNoDialog(Context context, int msg, int positive, int negative, final Handler handler) {
+        return displayYesNoDialog(context, msg, positive, negative, true, handler);
+    }
+
+    public static boolean displayYesNoDialog(Context context, int msg, int positive, int negative, boolean cancelable, final Handler handler) {
         if (handler == null)
             return false;
 
@@ -48,6 +52,7 @@ public class AlertDialogHelper {
                         handler.sendEmptyMessage(0);
                     }
                 })
+                .setCancelable(cancelable)
                 .show();
 
         return true;

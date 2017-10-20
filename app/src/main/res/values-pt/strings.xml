@@ -48,6 +48,7 @@
 
     <string name="maintab_about">Acerca</string>
     <string name="action_about">Acerca</string>
+    <string name="action_feedback">Enviar feedback</string>
     <string name="dataVersion">Base de dados</string>
 
     <string name="maintab_settings">Configurações</string>
@@ -97,4 +98,10 @@
     <string name="noCalendarsAvailable">Não tem calendários externo. Adicione um e tente novamente.</string>
 
     <string name="notification_show_other_years">Mostrar anos anteriores</string>
+
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="areYouHappyWithApp">Obrigado por utilizar Racing Calendar!\nA aplicação está do seu agrado?</string>
+    <string name="requestRate">Ótimas notícias!\nGostaria de a avaliar?</string>
+    <string name="contactForSupport">Por favor ajude-nos a melhorar a sua experiência!\nGostaria de nos enviar feedback?</string>
 </resources>

@@ -66,6 +66,8 @@ public class MainViewModel implements IDataUpdater {
     private Race raceBeingExported;
     private int calendarToExportTo;
 
+    private boolean isReadyToRequestRate;
+
     public MainViewModel(DatabaseManager dbManager, APIManager apiManager, SharedPreferencesManager sharedPreferencesManager) {
         mDbManager = dbManager;
         mApiManager = apiManager;
@@ -319,14 +321,26 @@ public class MainViewModel implements IDataUpdater {
         raceBeingExported = race;
         calendarToExportTo = calendarId;
     }
+
     public Race getRaceBeingExported() {
         return raceBeingExported;
     }
+
     public int getCalendarToExportTo() {
         return calendarToExportTo;
     }
+
     public void exportComplete() {
         raceBeingExported = null;
         calendarToExportTo = -1;
+    }
+
+
+    public boolean isReadyToRequestRate() {
+        return isReadyToRequestRate;
+    }
+
+    public void setReadyToRequestRate(boolean isReadyToRequestRate) {
+        this.isReadyToRequestRate = isReadyToRequestRate;
     }
 }
