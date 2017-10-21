@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         SettingsHelper.detectSystemSettings(this);
+
         createNotificationChannels();
 
         startAdmob();
@@ -184,7 +185,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     protected void onStart() {
         super.onStart();
+
         mViewModel.recheckUpdates();
+        FirebaseManager.initRemoteConfig(this);
     }
 
     private void startAdmob() {

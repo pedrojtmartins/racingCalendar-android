@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>rate_request_min_starts</key>
+        <value>6</value>
+    </entry>
+    <entry>
+        <key>auto_scroll_top_threshold</key>
+        <value>500</value>
+    </entry>
+    <entry>
+        <key>auto_scroll_top_mini_offset</key>
+        <value>3</value>
+    </entry>
+    <entry>
+        <key>auto_scroll_top_offset</key>
+        <value>1</value>
+    </entry>
+</defaultsMap>

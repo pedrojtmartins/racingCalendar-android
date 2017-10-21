@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.alertDialog.AlertDialogHelper;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
@@ -24,6 +23,9 @@ import java.util.ArrayList;
 
 public class UserActivityManager {
     private static UserActivityManager manager;
+    /**
+     * @return UserActivityManager instance
+     */
     public static UserActivityManager getInstance() {
         if (manager == null)
             manager = new UserActivityManager();
@@ -34,6 +36,12 @@ public class UserActivityManager {
     private UserActivityManager() {
     }
 
+    /**
+     * Adds a new app start event into the DB
+     *
+     * @param db Database manager
+     * @return inserted row id or -1 if an error occurred
+     */
     public int addAppStart(@NonNull final DatabaseManager db) {
         return addUserActivity(db, false, false);
     }
@@ -42,22 +50,37 @@ public class UserActivityManager {
         return db.addUserActivity(now, isRequest, isAccepted);
     }
 
+    /**
+     * Checks if all criteria are met for a rate request
+     *
+     * @param db Database manager
+     * @return true when ready; false otherwise
+     */
     public boolean isReadyToRequestRate(@NonNull final DatabaseManager db) {
         ArrayList<UserActivity> list = db.getUserActivity();
-        if (list == null || list.size() < Settings.RATE_REQUEST_MINIMUM_STARTS) {
+        int rateRequestMinStarts = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_RATE_REQUEST_MIN_STARTS);
+        if (list == null || list.size() < rateRequestMinStarts) {
+            // Criteria has not been met yet
             return false;
         }
 
         for (UserActivity ua : list) {
             if (ua.isRequest) {
+                //The request was already made
                 return false;
             }
         }
 
+        // We are ready to request
         return true;
     }
 
-    public boolean requestRate(@NonNull final Context context) {
+    /**
+     * Starts the rate request process
+     *
+     * @param context Activity context
+     */
+    public void requestRate(@NonNull final Context context) {
         FirebaseManager.logEvent(context, FirebaseManager.EVENT_REQUEST_RATE);
         AlertDialogHelper.displayYesNoDialog(
                 context,
@@ -76,8 +99,6 @@ public class UserActivityManager {
                         return true;
                     }
                 }));
-
-        return true;
     }
 
     private void requestRatePositive(@NonNull final Context context) {

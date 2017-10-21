@@ -22,8 +22,8 @@ public class SharedPreferencesManager {
     private final String ADS_NOTIFICATIONS = "notificationsOpenCount";
     private final String ADS_URL = "urlOpenCount";
 
-    private final String FORCE_RELEASE_NOTES = "forceReleaseNotes_2";
-    private final String FORCE_DB_UPDATE = "forceDBUpdate_2";
+    private final String FORCE_RELEASE_NOTES = "forceReleaseNotes_3";
+    private final String FORCE_DB_UPDATE = "forceDBUpdate_3";
 
     public SharedPreferencesManager(Context context) {
         // TODO: 19/09/2017 this should be a singleton?

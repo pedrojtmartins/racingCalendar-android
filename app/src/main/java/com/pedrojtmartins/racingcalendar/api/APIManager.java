@@ -46,7 +46,7 @@ public class APIManager {
 
                 int version = response.body();
                 if (version != currVersion || forceUpdate) {
-                    updateData(dataUpdater, version);
+                    updateData(dataUpdater);
                 }
             }
 
@@ -57,7 +57,7 @@ public class APIManager {
         });
     }
 
-    private void updateData(final IDataUpdater dataUpdater, final int version) {
+    public void updateData(final IDataUpdater dataUpdater) {
         dataUpdater.newDataIsAvailable();
         getApi().getData().enqueue(new Callback<ServerData>() {
             @Override
@@ -67,7 +67,6 @@ public class APIManager {
 
                 ServerData data = response.body();
                 if (data != null && data.races != null && data.series != null) {
-                    data.version = version;
                     dataUpdater.newDataIsReady(data);
                 }
             }
