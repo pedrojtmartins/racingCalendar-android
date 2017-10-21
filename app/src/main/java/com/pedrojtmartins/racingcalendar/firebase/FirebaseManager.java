@@ -1,9 +1,15 @@
 package com.pedrojtmartins.racingcalendar.firebase;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.pedrojtmartins.racingcalendar.BuildConfig;
+import com.pedrojtmartins.racingcalendar.R;
 
 /**
  * Pedro Martins
@@ -11,6 +17,11 @@ import com.pedrojtmartins.racingcalendar.BuildConfig;
  */
 
 public class FirebaseManager {
+    public static final String REMOTE_CONFIG_RATE_REQUEST_MIN_STARTS = "rate_request_min_starts";
+    public static final String REMOTE_CONFIG_AUTO_SCROLL_THRESHOLD = "auto_scroll_top_threshold";
+    public static final String REMOTE_CONFIG_AUTO_SCROLL_MINI_OFFSET = "auto_scroll_top_mini_offset";
+    public static final String REMOTE_CONFIG_AUTO_SCROLL_NORMAL_OFFSET = "auto_scroll_top_offset";
+
     public static final String EVENT_ACTIVITY_ABOUT = "activity_about";
     public static final String EVENT_ACTIVITY_FAVOURITES = "activity_favourites";
     public static final String EVENT_ACTIVITY_NOTIFICATIONS = "activity_notifications";
@@ -78,5 +89,23 @@ public class FirebaseManager {
         return true;
     }
 
+    //region Remote Config
+    public static void initRemoteConfig(@NonNull final Activity context) {
+        final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.fetch().addOnCompleteListener(context, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    remoteConfig.activateFetched();
+                }
+            }
+        });
+    }
 
+    public static int getIntRemoteConfig(String what) {
+        final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.setDefaults(R.xml.config_defaults);
+        return (int) remoteConfig.getLong(what);
+    }
+    //endregion
 }

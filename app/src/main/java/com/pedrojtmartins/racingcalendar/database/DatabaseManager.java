@@ -863,7 +863,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     private ContentValues createUserActivityContentValue(UserActivity userActivity) {
         ContentValues values = new ContentValues();
-        values.put(KEY_USER_ACTIVITY_ID, userActivity.id);
+//        values.put(KEY_USER_ACTIVITY_ID, userActivity.id);
         values.put(KEY_USER_ACTIVITY_DATE, userActivity.date);
         values.put(KEY_USER_ACTIVITY_TIME, userActivity.time);
         values.put(KEY_USER_ACTIVITY_RATE_REQUEST, userActivity.isRequest);
@@ -891,7 +891,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     private int addUserActivity(ContentValues item, SQLiteDatabase db) {
-        return (int) db.insert(TABLE_NOTIFICATIONS, null, item);
+        return (int) db.insert(TABLE_USER_ACTIVITY, null, item);
     }
 
     public ArrayList<UserActivity> getUserActivity() {

@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.BR;
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.RaceAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRaceList;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -174,13 +174,19 @@ public class RaceListFragment extends Fragment implements IRecyclerViewFragment 
         int activeOffset = firstActiveRaceIndex > 0 ? firstActiveRaceIndex : 0;
         int offset = Math.abs(activeOffset - firstVisiblePos);
 
-        int maxOffset = miniLayout ? Settings.SCROLL_ON_TOP_MINI_OFFSET : Settings.SCROLL_ON_TOP_NORMAL_OFFSET;
+        int maxOffset = 0;
+        if (miniLayout) {
+            maxOffset = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_AUTO_SCROLL_MINI_OFFSET);
+        } else {
+            maxOffset = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_AUTO_SCROLL_NORMAL_OFFSET);
+        }
         return offset <= maxOffset;
     }
 
     @Override
     public void itemsReloaded(int count) {
-        mBinding.recyclerView.smoothScrollBy(0, -Settings.SCROLL_ON_TOP_THRESHOLD);
+        int threshold = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_AUTO_SCROLL_THRESHOLD);
+        mBinding.recyclerView.smoothScrollBy(0, -threshold);
         mBinding.swipeRefresh.setRefreshing(false);
     }
 

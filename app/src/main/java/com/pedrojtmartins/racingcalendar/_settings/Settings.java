@@ -25,15 +25,7 @@ public class Settings {
     //region Device configurations
     public static boolean IS_12_HOURS_FORMAT;
     public static String DAY_MONTH_FORMAT;
-
-    public static int SCROLL_ON_TOP_THRESHOLD = 500;
-    public static int SCROLL_ON_TOP_NORMAL_OFFSET = 1;
-    public static int SCROLL_ON_TOP_MINI_OFFSET = 3;
     //endregion
 
     public final static String RACE_DATES_DIVIDER = "_";
-
-    //region RATE REQUEST
-    public static final int RATE_REQUEST_MINIMUM_STARTS = 5;
-    //endregion
 }

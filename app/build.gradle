@@ -73,6 +73,7 @@ dependencies {
     compile "com.google.firebase:firebase-perf:${rootProject.ext.firebaseVersion}"
     compile "com.google.firebase:firebase-ads:${rootProject.ext.firebaseVersion}"
     compile "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseVersion}"
+    compile "com.google.firebase:firebase-config:${rootProject.ext.firebaseVersion}"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.4.2'

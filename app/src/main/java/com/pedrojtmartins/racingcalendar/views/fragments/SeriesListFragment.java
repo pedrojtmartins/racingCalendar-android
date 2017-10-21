@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pedrojtmartins.racingcalendar.R;
-import com.pedrojtmartins.racingcalendar._settings.Settings;
 import com.pedrojtmartins.racingcalendar.adapters.recyclerViews.SeriesAdapter;
 import com.pedrojtmartins.racingcalendar.databinding.FragmentListBinding;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.IRecyclerViewFragment;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesCallback;
 import com.pedrojtmartins.racingcalendar.interfaces.fragments.ISeriesList;
@@ -97,7 +97,9 @@ public class SeriesListFragment extends Fragment implements IRecyclerViewFragmen
             return true;
 
         int firstPos = layoutManager.findFirstVisibleItemPosition();
-        return firstPos <= Settings.SCROLL_ON_TOP_NORMAL_OFFSET;
+        int offset = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_AUTO_SCROLL_NORMAL_OFFSET);
+
+        return firstPos <= offset;
     }
 
 //    @Override
