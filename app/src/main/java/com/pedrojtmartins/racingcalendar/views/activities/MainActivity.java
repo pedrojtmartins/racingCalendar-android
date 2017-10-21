@@ -101,80 +101,84 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     private void checkRateRequestStatus() {
+        UserActivityManager manager = UserActivityManager.getInstance();
         DatabaseManager databaseManager = DatabaseManager.getInstance(this);
-        UserActivityManager.addAppStart(databaseManager);
-        mViewModel.setReadyToRequestRate(UserActivityManager.isReadyToRequestRate(databaseManager));
+
+        manager.addAppStart(databaseManager);
+        boolean isReadyToRequestRate = manager.isReadyToRequestRate(databaseManager);
+        mViewModel.setReadyToRequestRate(isReadyToRequestRate);
     }
 
     //region Rate request
-    private void requestRate() {
-        if (!mViewModel.isReadyToRequestRate())
-            return;
+//    private void requestRate() {
+//        if (!mViewModel.isReadyToRequestRate())
+//            return;
+//
+//        FirebaseManager.logEvent(this, FirebaseManager.EVENT_REQUEST_RATE);
+//        AlertDialogHelper.displayYesNoDialog(this, R.string.areYouHappyWithApp, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+//            @Override
+//            public boolean handleMessage(Message message) {
+//                if (message.what == 1) {
+//                    requestRatePositive();
+//                } else {
+//                    requestRateNegative();
+//                }
+//                return true;
+//            }
+//        }));
+//    }
 
-        AlertDialogHelper.displayYesNoDialog(this, R.string.areYouHappyWithApp, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                if (message.what == 1) {
-                    requestRatePositive();
-                } else {
-                    requestRateNegative();
-                }
-                return true;
-            }
-        }));
-    }
+//    private void requestRatePositive() {
+//        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_APP);
+//        AlertDialogHelper.displayYesNoDialog(this, R.string.requestRate, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+//            @Override
+//            public boolean handleMessage(Message message) {
+//                requestRatePositiveResult(message.what);
+//                return true;
+//            }
+//        }));
+//    }
+//
+//    private void requestRatePositiveResult(int res) {
+//        switch (res) {
+//            case 1:
+//                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_Y_RATES_APP);
+//                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, true);
+//                startActivity(AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager()));
+//                break;
+//
+//            case 0:
+//                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_N_RATES_APP);
+//                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
+//                break;
+//        }
+//    }
 
-    private void requestRatePositive() {
-        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_APP);
-        AlertDialogHelper.displayYesNoDialog(this, R.string.requestRate, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                requestRatePositiveResult(message.what);
-                return true;
-            }
-        }));
-    }
-
-    private void requestRatePositiveResult(int res) {
-        switch (res) {
-            case 1:
-                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_Y_RATES_APP);
-                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, true);
-                startActivity(AppVersionHelper.getGooglePlayIntent(getPackageName(), getPackageManager()));
-                break;
-
-            case 0:
-                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_LIKES_N_RATES_APP);
-                UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
-                break;
-        }
-    }
-
-    private void requestRateNegative() {
-        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_APP);
-        AlertDialogHelper.displayYesNoDialog(this, R.string.contactForSupport, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                requestRateNegativeResult(message.what);
-                return true;
-            }
-        }));
-    }
-
-    private void requestRateNegativeResult(int res) {
-        UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
-
-        switch (res) {
-            case 1:
-                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_Y_SENDS_MAIL);
-                IntentHelper.sendFeedback(this);
-                break;
-
-            case 0:
-                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_N_SENDS_MAIL);
-                break;
-        }
-    }
+//    private void requestRateNegative() {
+//        FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_APP);
+//        AlertDialogHelper.displayYesNoDialog(this, R.string.contactForSupport, R.string.yes, R.string.no, false, new Handler(new Handler.Callback() {
+//            @Override
+//            public boolean handleMessage(Message message) {
+//                requestRateNegativeResult(message.what);
+//                return true;
+//            }
+//        }));
+//    }
+//
+//    private void requestRateNegativeResult(int res) {
+//        UserActivityManager.addUserActivity(DatabaseManager.getInstance(this), true, false);
+//
+//        switch (res) {
+//            case 1:
+//                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_Y_SENDS_MAIL);
+//                IntentHelper.sendFeedback(this);
+//                break;
+//
+//            case 0:
+//                FirebaseManager.logEvent(this, FirebaseManager.EVENT_USER_DISLIKES_N_SENDS_MAIL);
+//                break;
+//        }
+//    }
     //endregion
 
     @Override
@@ -414,9 +418,15 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
-        boolean fragmentUndo = undoFragmentTransition();
-        if (fragmentUndo)
+        if (undoFragmentTransition()) {
             return;
+        }
+
+        // Are we are ready to ask for a review?
+        if (mViewModel.isReadyToRequestRate()) {
+            UserActivityManager.getInstance().requestRate(this);
+            return;
+        }
 
         // In case the active scroll view is not on top, move it up and return
         int currTab = mBinding.viewPager.getCurrentItem();

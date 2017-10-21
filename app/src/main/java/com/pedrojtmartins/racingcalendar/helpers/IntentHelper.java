@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 
 import com.pedrojtmartins.racingcalendar.R;
@@ -22,6 +23,14 @@ public class IntentHelper {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
         }
+    }
+
+    public static void openGooglePlay(@NonNull final Context context) {
+        String packageName = context.getPackageName();
+        PackageManager packageManager = context.getPackageManager();
+        Intent gpIntent = AppVersionHelper.getGooglePlayIntent(packageName, packageManager);
+        context.startActivity(gpIntent);
+
     }
 
     public static boolean canResolveIntent(Intent intent, PackageManager packageManager) {
@@ -57,4 +66,5 @@ public class IntentHelper {
 
         return false;
     }
+
 }

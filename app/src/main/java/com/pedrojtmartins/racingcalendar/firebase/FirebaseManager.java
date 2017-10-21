@@ -42,6 +42,7 @@ public class FirebaseManager {
     public static final String ERROR_STANDINGS_EMPTY = "error_standings_";
 
 
+    public static final String EVENT_REQUEST_RATE = "action_request_rate";
     public static final String EVENT_USER_LIKES_APP = "action_user_y_likes_app";
     public static final String EVENT_USER_LIKES_Y_RATES_APP = "action_user_likes_y_rates_app";
     public static final String EVENT_USER_LIKES_N_RATES_APP = "action_user_likes_n_rates_app";
