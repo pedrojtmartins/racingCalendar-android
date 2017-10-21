@@ -88,10 +88,6 @@
 
     <string name="inWeeks" formatted="false">Em %d semanas</string>
 
-
-    <string name="releaseNotesMsg">
-        1. Adiciona novo layout minimalista (ativado no menu Configurações).\n2. Adiciona opção para definir notificações para todas as restantes corridas de uma série.\n3. Adiciona opção para exportar corridas para um calendário externo.\n4. Melhora o layout.\n5. Melhora a cobertura das classificações.\n6. Melhora a estabilidade da app.\n7. Melhora o suporte para o Android 8.0 Oreo.</string>
-
     <string name="exportToCalendar">Exportar para o calendário</string>
     <string name="raceExported">Evento exportado</string>
     <string name="exportRaceTo">Exportar evento para</string>
@@ -101,7 +97,10 @@
 
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="areYouHappyWithApp">Obrigado por utilizar Racing Calendar!\nA aplicação está do seu agrado?</string>
-    <string name="requestRate">Ótimas notícias!\nGostaria de a avaliar?</string>
-    <string name="contactForSupport">Por favor ajude-nos a melhorar a sua experiência!\nGostaria de nos enviar feedback?</string>
+    <string name="areYouHappyWithApp">Obrigado por utilizar Racing Calendar!\nEstá satisfeito com a aplicação?</string>
+    <string name="requestRate">Isso são ótimas notícias!\nGostaria de a avaliar?</string>
+    <string name="contactForSupport">Por favor, ajude-nos a melhorar a sua experiência!\nGostaria de nos enviar feedback?</string>
+
+    <string name="releaseNotesMsg">
+        1.Adiciona suporte para múltiplas edições da mesma série (pode ser alterado nas Configurações).\n2.Adiciona nova opção \"Enviar feedback\".\n3.Corrige vários problemas do layout.</string>
 </resources>
