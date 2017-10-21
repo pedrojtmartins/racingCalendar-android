@@ -727,6 +727,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     public void loadPrevious(Series series) {
         int count = mViewModel.loadPrevious(series);
+        if (count == 0)
+            return;
+
         mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
 
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_LOAD_PREVIOUS_SERIES);
@@ -789,6 +792,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     public void loadPrevious(boolean favouritesOnly) {
         int count = mViewModel.loadPrevious(favouritesOnly);
+        if (count == 0)
+            return;
+
         mPageAdapter.previousItemsLoaded(mBinding.viewPager.getCurrentItem(), count);
 
         if (favouritesOnly)

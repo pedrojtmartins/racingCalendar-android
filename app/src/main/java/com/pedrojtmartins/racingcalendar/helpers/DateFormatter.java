@@ -226,6 +226,9 @@ public class DateFormatter {
         Calendar now = Calendar.getInstance();
         Calendar checking = DateFormatter.getCalendar(date);
 
+        if (checking == null)
+            return false;
+
         return checking.after(now);
     }
 
