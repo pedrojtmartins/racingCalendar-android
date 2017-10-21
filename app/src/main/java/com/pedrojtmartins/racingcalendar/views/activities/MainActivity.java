@@ -420,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     public void onBackPressed() {
         // Are we are ready to ask for a review?
         if (mViewModel.isReadyToRequestRate()) {
+            mViewModel.setReadyToRequestRate(false);
             UserActivityManager.getInstance().requestRate(this);
             return;
         }
