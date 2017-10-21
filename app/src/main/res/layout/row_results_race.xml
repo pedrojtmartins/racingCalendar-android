@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,28 +9,42 @@
             type="com.pedrojtmartins.racingcalendar.models.EventResultUnit"/>
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal"
-                  android:padding="8dp">
 
-        <TextView
-            android:id="@+id/pos"
-            style="@style/ResultsRacePositionsCol"
-            android:text="@{result.position}"
-            tools:text="19"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/name"
-            style="@style/ResultsRaceNamesCol"
-            android:text="@{result.name}"
-            tools:text="19"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/points"
-            style="@style/ResultsRaceDeltaCol"
-            android:text="@{result.points}"
-            tools:text="19"/>
+            <TextView
+                android:id="@+id/pos"
+                style="@style/ResultsRacePositionsCol"
+                android:text="@{result.position}"
+                tools:text="19"/>
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/ResultsRaceNamesCol"
+                android:text="@{result.name}"
+                tools:text="19"/>
+
+            <TextView
+                android:id="@+id/points"
+                style="@style/ResultsRaceDeltaCol"
+                android:text="@{result.points}"
+                tools:text="19"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/listDividerTopRow"/>
     </LinearLayout>
 </layout>

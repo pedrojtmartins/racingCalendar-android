@@ -418,16 +418,16 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     //region System callbacks
     @Override
     public void onBackPressed() {
+        // Are we are ready to ask for a review?
+        if (mViewModel.isReadyToRequestRate()) {
+            UserActivityManager.getInstance().requestRate(this);
+            return;
+        }
+
         // We might have some transaction in place on our fragments
         // In this case we need to go back to the original fragment
         // and continue without finishing the activity.
         if (undoFragmentTransition()) {
-            return;
-        }
-
-        // Are we are ready to ask for a review?
-        if (mViewModel.isReadyToRequestRate()) {
-            UserActivityManager.getInstance().requestRate(this);
             return;
         }
 
