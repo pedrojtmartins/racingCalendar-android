@@ -30,13 +30,13 @@
                 android:id="@+id/name"
                 style="@style/ResultsStandingsNamesCol"
                 android:text="@{result.name}"
-                tools:text="19"/>
+                tools:text="Sebastian Vettel"/>
 
             <TextView
                 android:id="@+id/points"
                 style="@style/ResultsStandingsPointsCol"
                 android:text="@{result.points}"
-                tools:text="19"/>
+                tools:text="209.5"/>
         </LinearLayout>
 
         <View
