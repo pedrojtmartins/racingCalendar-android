@@ -14,6 +14,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar._settings.Settings;
+import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 
 /**
  * Pedro Martins
@@ -21,7 +22,6 @@ import com.pedrojtmartins.racingcalendar._settings.Settings;
  */
 
 public class AdmobHelper {
-    private final static int SHOW_NOTIF_AD_EVERY = 5;
 
     private InterstitialAd mInterstitialAd;
     private boolean mLoadNextInterstitial;
@@ -101,7 +101,8 @@ public class AdmobHelper {
             }
         });
 
-        if (ignoreCount || (count > 0 && count % SHOW_NOTIF_AD_EVERY == 0)) {
+        int skipAdCount = FirebaseManager.getIntRemoteConfig(FirebaseManager.REMOTE_CONFIG_SKIP_INTERSTITIAL_AD_COUNT);
+        if (ignoreCount || (count > 0 && count % skipAdCount == 0)) {
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             } else {

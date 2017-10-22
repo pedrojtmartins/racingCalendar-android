@@ -21,6 +21,7 @@ public class FirebaseManager {
     public static final String REMOTE_CONFIG_AUTO_SCROLL_THRESHOLD = "auto_scroll_top_threshold";
     public static final String REMOTE_CONFIG_AUTO_SCROLL_MINI_OFFSET = "auto_scroll_top_mini_offset";
     public static final String REMOTE_CONFIG_AUTO_SCROLL_NORMAL_OFFSET = "auto_scroll_top_offset";
+    public static final String REMOTE_CONFIG_SKIP_INTERSTITIAL_AD_COUNT = "skip_interstitial_ad_count";
 
     public static final String EVENT_ACTIVITY_ABOUT = "activity_about";
     public static final String EVENT_ACTIVITY_FAVOURITES = "activity_favourites";

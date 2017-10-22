@@ -16,4 +16,8 @@
         <key>auto_scroll_top_offset</key>
         <value>1</value>
     </entry>
+    <entry>
+        <key>skip_interstitial_ad_count</key>
+        <value>5</value>
+    </entry>
 </defaultsMap>
