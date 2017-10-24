@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
@@ -71,9 +72,15 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseVersion}"
     compile "com.google.firebase:firebase-config:${rootProject.ext.firebaseVersion}"
 
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${rootProject.ext.kotlinVersion}"
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.4.2'
     testCompile 'org.mockito:mockito-core:2.10.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+repositories {
+    mavenCentral()
+}
