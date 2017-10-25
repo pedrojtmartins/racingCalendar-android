@@ -25,12 +25,15 @@ android {
         }
     }
 
+    flavorDimensions "default"
     productFlavors {
         regular {
             resValue "string", "app_name", "Racing Calendar"
+            dimension "default"
         }
         beta {
             resValue "string", "app_name", "Racing Calendar Beta"
+            dimension "default"
         }
     }
 
@@ -42,7 +45,7 @@ android {
         def isRegular = variant.getFlavors().get(0).name == 'regular'
         def isDebug = variant.buildType.name == 'debug'
         if (!isRegular && isDebug) {
-            variant.setIgnore(true);
+            variant.setIgnore(true)
         }
     }
 }
