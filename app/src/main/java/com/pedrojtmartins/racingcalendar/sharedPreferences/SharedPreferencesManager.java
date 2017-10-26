@@ -138,6 +138,20 @@ public class SharedPreferencesManager {
     }
     //endregion Helpers
 
+    private final static String WIDGET_CONFIG = "widget_config_";
+    public int getWidgetConfig(int appWidgetId) {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        return sp.getInt(WIDGET_CONFIG + appWidgetId, -1);
+    }
+
+    public void addWidgetConfig(int appWidgetId, int seriesId) {
+        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(WIDGET_CONFIG + appWidgetId, seriesId);
+        editor.apply();
+    }
+
+
     //region RATING
 //    public boolean askForRate(String todayDate, int minStarts, int minDays) {
 //        SharedPreferences sp = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);

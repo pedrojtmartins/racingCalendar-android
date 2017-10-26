@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.pedrojtmartins.racingcalendar.BuildConfig;
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar._settings.Constants;
 import com.pedrojtmartins.racingcalendar.adapters.pagers.MainPagerAdapter;
@@ -419,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     @Override
     public void onBackPressed() {
         // Are we are ready to ask for a review?
-        if (mViewModel.isReadyToRequestRate()) {
+        if (!BuildConfig.DEBUG && mViewModel.isReadyToRequestRate()) {
             mViewModel.setReadyToRequestRate(false);
             UserActivityManager.getInstance().requestRate(this);
             return;

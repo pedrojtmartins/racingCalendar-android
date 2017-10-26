@@ -103,4 +103,11 @@
 
     <string name="releaseNotesMsg">
         1.Adiciona suporte para múltiplas edições da mesma série (pode ser alterado nas Configurações).\n2.Adiciona nova opção \"Enviar feedback\".\n3.Corrige vários problemas do layout.</string>
+
+    <string name="days">dias</string>
+    <string name="day">dia</string>
+    <string name="hour">hora</string>
+    <string name="hours">horas</string>
+    <string name="in">em</string>
+    <string name="today">Hoje</string>
 </resources>

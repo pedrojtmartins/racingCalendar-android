@@ -134,8 +134,11 @@ public class DateFormatter {
 
     @SuppressLint("SimpleDateFormat")
     private static String getHour(String date, String format) {
-        if (date == null || !date.contains("T") || !date.contains(":"))
+        if (date == null || !date.contains(":"))
             return "";
+
+        if (!date.contains("T"))
+            date += "T00:00:00";
 
         try {
             DateFormat utcFormat = new SimpleDateFormat(defaultFormat);
@@ -263,4 +266,28 @@ public class DateFormatter {
             return "";
         }
     }
+
+    public static long hoursUntil(String date, boolean ignoreHms) {
+        Calendar cNow = Calendar.getInstance();
+        Calendar cDate = DateFormatter.getCalendar(date);
+
+        if (ignoreHms) {
+            cNow.set(Calendar.HOUR, 0);
+            cNow.set(Calendar.MINUTE, 0);
+            cNow.set(Calendar.SECOND, 0);
+            cNow.set(Calendar.MILLISECOND, 0);
+
+            cDate.set(Calendar.HOUR, 0);
+            cDate.set(Calendar.MINUTE, 0);
+            cDate.set(Calendar.SECOND, 0);
+            cDate.set(Calendar.MILLISECOND, 0);
+        }
+
+        long millisDiff = cDate.getTimeInMillis() - cNow.getTimeInMillis();
+        long secsDiff = millisDiff / 1000;
+        long hoursDiff = secsDiff / 3600;
+
+        return hoursDiff;
+    }
+
 }

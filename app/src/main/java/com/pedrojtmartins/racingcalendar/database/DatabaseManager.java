@@ -100,7 +100,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
     //endregion
 
     //region Create Statement
-    private static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
+    private static final String CREATE_TABLE_NOTIFICATIONS_V1 = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
+            KEY_NOTIFICATIONS_ID + " INTEGER PRIMARY KEY," +
+            KEY_NOTIFICATIONS_RACE_ID + " INTEGER," +
+            KEY_NOTIFICATIONS_SERIES_ID + " INTEGER," +
+            KEY_NOTIFICATIONS_TIME + " TEXT," +
+            KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER)";
+
+    private static final String CREATE_TABLE_NOTIFICATIONS_V2 = "CREATE TABLE " + TABLE_NOTIFICATIONS + "(" +
             KEY_NOTIFICATIONS_ID + " INTEGER PRIMARY KEY," +
             KEY_NOTIFICATIONS_RACE_ID + " INTEGER," +
             KEY_NOTIFICATIONS_SERIES_ID + " INTEGER," +
@@ -154,14 +161,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_RACES);
         db.execSQL(CREATE_TABLE_SERIES);
-        db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+        db.execSQL(CREATE_TABLE_NOTIFICATIONS_V2);
         db.execSQL(CREATE_TABLE_USER_ACTIVITY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion <= 1) {
-            db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+            db.execSQL(CREATE_TABLE_NOTIFICATIONS_V1);
         }
 
         if (oldVersion <= 2) {

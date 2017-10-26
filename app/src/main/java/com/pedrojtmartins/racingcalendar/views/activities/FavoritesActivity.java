@@ -35,7 +35,6 @@ public class FavoritesActivity extends AppCompatActivity {
         initRecyclerView();
 
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTIVITY_FAVOURITES);
-
     }
 
     private void initViewModel() {

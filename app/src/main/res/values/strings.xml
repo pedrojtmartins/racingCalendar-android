@@ -104,4 +104,11 @@
 
     <string name="releaseNotesMsg">
         1. Adds support for multiple editions of the same series (customisable in Settings).\n2. Adds a new \"Send feedback\" menu option.\n3. Fixes several layout and behaviour issues.</string>
+
+    <string name="days">days</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="hours">hours</string>
+    <string name="in">in</string>
+    <string name="today">Today</string>
 </resources>

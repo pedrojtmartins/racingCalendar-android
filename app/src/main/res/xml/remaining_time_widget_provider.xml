@@ -1,0 +1,10 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:configure="com.pedrojtmartins.racingcalendar.views.widgetsConfig.RemainingTimeWidgetConfigActivity"
+                    android:initialLayout="@layout/widget_remaining_time_normal"
+                    android:minHeight="110dp"
+                    android:minWidth="110dp"
+                    android:previewImage="@drawable/podium"
+                    android:resizeMode="horizontal|vertical"
+                    android:updatePeriodMillis="3600000"
+                    android:widgetCategory="home_screen|keyguard">
+</appwidget-provider>
