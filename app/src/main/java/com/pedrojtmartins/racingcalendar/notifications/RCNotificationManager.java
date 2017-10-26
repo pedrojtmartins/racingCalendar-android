@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.pedrojtmartins.racingcalendar.R;
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 
 import static android.support.v4.app.NotificationCompat.DEFAULT_LIGHTS;
@@ -58,7 +59,10 @@ public class RCNotificationManager {
         String title;
         if (notification.time.contains("T")) {
             if (notification.minutesBefore > 0) {
-                title = String.format(resources.getString(R.string.notifRaceBefore), notification.minutesBefore);
+                title = String.format(
+                        resources.getString(R.string.notifRaceBefore),
+                        notification.minutesBefore,
+                        DateFormatter.getHour(notification.time));
             } else {
                 title = resources.getString(R.string.notifRace);
             }

@@ -19,7 +19,7 @@
     <string name="next">Next race:</string>
     <string name="of">of</string>
     <string name="seriesIsOver">Completed</string>
-    <string name="notifRaceBefore" formatted="false">Green flag in %d minutes</string>
+    <string name="notifRaceBefore" formatted="false">Green flag in %d minutes. (%s)</string>
     <string name="notifRace" formatted="false">Green flag</string>
     <string name="notifRaceToday" formatted="false">Race is today</string>
 

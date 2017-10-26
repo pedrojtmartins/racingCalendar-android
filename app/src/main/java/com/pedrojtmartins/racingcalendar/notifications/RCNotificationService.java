@@ -31,7 +31,6 @@ public class RCNotificationService extends JobIntentService {
         enqueueWork(context, RCNotificationService.class, JOB_ID, work);
     }
 
-
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         Log.i("debug", "RCNotificationService: onHandleWork");

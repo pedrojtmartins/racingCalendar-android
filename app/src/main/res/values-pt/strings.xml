@@ -20,7 +20,7 @@
     <string name="of">de</string>
     <string name="next">Próxima corrida:</string>
     <string name="seriesIsOver">Completa</string>
-    <string name="notifRaceBefore" formatted="false">A corrida vai começar dentro de %d minutos</string>
+    <string name="notifRaceBefore" formatted="false">A corrida vai começar dentro de %d minutos. (%s)</string>
     <string name="notifRace" formatted="false">A corrida está a começar</string>
     <string name="notifRaceToday" formatted="false">Corrida hoje</string>
 
