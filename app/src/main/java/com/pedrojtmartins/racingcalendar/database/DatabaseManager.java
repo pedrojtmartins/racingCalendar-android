@@ -839,7 +839,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         try {
             return db.delete(TABLE_NOTIFICATIONS, KEY_NOTIFICATIONS_IS_RACE + "=0 AND " + KEY_NOTIFICATIONS_COMPLETED + "=0", null);
         } finally {
-            db.endTransaction();
             closeDatabase(db);
         }
     }

@@ -114,7 +114,7 @@
 
     <string name="weekly_notification">Notificação semanal</string>
 
-    <string name="weeklyUpdate">Atualização semanal</string>
+    <string name="weeklyUpdate">Esta semana: </string>
     <string name="and">e</string>
-    <string name="addFavoutiresForWeeklyNotification">Adicione favoritos para receber uma atualização semanal.</string>
+    <string name="addFavoutiresForWeeklyNotification">Adicione favoritos para receber uma atualização semanal. Também pode desabilitar esta notificação nas Configurações.</string>
 </resources>

@@ -293,8 +293,8 @@ public class DateFormatter {
 
     static class Helper {
         static int getDaysMissingToNextDayOfWeek(int currDayOfWeek, int targetDayOfWeek) {
-            if (currDayOfWeek <= targetDayOfWeek)
-                currDayOfWeek += 7;
+            if (targetDayOfWeek <= currDayOfWeek)
+                targetDayOfWeek += 7;
 
             return targetDayOfWeek - currDayOfWeek;
         }

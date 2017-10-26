@@ -82,7 +82,6 @@ public class RCAlarmManager {
     public static void resetRaceAlarms(@NonNull final Context context, @NonNull final AlarmManager am, @NonNull final DatabaseManager db) {
         // Fetch all upcoming alarms
         ArrayList<RCNotification> rcNotifications = db.getUpcomingNotifications();
-
         if (rcNotifications == null || rcNotifications.isEmpty()) {
             // No alarms yet
             return;
@@ -102,14 +101,9 @@ public class RCAlarmManager {
         }
     }
 
-    public static void removePendingWeeklyNotifications(@NonNull final DatabaseManager db) {
-        //Delete all pending weekly Alarms
-        db.removePendingWeeklyNotifications();
-    }
-
     public static void resetWeeklyAlarm(@NonNull final Context context, @NonNull final AlarmManager am, @NonNull final DatabaseManager db, @NonNull final RCSettings settings) {
         //Delete all pending weekly Alarms
-        removePendingWeeklyNotifications(db);
+        db.removePendingWeeklyNotifications();
 
         // If weekly notifications are disabled, do nothing
         if (!settings.isWeeklyNotification())

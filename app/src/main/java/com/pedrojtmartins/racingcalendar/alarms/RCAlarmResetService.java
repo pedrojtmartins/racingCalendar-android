@@ -1,7 +1,6 @@
 package com.pedrojtmartins.racingcalendar.alarms;
 
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,10 +8,8 @@ import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
-import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
-import com.pedrojtmartins.racingcalendar.models.RCNotification;
-
-import java.util.ArrayList;
+import com.pedrojtmartins.racingcalendar.models.RCSettings;
+import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
 
 /**
  * Pedro Martins
@@ -32,21 +29,12 @@ public class RCAlarmResetService extends JobIntentService {
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         Log.i("debug", "RCAlarmResetService: onHandleWork");
-        DatabaseManager db = DatabaseManager.getInstance(this);
-        ArrayList<RCNotification> rcNotifications = db.getUpcomingNotifications();
-        if (rcNotifications == null || rcNotifications.isEmpty()) {
-            return;
-        }
 
-        FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_REBOOT, rcNotifications.size());
-
+        final DatabaseManager db = DatabaseManager.getInstance(this);
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        for (RCNotification rcNotification : rcNotifications) {
-            if (rcNotification.complete)
-                continue;
+        final RCSettings settings = new SharedPreferencesManager(this).getSettings();
 
-            final PendingIntent pendingIntent = RCAlarmManager.generatePendingIntent(this, rcNotification);
-            RCAlarmManager.setAlarm(am, rcNotification, pendingIntent);
-        }
+        RCAlarmManager.resetRaceAlarms(this, am, db);
+        RCAlarmManager.resetWeeklyAlarm(this, am, db, settings);
     }
 }
