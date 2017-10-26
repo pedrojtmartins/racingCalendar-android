@@ -67,7 +67,7 @@ public class RCNotificationService extends JobIntentService {
 
         NotificationManager notificationManager
                 = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        RCNotificationManager.notify(this, pendingIntent, notificationManager, title, msg, rcNotification.id, icon);
+        RCNotificationManager.notify(this, pendingIntent, notificationManager, title, msg, rcNotification.id, icon, RCNotificationManager.CHANNEL_EVENT_STARTING);
 
         db.setNotificationCompleted(rcNotification);
         FirebaseManager.logEvent(this, FirebaseManager.EVENT_ACTION_SET_NOTIFICATION_TRIGGERED);

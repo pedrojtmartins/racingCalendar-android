@@ -18,9 +18,11 @@ public class RCSettings extends BaseObservable {
 
     @SerializedName("notif_minBefore")
     private String notifMinutesBefore;
+
     public String getNotificationMinutesBefore() {
         return notifMinutesBefore;
     }
+
     public void setNotificationMinutesBefore(String notificationMinutesBefore) {
         if (notificationMinutesBefore.isEmpty())
             notificationMinutesBefore = "0";
@@ -33,10 +35,12 @@ public class RCSettings extends BaseObservable {
 
     @SerializedName("layout_miniAll")
     private boolean isMiniLayoutAllActive;
+
     @Bindable
     public boolean isMiniLayoutAllActive() {
         return isMiniLayoutAllActive;
     }
+
     public void setMiniLayoutAllActive(boolean miniLayoutAllActive) {
         isMiniLayoutAllActive = miniLayoutAllActive;
         notifyPropertyChanged(BR.miniLayoutAllActive);
@@ -44,10 +48,12 @@ public class RCSettings extends BaseObservable {
 
     @SerializedName("layout_miniFav")
     private boolean isMiniLayoutFavActive;
+
     @Bindable
     public boolean isMiniLayoutFavActive() {
         return isMiniLayoutFavActive;
     }
+
     public void setMiniLayoutFavActive(boolean miniLayoutFavActive) {
         isMiniLayoutFavActive = miniLayoutFavActive;
         notifyPropertyChanged(BR.miniLayoutFavActive);
@@ -55,10 +61,12 @@ public class RCSettings extends BaseObservable {
 
     @SerializedName("layout_miniSer")
     private boolean isMiniLayoutSeriesActive;
+
     @Bindable
     public boolean isMiniLayoutSeriesActive() {
         return isMiniLayoutSeriesActive;
     }
+
     public void setMiniLayoutSeriesActive(boolean miniLayoutSeriesActive) {
         isMiniLayoutSeriesActive = miniLayoutSeriesActive;
         notifyPropertyChanged(BR.miniLayoutSeriesActive);
@@ -70,16 +78,40 @@ public class RCSettings extends BaseObservable {
 
     @SerializedName("show_other_years")
     private boolean showOtherYears;
+
     @Bindable
     public boolean isShowOtherYears() {
         return showOtherYears;
     }
+
     public void setShowOtherYears(boolean showOtherYears) {
         this.showOtherYears = showOtherYears;
         notifyPropertyChanged(BR.showOtherYears);
     }
 
     private boolean originalShowOtherYears;
+
+    @SerializedName("weekly_notification")
+    private boolean isWeeklyNotification;
+
+    @Bindable
+    public boolean isWeeklyNotification() {
+        return isWeeklyNotification;
+    }
+
+    public void setWeeklyNotification(boolean weeklyNotification) {
+        isWeeklyNotification = weeklyNotification;
+        notifyPropertyChanged(BR.weeklyNotification);
+
+    }
+
+    private boolean originalisWeeklyNotification;
+
+    @SerializedName("weekly_day_of_week")
+    public int weeklyDayOfWeek;
+
+    @SerializedName("weekly_hour")
+    public String weeklyHour;
 
     public RCSettings(String serialized) {
         setDefaults();
@@ -100,12 +132,6 @@ public class RCSettings extends BaseObservable {
             if (aSettings.length > 3) {
                 originalMiniLayoutAllActive = isMiniLayoutAllActive = aSettings[3].equals("1");
             }
-
-//            if (aSettings.length > 4)
-//                isMiniLayoutFavActive = aSettings[4].equals("1");
-//
-//            if (aSettings.length > 5)
-//                isMiniLayoutSeriesActive = aSettings[5].equals("1");
         }
     }
 
@@ -114,6 +140,7 @@ public class RCSettings extends BaseObservable {
         originalMiniLayoutFavActive = isMiniLayoutFavActive;
         originalMiniLayoutSerActive = isMiniLayoutSeriesActive;
         originalShowOtherYears = showOtherYears;
+        originalisWeeklyNotification = isWeeklyNotification;
     }
 
     private void setDefaults() {
@@ -125,6 +152,10 @@ public class RCSettings extends BaseObservable {
         originalMiniLayoutAllActive = isMiniLayoutAllActive = Settings.IS_MINI_LAYOUT_ALL_ACTIVE;
         originalMiniLayoutFavActive = isMiniLayoutFavActive = Settings.IS_MINI_LAYOUT_FAV_ACTIVE;
         originalMiniLayoutSerActive = isMiniLayoutSeriesActive = Settings.IS_MINI_LAYOUT_SERIES_ACTIVE;
+
+        originalisWeeklyNotification = isWeeklyNotification = Settings.IS_WEEKLY_NOTIFICATION_ACTIVE;
+        weeklyDayOfWeek = Settings.WEEKLY_NOTIFICATION_DAY_OF_WEEK;
+        weeklyHour = Settings.WEEKLY_NOTIFICATION_HOUR;
     }
 
     @Override
@@ -147,5 +178,9 @@ public class RCSettings extends BaseObservable {
 
     public boolean showPreviousYearsChanged() {
         return showOtherYears != originalShowOtherYears;
+    }
+
+    public boolean weeklyNotificationChanged() {
+        return isWeeklyNotification != originalisWeeklyNotification;
     }
 }

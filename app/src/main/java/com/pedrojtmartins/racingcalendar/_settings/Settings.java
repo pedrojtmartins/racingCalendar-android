@@ -17,6 +17,10 @@ public class Settings {
     public static final boolean IS_MINI_LAYOUT_SERIES_ACTIVE = false;
 
     public static final boolean SHOW_OTHER_SERIES_YEARS = false;
+
+    public static final boolean IS_WEEKLY_NOTIFICATION_ACTIVE = true;
+    public static final int WEEKLY_NOTIFICATION_DAY_OF_WEEK = 3; //Tuesday (Sunday = 1)
+    public static final String WEEKLY_NOTIFICATION_HOUR = "15:00:00";
     //endregion
 
     public final static String TEST_DEVICE_ID = "B243049824CFD790875E71B3C9DC4847";

@@ -134,11 +134,8 @@ public class DateFormatter {
 
     @SuppressLint("SimpleDateFormat")
     private static String getHour(String date, String format) {
-        if (date == null || !date.contains(":"))
+        if (date == null || !date.contains("T") || !date.contains(":"))
             return "";
-
-        if (!date.contains("T"))
-            date += "T00:00:00";
 
         try {
             DateFormat utcFormat = new SimpleDateFormat(defaultFormat);
@@ -240,9 +237,25 @@ public class DateFormatter {
         return fullDate.startsWith(thisYear);
     }
 
+    public static boolean isThisWeek(String fullDate) {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, 7);
+
+        return !now.after(getCalendar(fullDate));
+    }
+
     public static long getDateInMillis(String date) {
         Calendar calendar = DateFormatter.getCalendar(date);
         return calendar.getTimeInMillis();
+    }
+
+    public static String getFormatted(Date date) {
+        try {
+            SimpleDateFormat currFormat = new SimpleDateFormat(defaultFormat);
+            return currFormat.format(date);
+        } catch (IllegalArgumentException iae) {
+            return "";
+        }
     }
 
     public static String getFormattedNow() {
@@ -264,6 +277,26 @@ public class DateFormatter {
             return currFormat.format(now.getTime());
         } catch (IllegalArgumentException iae) {
             return "";
+        }
+    }
+
+    public static String getNextDateForDayOfWeek(int weeklyDayOfWeek) {
+        Calendar now = Calendar.getInstance();
+
+        int currDayOfWeek = now.get(Calendar.DAY_OF_WEEK);
+        int daysToAdvance = Helper.getDaysMissingToNextDayOfWeek(currDayOfWeek, weeklyDayOfWeek);
+
+        now.add(Calendar.DAY_OF_MONTH, daysToAdvance);
+
+        return getDate(getFormatted(now.getTime()));
+    }
+
+    static class Helper {
+        static int getDaysMissingToNextDayOfWeek(int currDayOfWeek, int targetDayOfWeek) {
+            if (currDayOfWeek <= targetDayOfWeek)
+                currDayOfWeek += 7;
+
+            return targetDayOfWeek - currDayOfWeek;
         }
     }
 
@@ -289,5 +322,4 @@ public class DateFormatter {
 
         return hoursDiff;
     }
-
 }

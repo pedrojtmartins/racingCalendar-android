@@ -83,6 +83,7 @@
     <string name="upgradePro">Remover publicidade</string>
 
     <string name="notification_channel_race_starting">Início de corridas</string>
+    <string name="notification_channel_weekly">Notificação semanal</string>
     <string name="settinns_layout">Layout</string>
     <string name="settings_activate_mini_layout">Layout reduzido</string>
 
@@ -110,4 +111,10 @@
     <string name="hours">horas</string>
     <string name="in">em</string>
     <string name="today">Hoje</string>
+
+    <string name="weekly_notification">Notificação semanal</string>
+
+    <string name="weeklyUpdate">Atualização semanal</string>
+    <string name="and">e</string>
+    <string name="addFavoutiresForWeeklyNotification">Adicione favoritos para receber uma atualização semanal.</string>
 </resources>

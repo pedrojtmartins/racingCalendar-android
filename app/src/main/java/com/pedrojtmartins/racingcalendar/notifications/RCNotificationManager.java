@@ -24,7 +24,8 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
  */
 
 public class RCNotificationManager {
-    private static final String CHANNEL_EVENT_STARTING = "channel_event_starting";
+    public static final String CHANNEL_EVENT_STARTING = "channel_event_starting";
+    public static final String CHANNEL_WEEKLY = "channel_weekly";
 
     static boolean notify(final Context context,
                           final PendingIntent pendingIntent,
@@ -32,11 +33,12 @@ public class RCNotificationManager {
                           final String title,
                           final String msg,
                           final int id,
-                          final Bitmap icon) {
+                          final Bitmap icon,
+                          final String channel) {
         if (context == null || pendingIntent == null || notificationManager == null || id <= 0 || icon == null)
             return false;
 
-        Notification notification = new NotificationCompat.Builder(context, CHANNEL_EVENT_STARTING)
+        Notification notification = new NotificationCompat.Builder(context, channel)
                 .setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE | DEFAULT_LIGHTS)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
@@ -75,6 +77,16 @@ public class RCNotificationManager {
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_EVENT_STARTING, name, importance);
+        mChannel.enableLights(true);
+        mChannel.enableVibration(true);
+        mChannel.setLightColor(Color.RED);
+        mChannel.setVibrationPattern(new long[]{500, 250, 250, 250, 500});
+        mNotificationManager.createNotificationChannel(mChannel);
+
+        name = resources.getString(R.string.notification_channel_weekly);
+        importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+        mChannel = new NotificationChannel(CHANNEL_WEEKLY, name, importance);
         mChannel.enableLights(true);
         mChannel.enableVibration(true);
         mChannel.setLightColor(Color.RED);

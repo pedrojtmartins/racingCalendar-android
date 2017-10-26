@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
 
         showReleaseNotes();
         checkRateRequestStatus();
+        checkWeeklyNotificationStatus();
     }
+
 
     private void createNotificationChannels() {
         RCNotificationManager.createChannels(
@@ -109,6 +111,19 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
         manager.addAppStart(databaseManager);
         boolean isReadyToRequestRate = manager.isReadyToRequestRate(databaseManager);
         mViewModel.setReadyToRequestRate(isReadyToRequestRate);
+    }
+
+    private void checkWeeklyNotificationStatus() {
+        // TODO: 24/10/2017 this will run everytime the app is started, IMPROVE
+        final RCSettings settings = new SharedPreferencesManager(this).getSettings();
+        if (!settings.isWeeklyNotification()) {
+            // If weekly notifications are disabled, do nothing
+            return;
+        }
+
+        final DatabaseManager db = DatabaseManager.getInstance(this);
+        final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        RCAlarmManager.resetWeeklyAlarm(this, am, db, settings);
     }
 
     //region Rate request

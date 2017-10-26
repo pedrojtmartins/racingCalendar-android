@@ -28,7 +28,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     //region Database
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     //endregion
 
     //region Tables
@@ -96,6 +96,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String KEY_NOTIFICATIONS_MINUTES_BEFORE = "notif_mins_before";
     private static final String KEY_NOTIFICATIONS_DATE_INDEX = "notif_date_index";
     private static final String KEY_NOTIFICATIONS_COMPLETED = "notif_complete";
+    private static final String KEY_NOTIFICATIONS_IS_RACE = "notif_is_race";
+
 
     //endregion
 
@@ -114,7 +116,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             KEY_NOTIFICATIONS_TIME + " TEXT," +
             KEY_NOTIFICATIONS_MINUTES_BEFORE + " INTEGER," +
             KEY_NOTIFICATIONS_DATE_INDEX + " INTEGER DEFAULT 0," +
-            KEY_NOTIFICATIONS_COMPLETED + " INTEGER DEFAULT 0)";
+            KEY_NOTIFICATIONS_COMPLETED + " INTEGER DEFAULT 0," +
+            KEY_NOTIFICATIONS_IS_RACE + " INTEGER DEFAULT 1)";
     //endregion
     //endregion
     //endregion
@@ -199,6 +202,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     KEY_SERIES_NEXT_YEAR_SERIES_ID + " INTEGER DEFAULT 0");
 
             db.execSQL(CREATE_TABLE_USER_ACTIVITY);
+        }
+
+        if (oldVersion <= 5) {
+            db.execSQL("ALTER TABLE " + TABLE_NOTIFICATIONS + " ADD COLUMN " +
+                    KEY_NOTIFICATIONS_IS_RACE + " INTEGER DEFAULT 1");
+
         }
     }
 
@@ -633,13 +642,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 int minutesBefore = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_MINUTES_BEFORE));
                 int timeIndex = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_DATE_INDEX));
                 int complete = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_COMPLETED));
+                int isRace = cursor.getInt(cursor.getColumnIndex(KEY_NOTIFICATIONS_IS_RACE));
 
                 String seriesName = "";
                 int seriesNamePos = cursor.getColumnIndex(KEY_SERIES_NAME);
                 if (seriesNamePos != -1)
                     seriesName = cursor.getString(seriesNamePos);
 
-                list.add(new RCNotification(id, raceId, seriesId, time, timeIndex, minutesBefore, complete, seriesName));
+                list.add(new RCNotification(id, raceId, seriesId, time, timeIndex, minutesBefore, complete, seriesName, isRace));
             } while (cursor.moveToNext());
         }
 
@@ -665,6 +675,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         values.put(KEY_NOTIFICATIONS_MINUTES_BEFORE, notification.minutesBefore);
         values.put(KEY_NOTIFICATIONS_COMPLETED, notification.complete ? 1 : 0);
+        values.put(KEY_NOTIFICATIONS_IS_RACE, notification.isRace ? 1 : 0);
+
         return values;
     }
 
@@ -816,6 +828,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return removeNotifications(notifications);
     }
 
+    /**
+     * Remove weekly pending notifications from the database
+     *
+     * @return amount of lines removed
+     */
+    @AddTrace(name = "sqlite_removePendingWeeklyNotifications")
+    public int removePendingWeeklyNotifications() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            return db.delete(TABLE_NOTIFICATIONS, KEY_NOTIFICATIONS_IS_RACE + "=0 AND " + KEY_NOTIFICATIONS_COMPLETED + "=0", null);
+        } finally {
+            db.endTransaction();
+            closeDatabase(db);
+        }
+    }
 
     /**
      * Remove notifications from the database

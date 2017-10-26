@@ -5,19 +5,19 @@
 
         <variable
             name="data"
-            type="com.pedrojtmartins.racingcalendar.models.RCSettings"/>
+            type="com.pedrojtmartins.racingcalendar.models.RCSettings" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:focusableInTouchMode="true"
-                  android:orientation="vertical"
-                  tools:context="com.pedrojtmartins.racingcalendar.views.activities.SettingsActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:context="com.pedrojtmartins.racingcalendar.views.activities.SettingsActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -52,9 +52,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settinns_layout"
                         android:textColor="#000"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
 
-                    <include layout="@layout/list_divider_slim"/>
+                    <include layout="@layout/list_divider_slim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -67,14 +67,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_activate_mini_layout"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
 
                         <Switch
                             android:id="@+id/miniLayoutActiveSwitch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="@{data.miniLayoutActive}"
-                            android:theme="@style/SCBSwitch"/>
+                            android:theme="@style/SCBSwitch" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -97,14 +97,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/maintab_all"
-                                android:textColor="#000"/>
+                                android:textColor="#000" />
 
                             <Switch
                                 android:id="@+id/miniLayoutActiveAllSwitch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="@={data.miniLayoutAllActive}"
-                                android:theme="@style/SCBSwitch"/>
+                                android:theme="@style/SCBSwitch" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -118,14 +118,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/maintab_favourites"
-                                android:textColor="#000"/>
+                                android:textColor="#000" />
 
                             <Switch
                                 android:id="@+id/miniLayoutActiveFavSwitch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="@={data.miniLayoutFavActive}"
-                                android:theme="@style/SCBSwitch"/>
+                                android:theme="@style/SCBSwitch" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -139,14 +139,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/maintab_series"
-                                android:textColor="#000"/>
+                                android:textColor="#000" />
 
                             <Switch
                                 android:id="@+id/miniLayoutActiveSerSwitch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="@={data.miniLayoutSeriesActive}"
-                                android:theme="@style/SCBSwitch"/>
+                                android:theme="@style/SCBSwitch" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -164,9 +164,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/maintab_notifications"
                         android:textColor="#000"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
 
-                    <include layout="@layout/list_divider_slim"/>
+                    <include layout="@layout/list_divider_slim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -179,13 +179,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/notification_enable_defaults"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
 
                         <Switch
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="@={data.notificationsRemember}"
-                            android:theme="@style/SCBSwitch"/>
+                            android:theme="@style/SCBSwitch" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -200,7 +200,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/notifyBefore"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
 
                         <EditText
                             android:id="@+id/settings_notif_before"
@@ -211,7 +211,7 @@
                             android:gravity="center_horizontal"
                             android:inputType="number"
                             android:text="@={data.notificationMinutesBefore}"
-                            android:textCursorDrawable="@null"/>
+                            android:textCursorDrawable="@null" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -219,8 +219,29 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
                             android:text="@string/minutesShort"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/weekly_notification"
+                            android:textColor="#000" />
+
+                        <Switch
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="@={data.weeklyNotification}"
+                            android:theme="@style/SCBSwitch" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -236,9 +257,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/maintab_series"
                         android:textColor="#000"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
 
-                    <include layout="@layout/list_divider_slim"/>
+                    <include layout="@layout/list_divider_slim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -251,13 +272,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/notification_show_other_years"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
 
                         <Switch
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="@={data.showOtherYears}"
-                            android:theme="@style/SCBSwitch"/>
+                            android:theme="@style/SCBSwitch" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -274,9 +295,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settinns_links"
                         android:textColor="#000"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
 
-                    <include layout="@layout/list_divider_slim"/>
+                    <include layout="@layout/list_divider_slim" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -289,13 +310,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_open_link_in_app"
-                            android:textColor="#000"/>
+                            android:textColor="#000" />
 
                         <Switch
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="@={data.openLinksInBrowser}"
-                            android:theme="@style/SCBSwitch"/>
+                            android:theme="@style/SCBSwitch" />
                     </LinearLayout>
 
 

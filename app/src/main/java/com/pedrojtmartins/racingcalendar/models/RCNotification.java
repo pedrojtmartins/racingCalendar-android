@@ -18,6 +18,7 @@ public class RCNotification extends BaseObservable {
     public String time;
     public int timeIndex; // 0 - R1, 1 - R2...
     public boolean complete;
+    public boolean isRace = true;
 
     @Bindable
     public int minutesBefore;
@@ -60,7 +61,7 @@ public class RCNotification extends BaseObservable {
         }
     }
 
-    public RCNotification(int id, int raceId, int seriesId, String time, int index, int minutesBefore, int complete, String seriesName) {
+    public RCNotification(int id, int raceId, int seriesId, String time, int index, int minutesBefore, int complete, String seriesName, int isRace) {
         this.id = id;
         this.raceId = raceId;
         this.seriesId = seriesId;
@@ -69,6 +70,7 @@ public class RCNotification extends BaseObservable {
         this.minutesBefore = minutesBefore;
         this.complete = complete == 1;
         this.seriesName = seriesName;
+        this.isRace = isRace == 1;
     }
 
     public RCNotification(int eventId, int seriesId, String time, int index, int minutesBefore) {
@@ -79,5 +81,16 @@ public class RCNotification extends BaseObservable {
         this.minutesBefore = minutesBefore;
         this.seriesName = "";
         this.complete = false;
+        this.isRace = true;
+    }
+
+    /**
+     * Generates a weekly notifications that will fire at the "time"
+     *
+     * @param time utc String
+     */
+    public RCNotification(String time) {
+        this.time = time;
+        this.isRace = false;
     }
 }

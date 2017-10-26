@@ -85,6 +85,7 @@
     <string name="upgradePro">Remove ads</string>
 
     <string name="notification_channel_race_starting">Races starting</string>
+    <string name="notification_channel_weekly">Weekly notification</string>
     <string name="settinns_layout">Layout</string>
     <string name="settings_activate_mini_layout">Collapsed Layout</string>
 
@@ -111,4 +112,9 @@
     <string name="hours">hours</string>
     <string name="in">in</string>
     <string name="today">Today</string>
+
+    <string name="weekly_notification">Weekly notification</string>
+    <string name="weeklyUpdate">Weekly update</string>
+    <string name="and">and</string>
+    <string name="addFavoutiresForWeeklyNotification">Add favourites to receive a weekly update notifications.</string>
 </resources>
