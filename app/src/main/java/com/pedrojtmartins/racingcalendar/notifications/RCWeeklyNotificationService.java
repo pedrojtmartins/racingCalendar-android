@@ -15,6 +15,7 @@ import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
 import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
+import com.pedrojtmartins.racingcalendar.helpers.DateFormatter;
 import com.pedrojtmartins.racingcalendar.models.RCNotification;
 import com.pedrojtmartins.racingcalendar.models.RCSettings;
 import com.pedrojtmartins.racingcalendar.models.Race;
@@ -87,17 +88,19 @@ public class RCWeeklyNotificationService extends JobIntentService {
     private String buildSeriesMsg(ArrayList<Race> upcomingFavourites) {
         StringBuilder sb = new StringBuilder();
         if (upcomingFavourites != null && !upcomingFavourites.isEmpty()) {
-            sb.append(getString(R.string.weeklyUpdate));
-
             for (int i = 0; i < upcomingFavourites.size(); i++) {
+                if (!DateFormatter.isThisWeek(upcomingFavourites.get(i).getFullDate(0)))
+                    break;
+
                 if (i > 0)
                     sb.append(i < upcomingFavourites.size() - 1 ? ", " : getString(R.string.and));
 
                 sb.append(upcomingFavourites.get(i).getSeriesName());
             }
-        } else {
-            sb.append(getString(R.string.addFavoutiresForWeeklyNotification));
         }
+
+        if (sb.toString().isEmpty())
+            sb.append(getString(R.string.addFavoutiresForWeeklyNotification));
 
         return sb.toString();
     }

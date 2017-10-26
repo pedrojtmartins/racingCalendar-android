@@ -238,10 +238,10 @@ public class DateFormatter {
     }
 
     public static boolean isThisWeek(String fullDate) {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DAY_OF_MONTH, 7);
+        Calendar nextWeek = Calendar.getInstance();
+        nextWeek.add(Calendar.DAY_OF_MONTH, 7);
 
-        return !now.after(getCalendar(fullDate));
+        return nextWeek.after(getCalendar(fullDate));
     }
 
     public static long getDateInMillis(String date) {

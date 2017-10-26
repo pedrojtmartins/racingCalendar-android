@@ -114,7 +114,7 @@
     <string name="today">Today</string>
 
     <string name="weekly_notification">Weekly notification</string>
-    <string name="weeklyUpdate">This week: </string>
+    <string name="weeklyUpdate">Later this week</string>
     <string name="and">and</string>
     <string name="addFavoutiresForWeeklyNotification">Add favourites to receive a weekly update notifications. You can also disable this notification in the Settings.</string>
 </resources>

@@ -28,8 +28,13 @@ public class SettingsViewModel {
     public boolean needsLayoutUpdate() {
         return mSettings.miniLayoutChanged();
     }
+
     public boolean needsSeriesUpdate() {
         return mSettings.showPreviousYearsChanged();
+    }
+
+    public boolean needsWeeklyNotificationUpdate() {
+        return mSettings.weeklyNotificationChanged();
     }
 
     public void setMiniLayoutActive(boolean state) {

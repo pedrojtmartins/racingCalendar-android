@@ -2,6 +2,8 @@ package com.pedrojtmartins.racingcalendar.views.activities;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,6 +17,8 @@ import android.widget.LinearLayout;
 
 import com.pedrojtmartins.racingcalendar.R;
 import com.pedrojtmartins.racingcalendar._settings.AnimationConstants;
+import com.pedrojtmartins.racingcalendar.alarms.RCAlarmManager;
+import com.pedrojtmartins.racingcalendar.database.DatabaseManager;
 import com.pedrojtmartins.racingcalendar.databinding.ActivitySettingsBinding;
 import com.pedrojtmartins.racingcalendar.firebase.FirebaseManager;
 import com.pedrojtmartins.racingcalendar.sharedPreferences.SharedPreferencesManager;
@@ -50,22 +54,29 @@ public class SettingsActivity extends AppCompatActivity {
         if (viewModel.needsLayoutUpdate()) {
             getIntent().putExtra("update_layout", true);
             setResult(RESULT_OK, getIntent());
-        }
 
+        }
         if (viewModel.needsSeriesUpdate()) {
             getIntent().putExtra("reload_series", true);
             setResult(RESULT_OK, getIntent());
         }
 
+        if (viewModel.needsWeeklyNotificationUpdate()) {
+            final DatabaseManager db = DatabaseManager.getInstance(this);
+            boolean newState = viewModel.mSettings.isWeeklyNotification();
+
+            if (newState) {
+                final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                RCAlarmManager.resetWeeklyAlarm(this, am, db, viewModel.mSettings);
+            } else {
+                RCAlarmManager.removePendingWeeklyNotifications(db);
+            }
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                onBackPressed();
-        }
-
+        onBackPressed();
         return true;
     }
 
@@ -87,17 +98,6 @@ public class SettingsActivity extends AppCompatActivity {
                 else hideLayoutSettings();
             }
         });
-
-//        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-//                if (!checked)
-//                    checkSettingsState();
-//            }
-//        };
-//        binding.miniLayoutActiveAllSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
-//        binding.miniLayoutActiveFavSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
-//        binding.miniLayoutActiveSerSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
     private void showLayoutSettings() {
@@ -123,12 +123,15 @@ public class SettingsActivity extends AppCompatActivity {
             public void onAnimationStart(Animator animator) {
                 binding.miniLayoutsettings.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onAnimationEnd(Animator animator) {
             }
+
             @Override
             public void onAnimationCancel(Animator animator) {
             }
+
             @Override
             public void onAnimationRepeat(Animator animator) {
             }
@@ -137,6 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
         anim.setInterpolator(new AccelerateInterpolator());
         anim.start();
     }
+
     private void hideLayoutSettings() {
         if (binding.miniLayoutsettings.getVisibility() == View.GONE)
             return;
@@ -159,13 +163,16 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onAnimationStart(Animator animator) {
             }
+
             @Override
             public void onAnimationEnd(Animator animator) {
                 binding.miniLayoutsettings.setVisibility(View.GONE);
             }
+
             @Override
             public void onAnimationCancel(Animator animator) {
             }
+
             @Override
             public void onAnimationRepeat(Animator animator) {
             }
@@ -174,12 +181,4 @@ public class SettingsActivity extends AppCompatActivity {
         anim.setInterpolator(new AccelerateInterpolator());
         anim.start();
     }
-
-//    private void checkSettingsState() {
-//        if (!viewModel.mSettings.isMiniLayoutAllActive()
-//                && !viewModel.mSettings.isMiniLayoutFavActive()
-//                && !viewModel.mSettings.isMiniLayoutSeriesActive()) {
-//            binding.miniLayoutActiveSwitch.setChecked(false);
-//        }
-//    }
 }

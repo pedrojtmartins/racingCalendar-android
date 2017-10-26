@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements IRaceList, ISerie
     }
 
     private void checkWeeklyNotificationStatus() {
-        // TODO: 24/10/2017 this will run every time the app is started, IMPROVE
         final RCSettings settings = new SharedPreferencesManager(this).getSettings();
         if (!settings.isWeeklyNotification()) {
             // If weekly notifications are disabled, do nothing
